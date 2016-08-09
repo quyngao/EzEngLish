@@ -1,18 +1,22 @@
 package com.example.mypc.ezenglish.model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Quylt on 8/8/2016.
  */
-public class User extends  RealmModel{
-
+public class User extends RealmObject {
+    @PrimaryKey
+    public int id;
     String name;
     String email;
     String account;
     String password;
     String phone;
-    String level;
+    int level;
     String birthday;
-    String male;
+    int male;
     String img;
     int status;
     String description;
@@ -50,7 +54,7 @@ public class User extends  RealmModel{
         this.phone = phone;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
@@ -58,7 +62,7 @@ public class User extends  RealmModel{
         this.birthday = birthday;
     }
 
-    public void setMale(String male) {
+    public void setMale(int male) {
         this.male = male;
     }
 
@@ -95,7 +99,7 @@ public class User extends  RealmModel{
         return phone;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
@@ -103,7 +107,7 @@ public class User extends  RealmModel{
         return birthday;
     }
 
-    public String getMale() {
+    public int getMale() {
         return male;
     }
 
