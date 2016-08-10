@@ -135,7 +135,6 @@ public class LessonActivity extends Activity {
                 Log.d("TAG", "TAG Tapped INOUT(OUT)");
             }
         });
-
         btnPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
