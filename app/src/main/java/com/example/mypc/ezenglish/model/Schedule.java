@@ -14,6 +14,7 @@ public class Schedule extends RealmObject {
     public int id;
     String name;
     String description;
+    String type;  //  type = 1 , bao hoc bai , type = 2 bao tu vung
     String numberday;
     Date daystart;
     RealmList<Alarm> alarms;

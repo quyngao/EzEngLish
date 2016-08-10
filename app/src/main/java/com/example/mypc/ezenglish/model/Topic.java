@@ -15,6 +15,14 @@ public class Topic extends RealmObject {
     String description;
     RealmList<Lesson> lessons;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public RealmList<Lesson> getLessons() {
         return lessons;
     }

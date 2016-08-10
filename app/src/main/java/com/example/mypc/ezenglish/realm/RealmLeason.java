@@ -1,6 +1,7 @@
 package com.example.mypc.ezenglish.realm;
 
 import android.app.Activity;
+import android.app.Application;
 
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Topic;
@@ -18,13 +19,23 @@ public class RealmLeason {
         realm = RealmController.with(context).getRealm();
     }
 
+    public RealmLeason(Application context) {
+        realm = RealmController.with(context).getRealm();
+    }
+
     public void Savetopic(Lesson l) {
         realm.beginTransaction();
         realm.copyToRealm(l);
         realm.commitTransaction();
     }
+
     public RealmList<Lesson> getTopicbyid(int id) {
         Topic t = realm.where(Topic.class).equalTo("id", id).findFirst();
         return t.getLessons();
+    }
+
+    public Lesson getleassongbyid(int id) {
+        Lesson l = realm.where(Lesson.class).equalTo("id", id).findFirst();
+        return l;
     }
 }

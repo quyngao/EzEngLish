@@ -12,11 +12,10 @@ import io.realm.annotations.PrimaryKey;
 public class Alarm extends RealmObject {
     @PrimaryKey
     public int id;
-    int type;
-    Date time;
+    String time; // gio
     int step;
+    String type; // type = 0 ,1,2,3 listion, 4 voca
     String context;
-
     @Ignore
     Schedule schedule;
 }

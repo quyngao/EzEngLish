@@ -1,21 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mypc.ezenglish">
+          package="com.example.mypc.ezenglish">
 
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.LessonActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <activity
+                android:name="com.example.mypc.ezenglish.activity.AudioPlayerActivity"
+                android:launchMode="singleTask"
+                android:screenOrientation="portrait">
+            </activity>
+
         </activity>
+        <service
+            android:name="com.example.mypc.ezenglish.service.SongService"
+            android:enabled="true"
+            android:exported="true"/>
+        <receiver android:name="com.example.mypc.ezenglish.receiver.NotificationBroadcast">
+            <intent-filter>
+                <action android:name="com.example.mypc.ezenglish.delete"/>
+                <action android:name="com.example.mypc.ezenglish.pause"/>
+                <action android:name="com.example.mypc.ezenglish.next"/>
+                <action android:name="com.example.mypc.ezenglish.play"/>
+                <action android:name="com.example.mypc.ezenglish.previous"/>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

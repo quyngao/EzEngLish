@@ -2,6 +2,7 @@ package com.example.mypc.ezenglish.realm;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import io.realm.Realm;
