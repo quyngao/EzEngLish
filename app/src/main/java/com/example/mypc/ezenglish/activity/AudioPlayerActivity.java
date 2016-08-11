@@ -9,6 +9,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -26,6 +27,11 @@ import com.example.mypc.ezenglish.service.SongService;
 import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class AudioPlayerActivity extends Activity {
 
     Button btnBack;
@@ -35,6 +41,7 @@ public class AudioPlayerActivity extends Activity {
     static TextView textNowPlaying;
     static TextView textAlbumArtist;
     static TextView textComposer;
+    static TextView textdoc;
     static LinearLayout linearLayoutPlayer;
     ProgressBar progressBar;
     static Context context;
@@ -101,10 +108,13 @@ public class AudioPlayerActivity extends Activity {
     }
 
     private void getViews() {
+
         btnBack = (Button) findViewById(R.id.btnBack);
         btnPause = (Button) findViewById(R.id.btnPause);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnPlay = (Button) findViewById(R.id.btnPlay);
+        textdoc = (TextView) findViewById(R.id.text_doc);
+
         textNowPlaying = (TextView) findViewById(R.id.textNowPlaying);
         linearLayoutPlayer = (LinearLayout) findViewById(R.id.linearLayoutPlayer);
         textAlbumArtist = (TextView) findViewById(R.id.textAlbumArtist);
@@ -135,13 +145,25 @@ public class AudioPlayerActivity extends Activity {
             btnPlay.setVisibility(View.GONE);
         }
     }
-
     private static void updateUI() {
         try {
             String songName = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getName();
             String artist = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getContext();
             String album = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getLocation();
             String composer = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getType();
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/original/1/voca.txt");
+            StringBuilder text = new StringBuilder();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    text.append(line);
+                    text.append('\n');
+                }
+                br.close();
+            } catch (IOException e) {
+            }
+            textdoc.setText(text.toString());
             textNowPlaying.setText(songName);
             textAlbumArtist.setText(artist + " - " + album);
             if (composer != null && composer.length() > 0) {
@@ -155,12 +177,9 @@ public class AudioPlayerActivity extends Activity {
         }
         try {
             long albumId = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getId();
-            Bitmap albumArt = UtilFunctions.getAlbumart(context, albumId);
-            if (albumArt != null) {
-                linearLayoutPlayer.setBackgroundDrawable(new BitmapDrawable(albumArt));
-            } else {
-                linearLayoutPlayer.setBackgroundDrawable(new BitmapDrawable(UtilFunctions.getDefaultAlbumArt(context)));
-            }
+            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
+            linearLayoutPlayer.setBackgroundDrawable(new BitmapDrawable(albumArt));
+
         } catch (Exception e) {
             e.printStackTrace();
         }

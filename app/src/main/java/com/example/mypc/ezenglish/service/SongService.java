@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.RemoteControlClient;
 import android.media.RemoteControlClient.MetadataEditor;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.IBinder;
@@ -197,7 +198,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
 
         try {
             long albumId = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getId();
-            Bitmap albumArt = UtilFunctions.getAlbumart(getApplicationContext(), albumId);
+            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
             if (albumArt != null) {
                 notification.contentView.setImageViewBitmap(R.id.imageViewAlbumArt, albumArt);
                 if (currentVersionSupportBigNotification) {
@@ -292,7 +293,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                 remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
             }
             mp.reset();
-            mp.setDataSource(songPath);
+            mp.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath()+songPath);
             mp.prepare();
             mp.start();
             timer.scheduleAtFixedRate(new MainTask(), 0, 100);
@@ -323,7 +324,6 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
         } catch (Exception ex) {
         }
     }
-
     @SuppressLint("NewApi")
     private void UpdateMetadata(MP3 data) {
         if (remoteControlClient == null)
@@ -332,7 +332,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM, data.getContext());
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST, data.getType());
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE, data.getName());
-        mDummyAlbumArt = UtilFunctions.getAlbumart(getApplicationContext(), (long) data.getId());
+        mDummyAlbumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
         if (mDummyAlbumArt == null) {
             mDummyAlbumArt = BitmapFactory.decodeResource(getResources(), R.drawable.default_album_art);
         }

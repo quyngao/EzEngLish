@@ -116,6 +116,7 @@ public class LessonActivity extends Activity {
         btnNext = (Button) findViewById(R.id.btnNext);
         btnPrevious = (Button) findViewById(R.id.btnPrevious);
     }
+
     private void setListeners() {
         mediaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -213,14 +214,11 @@ public class LessonActivity extends Activity {
     @SuppressWarnings("deprecation")
     public static void updateUI() {
         try {
+
             MP3 data = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER);
             playingSong.setText(data.getName() + " " + data.getContext() + "-" + data.getType());
-            Bitmap albumArt = UtilFunctions.getAlbumart(context, (long) data.getId());
-            if (albumArt != null) {
-                imageViewAlbumArt.setBackgroundDrawable(new BitmapDrawable(albumArt));
-            } else {
-                imageViewAlbumArt.setBackgroundDrawable(new BitmapDrawable(UtilFunctions.getDefaultAlbumArt(context)));
-            }
+            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
+            imageViewAlbumArt.setBackgroundDrawable(new BitmapDrawable(albumArt));
             linearLayoutPlayingSong.setVisibility(View.VISIBLE);
         } catch (Exception e) {
         }

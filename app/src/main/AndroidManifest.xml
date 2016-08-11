@@ -21,12 +21,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <activity
-                android:name="com.example.mypc.ezenglish.activity.AudioPlayerActivity"
-                android:launchMode="singleTask"
-                android:screenOrientation="portrait">
-            </activity>
-
+        </activity>
+        <activity
+            android:name=".activity.AudioPlayerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
         <service
             android:name="com.example.mypc.ezenglish.service.SongService"

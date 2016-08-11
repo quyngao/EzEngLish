@@ -23,7 +23,7 @@ public class DataDummyLocal {
         l.setName("Leason" + id);
         l.setDoc(getDoc(id));
         l.setContext("ok");
-        l.setImg("location/img");
+        l.setImg("/original/1/avatar.jpg");
         l.setIsrealy(1);
         l.setTime(10);
         l.setVocas(getlistvocar(id * 10));
@@ -34,7 +34,7 @@ public class DataDummyLocal {
     public Topic saveTopic() {
         Topic t = new Topic();
         t.setId(1);
-        t.setImg("img");
+        t.setImg("");
         t.setName("Original");
         t.setDescription("for Biginer");
         RealmList<Lesson> list = new RealmList<>();
@@ -71,7 +71,7 @@ public class DataDummyLocal {
         Doc d = new Doc();
         d.setId(i);
         d.setType("audio");
-        d.setLocation("location");
+        d.setLocation("/original/1/voca.txt");
         d.setName("buca");
         return d;
     }
@@ -83,7 +83,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Day of the Dead Audio");
         m.setContext("Audio");
-        m.setLocation("/storage/emulated/0/original/Day of the Dead Audio.mp3");
+        m.setLocation("/original/1/Day of the Dead Audio.mp3");
         m.setType("0");
         list.add(m);
         i++;
@@ -91,7 +91,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Day of the Dead Vocab");
         m.setContext("Voca");
-        m.setLocation("/storage/emulated/0/original/Day of the Dead Vocab.mp3");
+        m.setLocation("/original/1/Day of the Dead Vocab.mp3");
         m.setType("1");
         list.add(m);
         i++;
@@ -99,32 +99,8 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Day of the Dead MS");
         m.setContext("Ministore");
-        m.setLocation("/storage/emulated/0/original/Day of the Dead MS.mp3");
+        m.setLocation("/original/1/Day of the Dead MS.mp3");
         m.setType("2");
-        list.add(m);
-        i++;
-        m = new MP3();
-        m.setId(i);
-        m.setName("mp3 4");
-        m.setContext("context");
-        m.setLocation("location//");
-        m.setType("2");
-        list.add(m);
-        i++;
-        m = new MP3();
-        m.setId(i);
-        m.setName("mp3 5");
-        m.setContext("context");
-        m.setLocation("location//");
-        m.setType("2");
-        list.add(m);
-        i++;
-        m = new MP3();
-        m.setId(i);
-        m.setName("mp3 6");
-        m.setContext("context");
-        m.setLocation("location//");
-        m.setType("3");
         list.add(m);
         i++;
         return list;

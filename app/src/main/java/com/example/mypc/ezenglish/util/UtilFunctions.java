@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 
 import com.example.mypc.ezenglish.R;
@@ -70,32 +71,11 @@ public class UtilFunctions {
 //		Log.d("SIZE", "SIZE: " + listOfSongs.size());
 //		return listOfSongs;
     }
-
-
-    public static Bitmap getAlbumart(Context context, Long album_id) {
+    public static Bitmap getDefaultAlbumArt(String location) {
         Bitmap bm = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
         try {
-            final Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-            Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
-            ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
-            if (pfd != null) {
-                FileDescriptor fd = pfd.getFileDescriptor();
-                bm = BitmapFactory.decodeFileDescriptor(fd, null, options);
-                pfd = null;
-                fd = null;
-            }
-        } catch (Error ee) {
-        } catch (Exception e) {
-        }
-        return bm;
-    }
-
-    public static Bitmap getDefaultAlbumArt(Context context) {
-        Bitmap bm = null;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        try {
-            bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_album_art, options);
+            bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() +location);
         } catch (Error ee) {
         } catch (Exception e) {
         }
