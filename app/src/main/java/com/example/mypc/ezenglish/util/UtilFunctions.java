@@ -73,7 +73,6 @@ public class UtilFunctions {
     }
     public static Bitmap getDefaultAlbumArt(String location) {
         Bitmap bm = null;
-        BitmapFactory.Options options = new BitmapFactory.Options();
         try {
             bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() +location);
         } catch (Error ee) {

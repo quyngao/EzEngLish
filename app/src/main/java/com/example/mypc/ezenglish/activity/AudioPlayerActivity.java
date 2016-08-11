@@ -3,6 +3,7 @@ package com.example.mypc.ezenglish.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff.Mode;
@@ -36,8 +37,9 @@ public class AudioPlayerActivity extends Activity {
 
     Button btnBack;
     static Button btnPause;
-    Button btnNext;
+    static Button btnNext;
     static Button btnPlay;
+    static Button btnVoca;
     static TextView textNowPlaying;
     static TextView textAlbumArtist;
     static TextView textComposer;
@@ -100,6 +102,13 @@ public class AudioPlayerActivity extends Activity {
                 Controls.nextControl(getApplicationContext());
             }
         });
+        btnVoca.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AudioPlayerActivity.this, VocaActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     public static void changeUI() {
@@ -113,6 +122,7 @@ public class AudioPlayerActivity extends Activity {
         btnPause = (Button) findViewById(R.id.btnPause);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnPlay = (Button) findViewById(R.id.btnPlay);
+        btnVoca = (Button) findViewById(R.id.btnVoca);
         textdoc = (TextView) findViewById(R.id.text_doc);
 
         textNowPlaying = (TextView) findViewById(R.id.textNowPlaying);
@@ -145,6 +155,7 @@ public class AudioPlayerActivity extends Activity {
             btnPlay.setVisibility(View.GONE);
         }
     }
+
     private static void updateUI() {
         try {
             String songName = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getName();

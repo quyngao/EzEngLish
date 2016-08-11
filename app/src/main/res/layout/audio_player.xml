@@ -160,6 +160,22 @@
                 android:layout_height="@dimen/button_width"
                 android:layout_margin="10dp"
                 android:background="@drawable/ic_action_next"/>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/button_width"
+                android:background="@android:color/darker_gray"/>
+            <View
+                android:layout_width="100dp"
+                android:layout_height="@dimen/button_width"
+                android:background="@android:color/transparent"/>
+            <Button
+                android:layout_marginRight="10dp"
+                android:id="@+id/btnVoca"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_width"
+                android:layout_margin="10dp"
+                android:background="@drawable/ic_voca"/>
         </LinearLayout>
 
     </LinearLayout>
