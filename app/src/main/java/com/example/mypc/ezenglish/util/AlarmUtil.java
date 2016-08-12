@@ -48,7 +48,6 @@ public class AlarmUtil {
         PendingIntent pending = PendingIntent.getBroadcast(context.getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         am.cancel(pending);
     }
-
     public static void startNotification(int id, boolean sound, Context context) {
         Intent intent1 = new Intent(context, VocaActivity.class);
         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
