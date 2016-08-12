@@ -171,6 +171,13 @@
                 android:background="@android:color/transparent"/>
             <Button
                 android:layout_marginRight="10dp"
+                android:id="@+id/btn_record"
+                android:layout_width="@dimen/button_width"
+                android:layout_height="@dimen/button_width"
+                android:layout_margin="10dp"
+                android:background="@drawable/ic_record"/>
+            <Button
+                android:layout_marginRight="10dp"
                 android:id="@+id/btnVoca"
                 android:layout_width="@dimen/button_width"
                 android:layout_height="@dimen/button_width"

@@ -8,7 +8,6 @@
     <string name="pause">Pause</string>
     <string name="play">Play</string>
     <string name="player">Audio Player</string>
-    <string name="next">Next</string>
     <string name="open_playlist">Open Playlist</string>
     <string name="idle">Idle</string>
     <string name="empty_text">Select song from below to play</string>
@@ -16,4 +15,24 @@
     <dimen name="button_width">32dp</dimen>
     <dimen name="small_button_width">28dp</dimen>
     <dimen name="small_image_art_width">85dp</dimen>
+
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Learn Real English!</string>
+    <string name="slide_1_desc">you will learn as the kid, with the guidance of Me </string>
+
+    <string name="slide_2_title">Dowload and Manager Document</string>
+    <string name="slide_2_desc">1 Dowload once and use forvever, Online or Offline </string>
+
+    <string name="slide_3_title">Creat Schedule and Alarm</string>
+    <string name="slide_3_desc">completed according to schedule lessons And SMART Statistics </string>
+
+    <string name="slide_4_title">Real Relax </string>
+    <string name="slide_4_desc">You can play Mini game or Chat with "stranger" :)Now Come on!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
 </resources>

@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.controls.Controls;
+import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.service.SongService;
 import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.UtilFunctions;
@@ -40,6 +41,7 @@ public class AudioPlayerActivity extends Activity {
     static Button btnNext;
     static Button btnPlay;
     static Button btnVoca;
+    static Button btnRecord;
     static TextView textNowPlaying;
     static TextView textAlbumArtist;
     static TextView textComposer;
@@ -52,7 +54,6 @@ public class AudioPlayerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().hide();
         setContentView(R.layout.audio_player);
         context = this;
         init();
@@ -109,6 +110,13 @@ public class AudioPlayerActivity extends Activity {
                 startActivity(i);
             }
         });
+        btnRecord.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AudioPlayerActivity.this, RecordActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     public static void changeUI() {
@@ -123,6 +131,7 @@ public class AudioPlayerActivity extends Activity {
         btnNext = (Button) findViewById(R.id.btnNext);
         btnPlay = (Button) findViewById(R.id.btnPlay);
         btnVoca = (Button) findViewById(R.id.btnVoca);
+        btnRecord = (Button) findViewById(R.id.btn_record);
         textdoc = (TextView) findViewById(R.id.text_doc);
 
         textNowPlaying = (TextView) findViewById(R.id.textNowPlaying);
@@ -188,7 +197,7 @@ public class AudioPlayerActivity extends Activity {
         }
         try {
             long albumId = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getId();
-            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
+            Bitmap albumArt = UtilFunctions.blur("/original/1/avatar.jpg",context);
             linearLayoutPlayer.setBackgroundDrawable(new BitmapDrawable(albumArt));
 
         } catch (Exception e) {

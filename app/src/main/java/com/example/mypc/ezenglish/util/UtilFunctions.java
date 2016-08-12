@@ -12,6 +12,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
+import android.util.Log;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.model.Lesson;
@@ -71,16 +76,37 @@ public class UtilFunctions {
 //		Log.d("SIZE", "SIZE: " + listOfSongs.size());
 //		return listOfSongs;
     }
+
     public static Bitmap getDefaultAlbumArt(String location) {
         Bitmap bm = null;
         try {
-            bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() +location);
+            bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + location);
         } catch (Error ee) {
         } catch (Exception e) {
         }
         return bm;
     }
+    private static final float BITMAP_SCALE = 1f;
+    private static final float BLUR_RADIUS = 6.5f;
+    public static Bitmap blur(String location,Context context) {
+        Bitmap image =getDefaultAlbumArt(location);
+        int width = Math.round(image.getWidth() * BITMAP_SCALE);
+        int height = Math.round(image.getHeight() * BITMAP_SCALE);
 
+        Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+        Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
+
+        RenderScript rs = RenderScript.create(context);
+        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+        Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
+        Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
+        theIntrinsic.setRadius(BLUR_RADIUS);
+        theIntrinsic.setInput(tmpIn);
+        theIntrinsic.forEach(tmpOut);
+        tmpOut.copyTo(outputBitmap);
+
+        return outputBitmap;
+    }
 
     public static String getDuration(long milliseconds) {
         long sec = (milliseconds / 1000) % 60;

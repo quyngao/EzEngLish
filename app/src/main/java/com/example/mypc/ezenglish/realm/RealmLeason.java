@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.example.mypc.ezenglish.model.Lesson;
+import com.example.mypc.ezenglish.model.Recod;
 import com.example.mypc.ezenglish.model.Topic;
 
 import io.realm.Realm;
@@ -37,5 +38,21 @@ public class RealmLeason {
     public Lesson getleassongbyid(int id) {
         Lesson l = realm.where(Lesson.class).equalTo("id", id).findFirst();
         return l;
+    }
+
+    public void addRecordbyid(Recod r, Lesson l) {
+        realm.beginTransaction();
+        Lesson lesson = getleassongbyid(l.getId());
+        lesson.getRecods().add(r);
+        realm.commitTransaction();
+
+    }
+
+    public void deleteRecordbyid(int i, Lesson l) {
+        realm.beginTransaction();
+        Lesson lesson = getleassongbyid(l.getId());
+        lesson.getRecods().remove(i);
+        realm.commitTransaction();
+
     }
 }
