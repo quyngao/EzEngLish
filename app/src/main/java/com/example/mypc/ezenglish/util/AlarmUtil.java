@@ -19,6 +19,7 @@ import com.example.mypc.ezenglish.adapter.VocaAdapter;
 import com.example.mypc.ezenglish.receiver.AlarmBroadcastReceiver;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Quylt on 8/12/2016.
@@ -27,15 +28,15 @@ public class AlarmUtil {
 
     static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @TargetApi(Build.VERSION_CODES.N)
     public static void startAlarmvocar(int time, int id, Context context) {
-        Calendar c = Calendar.getInstance();
+
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
         intent.putExtra("id", id + "");
         PendingIntent pending = PendingIntent.getBroadcast(context.getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        long date = c.getTime().getTime() + time * 60 * 1000;
-        Log.e("time", df.format(c.getTime()));
+        Date d = new Date();
+        long date = d.getTime() + time * 60 * 1000;
+        Log.e("time", df.format(d));
         if (Build.VERSION.SDK_INT >= 19) {
             am.setExact(AlarmManager.RTC_WAKEUP, date, pending);
         } else am.set(AlarmManager.RTC_WAKEUP, date, pending);
@@ -48,6 +49,7 @@ public class AlarmUtil {
         PendingIntent pending = PendingIntent.getBroadcast(context.getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         am.cancel(pending);
     }
+
     public static void startNotification(int id, boolean sound, Context context) {
         Intent intent1 = new Intent(context, VocaActivity.class);
         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -56,7 +56,7 @@ public class VocaActivity extends Activity implements TextToSpeech.OnInitListene
         isalarm = prefManager.getsound();
         issound = prefManager.getalarm();
 
-        tv_step.setText(""+step);
+        tv_step.setText("" + step);
         switchalarm.setChecked(isalarm);
         switchsound.setChecked(issound);
 
@@ -97,11 +97,12 @@ public class VocaActivity extends Activity implements TextToSpeech.OnInitListene
 
     public void setupalarm(boolean ischeck) {
         if (ischeck == true) {
+            Log.e("alarm", "start");
             step = Integer.parseInt(tv_step.getText().toString());
             prefManager.setstep(step);
-
             AlarmUtil.startAlarmvocar(step, l.getId(), this);
         } else {
+            Log.e("alarm", "cancel");
             AlarmUtil.cancelAlarmvocar(l.getId(), this);
         }
     }
