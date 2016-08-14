@@ -1,20 +1,15 @@
 package com.example.mypc.ezenglish.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,20 +20,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.adapter.RecordAdapter;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Recod;
-import com.example.mypc.ezenglish.model.Voca;
 import com.example.mypc.ezenglish.realm.RealmLeason;
-import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
@@ -104,13 +95,9 @@ public class RecordActivity extends Activity {
         Calendar c = Calendar.getInstance();
 
 
-        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/original/1";
-        mFileName += "/record" + c.getTime().getTime() + ".mp3";
-        Log.e("mFileName", mFileName);
-        recod.setLocation(mFileName);
 
-        Bitmap albumArt = UtilFunctions.blur(l.getImg(),RecordActivity.this);
+
+        Bitmap albumArt = UtilFunctions.blur(l.getImg(), RecordActivity.this);
         bg.setBackgroundDrawable(new BitmapDrawable(albumArt));
     }
 
@@ -197,9 +184,26 @@ public class RecordActivity extends Activity {
                 return true;
             }
         });
-
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long li) {
+                l = rl.getleassongbyid(0);
+                list = l.getRecods();
+                recod = list.get(i);
+                if (isplay == false) {
+                    btn_play.setBackgroundResource(R.drawable.ic_action_pause);
+                    btn_record.setEnabled(false);
+                    btn_save.setEnabled(true);
+                } else {
+                    btn_play.setBackgroundResource(R.drawable.ic_action_play);
+                    btn_record.setEnabled(true);
+                    btn_save.setEnabled(true);
+                }
+                isplay = !isplay;
+                onPlay(isplay);
+            }
+        });
     }
-
 
     private class MainTask extends TimerTask {
         int time = 0;
@@ -237,13 +241,18 @@ public class RecordActivity extends Activity {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        Calendar c = Calendar.getInstance();
+        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        mFileName += "/original/1";
+        mFileName += "/record" + c.getTime().getTime() + ".mp3";
+        Log.e("mFileName", mFileName);
+        recod.setLocation(mFileName);
         Log.e("location", recod.getLocation());
         mRecorder.setOutputFile(recod.getLocation());
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
             mRecorder.prepare();
         } catch (IOException e) {
-
         }
         mRecorder.start();
         timer = new Timer();
@@ -257,7 +266,7 @@ public class RecordActivity extends Activity {
         timer.cancel();
     }
 
-    private void onPlay(boolean start) {
+    public void onPlay(boolean start) {
         if (start) {
             startPlaying(recod.getLocation());
         } else {
@@ -271,7 +280,7 @@ public class RecordActivity extends Activity {
         timer.cancel();
     }
 
-    private void startPlaying(String location) {
+    public void startPlaying(String location) {
         mPlayer = new MediaPlayer();
         try {
             mPlayer.setDataSource(location);
