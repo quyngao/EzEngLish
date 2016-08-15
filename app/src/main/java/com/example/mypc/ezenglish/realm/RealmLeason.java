@@ -2,6 +2,7 @@ package com.example.mypc.ezenglish.realm;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Recod;
@@ -18,6 +19,11 @@ public class RealmLeason {
 
     public RealmLeason(Activity context) {
         realm = RealmController.with(context).getRealm();
+    }
+
+    public RealmLeason(Context context) {
+        realm = RealmController.with(context).getRealm();
+
     }
 
     public RealmLeason(Application context) {

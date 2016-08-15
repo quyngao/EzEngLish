@@ -18,6 +18,10 @@ public class RealmController {
         realm = Realm.getDefaultInstance();
     }
 
+    public RealmController(Context application) {
+        realm = Realm.getDefaultInstance();
+    }
+
     public static RealmController with(Fragment fragment) {
 
         if (instance == null) {
@@ -30,6 +34,14 @@ public class RealmController {
 
         if (instance == null) {
             instance = new RealmController(activity.getApplication());
+        }
+        return instance;
+    }
+
+    public static RealmController with(Context activity) {
+
+        if (instance == null) {
+            instance = new RealmController(activity);
         }
         return instance;
     }

@@ -86,8 +86,8 @@ public class UtilFunctions {
         }
         return bm;
     }
-    private static final float BITMAP_SCALE = 1f;
-    private static final float BLUR_RADIUS = 6.5f;
+    private static final float BITMAP_SCALE = 3f;
+    private static final float BLUR_RADIUS = 15f;
     public static Bitmap blur(String location,Context context) {
         Bitmap image =getDefaultAlbumArt(location);
         int width = Math.round(image.getWidth() * BITMAP_SCALE);

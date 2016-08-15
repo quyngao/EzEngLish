@@ -10,16 +10,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.icu.util.Calendar;
 import android.os.Build;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.activity.VocaActivity;
 import com.example.mypc.ezenglish.adapter.VocaAdapter;
+import com.example.mypc.ezenglish.model.Voca;
 import com.example.mypc.ezenglish.receiver.AlarmBroadcastReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Quylt on 8/12/2016.
@@ -50,30 +53,38 @@ public class AlarmUtil {
         am.cancel(pending);
     }
 
-    public static void startNotification(int id, boolean sound, Context context) {
+
+    public static void startNotification(Voca vc, int id, boolean sound, Context context) {
         Intent intent1 = new Intent(context, VocaActivity.class);
         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        Bitmap x = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
+        Bitmap x = UtilFunctions.getDefaultAlbumArt(vc.getImg());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(getNotificationIcon());
+        builder.setLargeIcon(UtilFunctions.getDefaultAlbumArt(vc.getImg()));
         builder.setLargeIcon(x);
-        builder.setContentTitle("alarm");
-
+        builder.setContentTitle(vc.getName() + " ( " + vc.getTrans() + " ) " + vc.getDescription());
         builder.setWhen(System.currentTimeMillis());
-        builder.setTicker("den gio uong thuoc");
+        builder.setTicker("Remind " + vc.getName());
         if (sound == true) {
-            builder.setContentText("noi dung co tteing");
+
         } else builder.setContentText("noi dung ko tteing");
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
         notificationManager.notify(id, builder.build());
     }
+    private static void speakOut(String s, TextToSpeech tt) {
+        tt.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+    }
 
     private static int getNotificationIcon() {
         boolean useWhiteIcon = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
         return useWhiteIcon ? R.drawable.ic_voca : R.drawable.ic_voca;
+    }
+
+    public void sound() {
+
     }
 
 }

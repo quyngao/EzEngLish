@@ -8,10 +8,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.8"
+        android:layout_weight="0.7"
         android:gravity="center"
         android:orientation="vertical"
         >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Setting Remind "
+                android:textSize="28sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +47,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:inputType="numberDecimal"
-                android:text="minute"
+                android:text="5"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textSize="15dp"/>
 
         </LinearLayout>
@@ -72,6 +89,45 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:checked="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Time start:"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tv_start"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00:00"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Time stop"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tv_end"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="23:59"
+                android:textSize="18sp"/>
 
         </LinearLayout>
 

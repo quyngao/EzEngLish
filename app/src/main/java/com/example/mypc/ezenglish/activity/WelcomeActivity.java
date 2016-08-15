@@ -231,10 +231,8 @@ public class WelcomeActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
-
             return view;
         }
 
@@ -247,8 +245,6 @@ public class WelcomeActivity extends AppCompatActivity {
         public boolean isViewFromObject(View view, Object obj) {
             return view == obj;
         }
-
-
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;

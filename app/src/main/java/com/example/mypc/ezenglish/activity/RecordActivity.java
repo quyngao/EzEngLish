@@ -28,6 +28,7 @@ import com.example.mypc.ezenglish.model.Recod;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,12 +45,15 @@ public class RecordActivity extends Activity {
     ListView listview;
     Button btn_play, btn_save, btn_record;
     TextView tv_time;
+    TextView tv_nameplay;
+
     LinearLayout bg;
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
     boolean isplay = false;
     boolean isrecord = false;
+    boolean issave = false;
     RealmList<Recod> list;
     private Timer timer;
     RealmLeason rl;
@@ -77,6 +81,7 @@ public class RecordActivity extends Activity {
         btn_save = (Button) findViewById(R.id.btn_save);
         listview = (ListView) findViewById(R.id.listrecord);
         tv_time = (TextView) findViewById(R.id.text_time);
+        tv_nameplay = (TextView) findViewById(R.id.textNowPlaying);
         btn_play.setEnabled(false);
         btn_save.setEnabled(false);
 
@@ -95,14 +100,12 @@ public class RecordActivity extends Activity {
         Calendar c = Calendar.getInstance();
 
 
-
-
         Bitmap albumArt = UtilFunctions.blur(l.getImg(), RecordActivity.this);
         bg.setBackgroundDrawable(new BitmapDrawable(albumArt));
     }
 
     public void setListeners() {
-        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         btn_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,54 +142,31 @@ public class RecordActivity extends Activity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LayoutInflater li = LayoutInflater.from(RecordActivity.this);
-                View promptsView = li.inflate(R.layout.dialog_saverecord, null);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        RecordActivity.this);
-                alertDialogBuilder.setView(promptsView);
-
-                final EditText userInput = (EditText) promptsView
-                        .findViewById(R.id.editTextDialogUserInput);
-                String time = df.format(new Date());
-                String s = "Record: " + l.getName() + "__" + time;
-                userInput.setText(s);
-                recod.setName(s);
-                recod.setTime(time);
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("Save",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        rl.addRecordbyid(recod, l);
-                                        l = rl.getleassongbyid(0);
-                                        list = l.getRecods();
-                                        recordAdapter.notifyDataSetChanged();
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                savefile();
             }
         });
         listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             public boolean onItemLongClick(AdapterView<?> arg0, View v,
                                            int index, long arg3) {
+                File file = new File(l.getRecods().get(index).getLocation());
+                boolean deleted = file.delete();
+                Log.e("delete", "" + deleted);
                 rl.deleteRecordbyid(index, l);
                 l = rl.getleassongbyid(0);
                 list = l.getRecods();
                 recordAdapter.notifyDataSetChanged();
+                issave = true;
                 return true;
             }
         });
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long li) {
+                if (issave == false && recod.getLocation().length() > 0) {
+                    savefile();
+                }
+                issave = true;
                 l = rl.getleassongbyid(0);
                 list = l.getRecods();
                 recod = list.get(i);
@@ -205,6 +185,48 @@ public class RecordActivity extends Activity {
         });
     }
 
+    public void savefile() {
+        final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if (issave == false) {
+            LayoutInflater li = LayoutInflater.from(RecordActivity.this);
+            View promptsView = li.inflate(R.layout.dialog_saverecord, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    RecordActivity.this);
+            alertDialogBuilder.setView(promptsView);
+
+            final EditText userInput = (EditText) promptsView
+                    .findViewById(R.id.editTextDialogUserInput);
+            String time = df.format(new Date());
+            String s = "Record: " + l.getName() + "__" + time;
+            userInput.setText(s);
+            recod.setName(s);
+            recod.setTime(time);
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton("Save",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    rl.addRecordbyid(recod, l);
+                                    l = rl.getleassongbyid(0);
+                                    list = l.getRecods();
+                                    recordAdapter.notifyDataSetChanged();
+                                }
+                            })
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    File file = new File(recod.getLocation());
+                                    boolean deleted = file.delete();
+                                    Log.e("delete", "" + deleted);
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            issave = true;
+        }
+    }
+
     private class MainTask extends TimerTask {
         int time = 0;
 
@@ -218,8 +240,10 @@ public class RecordActivity extends Activity {
 
     private void onRecord(boolean start) {
         if (start) {
+            tv_nameplay.setText("Is Recording");
             startRecording();
         } else {
+            tv_nameplay.setText("Completed Record");
             stopRecording();
         }
     }
@@ -238,6 +262,7 @@ public class RecordActivity extends Activity {
     };
 
     private void startRecording() {
+        issave = false;
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -268,8 +293,10 @@ public class RecordActivity extends Activity {
 
     public void onPlay(boolean start) {
         if (start) {
+            tv_nameplay.setText("Play file: " + recod.getLocation());
             startPlaying(recod.getLocation());
         } else {
+            tv_nameplay.setText("Completed");
             stopPlaying();
         }
     }
@@ -291,6 +318,7 @@ public class RecordActivity extends Activity {
                     btn_play.setBackgroundResource(R.drawable.ic_action_play);
                     btn_record.setEnabled(true);
                     btn_save.setEnabled(true);
+                    tv_nameplay.setText("Completed");
                     timer.cancel();
                 }
             });
@@ -311,6 +339,11 @@ public class RecordActivity extends Activity {
         if (mPlayer != null) {
             mPlayer.release();
             mPlayer = null;
+        }
+        if (issave == false && recod.getLocation()!=null) {
+            File file = new File(""+recod.getLocation());
+            boolean deleted = file.delete();
+            Log.e("delete", "" + deleted);
         }
     }
 }

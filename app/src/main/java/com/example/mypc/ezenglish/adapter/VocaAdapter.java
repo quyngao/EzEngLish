@@ -17,16 +17,17 @@ import com.example.mypc.ezenglish.model.Voca;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Quylt on 8/11/2016.
  */
 public class VocaAdapter extends BaseAdapter {
     private Activity activity;
-    private ArrayList<Voca> data;
+    private List<Voca> data;
     private static LayoutInflater inflater = null;
 
-    public VocaAdapter(Activity a, ArrayList<Voca> list) {
+    public VocaAdapter(Activity a, List<Voca> list) {
         activity = a;
         data = list;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -46,6 +47,7 @@ public class VocaAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return data.get(i).getId();
     }
+
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         View vi = convertView;
@@ -63,7 +65,7 @@ public class VocaAdapter extends BaseAdapter {
         artist.setText(song.getDescription());
         duration.setText(song.getTrans());
 
-        Bitmap albumArt = UtilFunctions.getDefaultAlbumArt(data.get(i).getImg());
+        Bitmap albumArt = UtilFunctions.getDefaultAlbumArt(song.getImg());
         Log.e("location", data.get(i).getImg());
         thumb_image.setBackgroundDrawable(new BitmapDrawable(albumArt));
         return vi;
