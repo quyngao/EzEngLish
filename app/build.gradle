@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     apply plugin: 'realm-android'
     compile 'com.google.code.gson:gson:2.4'
+    compile 'com.aurelhubert:ahbottomnavigation:1.3.3'
 }

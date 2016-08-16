@@ -34,7 +34,9 @@
             android:name=".activity.LessonActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-
+        </activity>
+        <activity
+            android:name=".activity.ItemActivity">
         </activity>
         <activity
             android:name=".activity.AudioPlayerActivity"
