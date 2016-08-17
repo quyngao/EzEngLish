@@ -25,9 +25,11 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.activity.AudioPlayerActivity;
+import com.example.mypc.ezenglish.activity.ItemActivity;
 import com.example.mypc.ezenglish.activity.LessonActivity;
 import com.example.mypc.ezenglish.controls.Controls;
+import com.example.mypc.ezenglish.flagment.Mp3Flagment;
+import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.receiver.NotificationBroadcast;
 import com.example.mypc.ezenglish.util.PlayerConstants;
@@ -104,13 +106,12 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
             }
         }
     };
-
     @SuppressLint("NewApi")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
             if (PlayerConstants.SONGS_LIST.size() <= 0) {
-                PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication());
+                PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), 0);
             }
             MP3 data = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER);
             if (currentVersionSupportLockScreenControls) {
@@ -128,8 +129,8 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     newNotification();
                     try {
                         playSong(songPath, data);
+                        ItemActivity.changeButton();
                         LessonActivity.changeUI();
-                        AudioPlayerActivity.changeUI();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -158,8 +159,9 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     }
                     newNotification();
                     try {
+                        ItemActivity.changeButton();
                         LessonActivity.changeButton();
-                        AudioPlayerActivity.changeButton();
+
                     } catch (Exception e) {
                     }
                     Log.d("TAG", "TAG Pressed: " + message);
@@ -293,7 +295,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                 remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
             }
             mp.reset();
-            mp.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath()+songPath);
+            mp.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath() + songPath);
             mp.prepare();
             mp.start();
             timer.scheduleAtFixedRate(new MainTask(), 0, 100);
@@ -324,6 +326,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
         } catch (Exception ex) {
         }
     }
+
     @SuppressLint("NewApi")
     private void UpdateMetadata(MP3 data) {
         if (remoteControlClient == null)

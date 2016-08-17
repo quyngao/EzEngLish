@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -40,8 +41,6 @@ public class AudioPlayerActivity extends Activity {
     static Button btnPause;
     static Button btnNext;
     static Button btnPlay;
-    static Button btnVoca;
-    static Button btnRecord;
     static TextView textNowPlaying;
     static TextView textAlbumArtist;
     static TextView textComposer;
@@ -50,6 +49,7 @@ public class AudioPlayerActivity extends Activity {
     ProgressBar progressBar;
     static Context context;
     TextView textBufferDuration, textDuration;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,20 +103,7 @@ public class AudioPlayerActivity extends Activity {
                 Controls.nextControl(getApplicationContext());
             }
         });
-        btnVoca.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(AudioPlayerActivity.this, VocaActivity.class);
-                startActivity(i);
-            }
-        });
-        btnRecord.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(AudioPlayerActivity.this, RecordActivity.class);
-                startActivity(i);
-            }
-        });
+
     }
 
     public static void changeUI() {
@@ -130,8 +117,6 @@ public class AudioPlayerActivity extends Activity {
         btnPause = (Button) findViewById(R.id.btnPause);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnPlay = (Button) findViewById(R.id.btnPlay);
-        btnVoca = (Button) findViewById(R.id.btnVoca);
-        btnRecord = (Button) findViewById(R.id.btn_record);
         textdoc = (TextView) findViewById(R.id.text_doc);
 
         textNowPlaying = (TextView) findViewById(R.id.textNowPlaying);
@@ -197,7 +182,7 @@ public class AudioPlayerActivity extends Activity {
         }
         try {
             long albumId = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getId();
-            Bitmap albumArt = UtilFunctions.blur("/original/1/avatar.jpg",context);
+            Bitmap albumArt = UtilFunctions.blur("/original/1/avatar.jpg", context);
             linearLayoutPlayer.setBackgroundDrawable(new BitmapDrawable(albumArt));
 
         } catch (Exception e) {

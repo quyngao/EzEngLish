@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/linearLayoutMusicList"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:layout_gravity="center_horizontal"
               android:background="@drawable/default_album_art_thumb"
               android:orientation="vertical">
@@ -10,7 +10,7 @@
     <ListView
         android:id="@+id/listViewMusic"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@android:color/transparent"/>
 

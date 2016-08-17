@@ -40,9 +40,9 @@ public class UtilFunctions {
         return false;
     }
 
-    public static ArrayList<MP3> listOfSongs(Application activity) {
+    public static ArrayList<MP3> listOfSongs(Application activity, int id) {
         RealmLeason rl = new RealmLeason(activity);
-        Lesson l = rl.getleassongbyid(0);
+        Lesson l = rl.getleassongbyid(id);
         ArrayList<MP3> list = new ArrayList<>();
         for (MP3 i : l.getAll()) {
             list.add(i);
@@ -86,10 +86,12 @@ public class UtilFunctions {
         }
         return bm;
     }
+
     private static final float BITMAP_SCALE = 3f;
     private static final float BLUR_RADIUS = 15f;
-    public static Bitmap blur(String location,Context context) {
-        Bitmap image =getDefaultAlbumArt(location);
+
+    public static Bitmap blur(String location, Context context) {
+        Bitmap image = getDefaultAlbumArt(location);
         int width = Math.round(image.getWidth() * BITMAP_SCALE);
         int height = Math.round(image.getHeight() * BITMAP_SCALE);
 

@@ -10,30 +10,29 @@ import android.widget.TextView;
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
-import com.example.mypc.ezenglish.model.Topic;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends ArrayAdapter<Lesson> {
-
-    ArrayList<Lesson> listleasson;
+/**
+ * Created by Quylt on 8/17/2016.
+ */
+public class MP3Adapter extends ArrayAdapter<MP3> {
+    ArrayList<MP3> listleasson;
     Context context;
     LayoutInflater inflator;
 
-    public CustomAdapter(Context context, int resource, ArrayList<Lesson> listOfSongs) {
+    public MP3Adapter(Context context, int resource, ArrayList<MP3> listOfSongs) {
         super(context, resource, listOfSongs);
         this.listleasson = listOfSongs;
         this.context = context;
         inflator = LayoutInflater.from(context);
     }
-
     private class ViewHolder {
         TextView textViewSongName, textViewArtist, textViewDuration;
     }
 
     ViewHolder holder;
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View myView = convertView;
@@ -47,7 +46,7 @@ public class CustomAdapter extends ArrayAdapter<Lesson> {
         } else {
             holder = (ViewHolder) myView.getTag();
         }
-        Lesson detail = listleasson.get(position);
+        MP3 detail = listleasson.get(position);
         holder.textViewSongName.setText(detail.getName());
         holder.textViewArtist.setText(detail.getContext() + " - " + detail.getId());
         holder.textViewDuration.setText(UtilFunctions.getDuration(0));

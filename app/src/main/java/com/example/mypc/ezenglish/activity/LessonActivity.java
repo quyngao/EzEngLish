@@ -32,10 +32,16 @@ import android.widget.Toast;
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.adapter.CustomAdapter;
 import com.example.mypc.ezenglish.controls.Controls;
+import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
+import com.example.mypc.ezenglish.model.Topic;
+import com.example.mypc.ezenglish.realm.RealmLeason;
+import com.example.mypc.ezenglish.realm.RealmTopic;
 import com.example.mypc.ezenglish.service.SongService;
 import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.UtilFunctions;
+
+import java.util.ArrayList;
 
 /**
  * Created by Quylt on 8/10/2016.
@@ -53,38 +59,16 @@ public class LessonActivity extends Activity {
     TextView textBufferDuration, textDuration;
     static ImageView imageViewAlbumArt;
     static Context context;
+    RealmLeason rl;
+    ArrayList<Lesson> list;
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 102: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("Permission", "Granted");
-                } else {
-                    Log.e("Permission", "Denied");
-                }
-                Log.e("Permissions", "olk");
-                return;
-            }
-        }
-    }
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean hasPermission = (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-        boolean hasPermission1 = (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-        boolean hasPermission2 = (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED);
-        if (!hasPermission || !hasPermission1 || !hasPermission2) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
-                    102);
-        }
         setContentView(R.layout.activity_lesson);
         context = LessonActivity.this;
+        rl = new RealmLeason(this);
         init();
     }
 
@@ -94,13 +78,14 @@ public class LessonActivity extends Activity {
         playingSong.setSelected(true);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
         if (PlayerConstants.SONGS_LIST.size() <= 0) {
-            PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication());
+            PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), 0);
         }
         setListItems();
     }
 
     private void setListItems() {
-        customAdapter = new CustomAdapter(this, R.layout.custom_list, PlayerConstants.SONGS_LIST);
+        list = rl.getAllLeasson();
+        customAdapter = new CustomAdapter(this, R.layout.custom_list, list);
         mediaListView.setAdapter(customAdapter);
         mediaListView.setFastScrollEnabled(true);
     }
@@ -127,6 +112,8 @@ public class LessonActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
                 Log.d("TAG", "TAG Tapped INOUT(IN)");
+                Lesson l = list.get(position);
+                PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), l.getId());
                 PlayerConstants.SONG_PAUSED = false;
                 PlayerConstants.SONG_NUMBER = position;
                 boolean isServiceRunning = UtilFunctions.isServiceRunning(SongService.class.getName(), getApplicationContext());
@@ -144,7 +131,7 @@ public class LessonActivity extends Activity {
         btnPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LessonActivity.this, AudioPlayerActivity.class);
+                Intent i = new Intent(LessonActivity.this, ItemActivity.class);
                 startActivity(i);
             }
         });
@@ -186,7 +173,7 @@ public class LessonActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LessonActivity.this, AudioPlayerActivity.class);
+                Intent i = new Intent(LessonActivity.this, ItemActivity.class);
                 startActivity(i);
             }
         });

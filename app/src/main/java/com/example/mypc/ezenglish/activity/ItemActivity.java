@@ -9,21 +9,34 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.adapter.ViewPagerAdapter;
+import com.example.mypc.ezenglish.flagment.Mp3Flagment;
 import com.example.mypc.ezenglish.flagment.OneFragment;
+import com.example.mypc.ezenglish.flagment.TextFlagment;
 
 /**
  * Created by Quylt on 8/16/2016.
  */
 public class ItemActivity extends AppCompatActivity {
-    private ViewPager viewPager;
+    static private ViewPager viewPager;
     AHBottomNavigation bottomNavigation;
+    static Mp3Flagment fragment1;
+    TextFlagment flagment2;
+    static ViewPagerAdapter adapter;
+
+    public static void changeButton() {
+        fragment1.changeUI();
+        if (adapter != null) adapter.notifyDataSetChanged();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_icon);
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        fragment1 = new Mp3Flagment();
+        flagment2 = new TextFlagment();
         setupViewPager(viewPager);
 
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
@@ -41,16 +54,13 @@ public class ItemActivity extends AppCompatActivity {
 
         bottomNavigation.setDefaultBackgroundColor(Color.parseColor("#FEFEFE"));
         bottomNavigation.setBehaviorTranslationEnabled(false);
-        bottomNavigation.setAccentColor(Color.parseColor("#F63D2B"));
+        bottomNavigation.setAccentColor(Color.parseColor("#C5CAE9"));
         bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
         bottomNavigation.setForceTint(true);
         bottomNavigation.setForceTitlesDisplay(true);
         bottomNavigation.setColored(true);
         bottomNavigation.setCurrentItem(2);
 
-        bottomNavigation.setNotification("QUYdz", 1);
-        bottomNavigation.setNotification("QUYdz", 2);
-        bottomNavigation.setNotificationBackgroundColor(Color.parseColor("#F63D2B"));
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
@@ -61,8 +71,8 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(R.layout.welcome_slide1), "ONE");
+        adapter.addFragment(fragment1, "ONE");
+        adapter.addFragment(flagment2, "TWO");
         adapter.addFragment(new OneFragment(R.layout.welcome_slide2), "TWO");
         adapter.addFragment(new OneFragment(R.layout.welcome_slide3), "THREE");
         adapter.addFragment(new OneFragment(R.layout.welcome_slide4), "four");

@@ -8,6 +8,8 @@ import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Recod;
 import com.example.mypc.ezenglish.model.Topic;
 
+import java.util.ArrayList;
+
 import io.realm.Realm;
 import io.realm.RealmList;
 
@@ -53,7 +55,13 @@ public class RealmLeason {
         realm.commitTransaction();
 
     }
-
+    public ArrayList<Lesson> getAllLeasson() {
+        ArrayList<Lesson> list = new ArrayList<>();
+        for (Lesson i : realm.where(Lesson.class).findAll()) {
+            list.add(i);
+        }
+        return list;
+    }
     public void deleteRecordbyid(int i, Lesson l) {
         realm.beginTransaction();
         Lesson lesson = getleassongbyid(l.getId());
