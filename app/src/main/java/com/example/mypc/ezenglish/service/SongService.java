@@ -28,8 +28,6 @@ import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.activity.ItemActivity;
 import com.example.mypc.ezenglish.activity.LessonActivity;
 import com.example.mypc.ezenglish.controls.Controls;
-import com.example.mypc.ezenglish.flagment.Mp3Flagment;
-import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.receiver.NotificationBroadcast;
 import com.example.mypc.ezenglish.util.PlayerConstants;
@@ -106,6 +104,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
             }
         }
     };
+
     @SuppressLint("NewApi")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -129,7 +128,6 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     newNotification();
                     try {
                         playSong(songPath, data);
-                        ItemActivity.changeButton();
                         LessonActivity.changeUI();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -159,7 +157,6 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     }
                     newNotification();
                     try {
-                        ItemActivity.changeButton();
                         LessonActivity.changeButton();
 
                     } catch (Exception e) {

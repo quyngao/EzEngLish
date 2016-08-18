@@ -23,11 +23,11 @@ import java.util.List;
  * Created by Quylt on 8/11/2016.
  */
 public class VocaAdapter extends BaseAdapter {
-    private Activity activity;
+    private Context activity;
     private List<Voca> data;
     private static LayoutInflater inflater = null;
 
-    public VocaAdapter(Activity a, List<Voca> list) {
+    public VocaAdapter(Context a, List<Voca> list) {
         activity = a;
         data = list;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

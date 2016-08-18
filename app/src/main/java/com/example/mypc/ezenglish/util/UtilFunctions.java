@@ -106,7 +106,6 @@ public class UtilFunctions {
         theIntrinsic.setInput(tmpIn);
         theIntrinsic.forEach(tmpOut);
         tmpOut.copyTo(outputBitmap);
-
         return outputBitmap;
     }
 
