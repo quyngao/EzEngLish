@@ -2,8 +2,6 @@ package com.example.mypc.ezenglish.flagment;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -20,12 +18,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.activity.RecordActivity;
 import com.example.mypc.ezenglish.adapter.RecordAdapter;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Recod;
@@ -52,7 +48,6 @@ public class RecordFragment extends Fragment {
     TextView tv_time;
     TextView tv_nameplay;
 
-    LinearLayout bg;
 
     private MediaRecorder mRecorder = null;
     private MediaPlayer mPlayer = null;
@@ -72,6 +67,7 @@ public class RecordFragment extends Fragment {
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +160,7 @@ public class RecordFragment extends Fragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long li) {
-                if (issave == false && recod.getLocation().length() > 0) {
+                if (issave == false && recod.getLocation() != null) {
                     savefile();
                 }
                 issave = true;
@@ -340,10 +336,7 @@ public class RecordFragment extends Fragment {
         recordAdapter = new RecordAdapter(mcontext, R.layout.custom_list, list);
         listview.setAdapter(recordAdapter);
         listview.setFastScrollEnabled(true);
-
         recod = new Recod();
-        Calendar c = Calendar.getInstance();
-
 
     }
 

@@ -1,25 +1,16 @@
 package com.example.mypc.ezenglish.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,16 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.adapter.CustomAdapter;
 import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
-import com.example.mypc.ezenglish.model.Topic;
 import com.example.mypc.ezenglish.realm.RealmLeason;
-import com.example.mypc.ezenglish.realm.RealmTopic;
 import com.example.mypc.ezenglish.service.SongService;
 import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.UtilFunctions;
@@ -131,7 +119,7 @@ public class LessonActivity extends Activity {
         btnPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LessonActivity.this, ItemActivity.class);
+                Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
                 startActivity(i);
             }
         });
@@ -173,7 +161,7 @@ public class LessonActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(LessonActivity.this, ItemActivity.class);
+                Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
                 startActivity(i);
             }
         });

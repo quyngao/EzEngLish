@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/bg"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="center_horizontal"
-              android:background="@android:color/transparent"
-              android:orientation="vertical">
+    android:id="@+id/bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <ListView
         android:id="@+id/listrecord"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent" />
 
     <LinearLayout
         android:id="@+id/linearLayoutPlayingSong"
@@ -25,7 +26,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                     android:singleLine="true"
                     android:text="@string/empty_text"
                     android:textColor="@color/white"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -77,7 +78,7 @@
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:background="@drawable/ic_action_play"
-                                android:gravity="center|center_horizontal"/>
+                                android:gravity="center|center_horizontal" />
 
                         </LinearLayout>
 
@@ -96,7 +97,7 @@
                                 android:layout_alignParentTop="true"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="24dp"
-                                android:background="@drawable/ic_record"/>
+                                android:background="@drawable/ic_record" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -112,7 +113,7 @@
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:background="@drawable/ic_save"
-                                android:gravity="center|center_horizontal"/>
+                                android:gravity="center|center_horizontal" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -131,10 +132,11 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="00:00"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>
