@@ -1,28 +1,24 @@
 package com.example.mypc.ezenglish.util;
 
-import android.annotation.TargetApi;
-import android.app.NotificationManager;
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.activity.VocaActivity;
-import com.example.mypc.ezenglish.adapter.VocaAdapter;
-import com.example.mypc.ezenglish.model.Voca;
+import com.example.mypc.ezenglish.model.VocaData;
 import com.example.mypc.ezenglish.receiver.AlarmBroadcastReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Quylt on 8/12/2016.
@@ -54,37 +50,32 @@ public class AlarmUtil {
     }
 
 
-    public static void startNotification(Voca vc, int id, boolean sound, Context context) {
-        Intent intent1 = new Intent(context, VocaActivity.class);
-        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        Bitmap x = UtilFunctions.getDefaultAlbumArt(vc.getImg());
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(getNotificationIcon());
-        builder.setLargeIcon(UtilFunctions.getDefaultAlbumArt(vc.getImg()));
-        builder.setLargeIcon(x);
-        builder.setContentTitle(vc.getName() + " ( " + vc.getTrans() + " ) " + vc.getDescription());
-        builder.setWhen(System.currentTimeMillis());
-        builder.setTicker("Remind " + vc.getName());
-        if (sound == true) {
-
-        } else builder.setContentText("noi dung ko tteing");
-        builder.setContentIntent(pendingIntent);
-        builder.setAutoCancel(true);
-        notificationManager.notify(id, builder.build());
-    }
     private static void speakOut(String s, TextToSpeech tt) {
         tt.speak(s, TextToSpeech.QUEUE_FLUSH, null);
     }
+    public static void buildNotificaiton(VocaData voca, int id,int idvoca, boolean sound, Context context) {
 
-    private static int getNotificationIcon() {
-        boolean useWhiteIcon = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.ic_voca : R.drawable.ic_voca;
+
+        Intent intent1 = new Intent(context, VocaActivity.class);
+        intent1.putExtra("id",idvoca);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        RemoteViews simpleContentView = new RemoteViews(context.getApplicationContext().getPackageName(), R.layout.notification_voca);
+        Notification notification = new NotificationCompat.Builder(context.getApplicationContext())
+                .setSmallIcon(R.drawable.ic_music).setAutoCancel(true)
+                .setContentTitle(voca.getName()).build();
+        notification.contentView = simpleContentView;
+        notification.contentView.setImageViewBitmap(R.id.image, UtilFunctions.getDefaultAlbumArt(voca.getImg()));
+        notification.contentView.setTextViewText(R.id.text, voca.getName());
+        notification.contentView.setTextViewText(R.id.description, voca.getDescription());
+        notification.when = System.currentTimeMillis();
+        notification.contentIntent = pendingIntent;
+
+        notificationManager.notify(id, notification);
+
     }
 
-    public void sound() {
-
-    }
 
 }

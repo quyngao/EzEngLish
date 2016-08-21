@@ -32,11 +32,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return TextFragment.newInstance(l);
             case 2:
-                return VocaFlagment.newInstance();
+                return VocaFlagment.newInstance(l);
             case 3: // Fragment # 1 - This will show SecondFragment
                 return new OneFragment(R.layout.welcome_slide3);
             case 4: // Fragment # 1 - This will show SecondFragment
-                return RecordFragment.newInstance();
+                return RecordFragment.newInstance(l);
 
             default:
                 return null;

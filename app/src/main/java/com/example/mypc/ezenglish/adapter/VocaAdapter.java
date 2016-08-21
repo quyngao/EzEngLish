@@ -1,73 +1,92 @@
 package com.example.mypc.ezenglish.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
+import android.os.Environment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.model.Voca;
-import com.example.mypc.ezenglish.util.UtilFunctions;
+import com.example.mypc.ezenglish.callback.VocaClick;
+import com.example.mypc.ezenglish.model.VocaData;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
 /**
  * Created by Quylt on 8/11/2016.
  */
-public class VocaAdapter extends BaseAdapter {
-    private Context activity;
-    private List<Voca> data;
-    private static LayoutInflater inflater = null;
+public class VocaAdapter extends RecyclerView.Adapter<VocaAdapter.MyViewHolder> {
+    private Context mContext;
+    private List<VocaData> data;
+    VocaClick vocaClick;
 
-    public VocaAdapter(Context a, List<Voca> list) {
-        activity = a;
-        data = list;
-        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public VocaAdapter(Context mContext, List<VocaData> data, VocaClick vocaClick) {
+        this.mContext = mContext;
+        this.data = data;
+        this.vocaClick = vocaClick;
     }
 
     @Override
-    public int getCount() {
+    public VocaAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_voca, parent, false);
+        return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(VocaAdapter.MyViewHolder holder, final int position) {
+        final VocaData album = data.get(position);
+        holder.title.setText(album.getName());
+        holder.tran.setText(album.getTrans());
+        holder.des.setText(album.getDescription());
+        holder.check.setChecked(album.isRed());
+
+        holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (vocaClick != null) {
+                    vocaClick.onCheckBox(position, b);
+                }
+            }
+        });
+        holder.voice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vocaClick.onItemClick(position);
+            }
+        });
+
+
+        Glide.with(mContext).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + album.getImg())).into(holder.thumbnail);
+    }
+
+    @Override
+    public int getItemCount() {
         return data.size();
     }
 
-    @Override
-    public Voca getItem(int i) {
-        return data.get(i);
-    }
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, tran, des;
+        public ImageView thumbnail, voice;
+        public CheckBox check;
 
-    @Override
-    public long getItemId(int i) {
-        return data.get(i).getId();
-    }
-
-    @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        View vi = convertView;
-        if (convertView == null)
-            vi = inflater.inflate(R.layout.list_row, null);
-
-        TextView title = (TextView) vi.findViewById(R.id.title); // title
-        TextView artist = (TextView) vi.findViewById(R.id.artist); // artist name
-        TextView duration = (TextView) vi.findViewById(R.id.duration); // duration
-        ImageView thumb_image = (ImageView) vi.findViewById(R.id.list_image); // thumb image
+        public MyViewHolder(View view) {
+            super(view);
+            title = (TextView) view.findViewById(R.id.title);
+            tran = (TextView) view.findViewById(R.id.tran);
+            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            check = (CheckBox) view.findViewById(R.id.tv_checkbox);
+            des = (TextView) view.findViewById(R.id.des);
+            voice = (ImageView) view.findViewById(R.id.voice);
 
 
-        Voca song = data.get(i);
-        title.setText(song.getName());
-        artist.setText(song.getDescription());
-        duration.setText(song.getTrans());
-
-        Bitmap albumArt = UtilFunctions.getDefaultAlbumArt(song.getImg());
-        Log.e("location", data.get(i).getImg());
-        thumb_image.setBackgroundDrawable(new BitmapDrawable(albumArt));
-        return vi;
+        }
     }
 }

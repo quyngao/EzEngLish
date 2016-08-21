@@ -24,11 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Topic;
 import com.example.mypc.ezenglish.model.User;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
-import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.realm.RealmTopic;
 import com.example.mypc.ezenglish.realm.RealmUser;
 import com.example.mypc.ezenglish.util.PrefManager;
@@ -86,9 +84,9 @@ public class WelcomeActivity extends AppCompatActivity {
         Topic tsave = r.getTopicbyid(1);
         d.showTopic(tsave);
 
-        RealmLeason rl = new RealmLeason(this);
-        Lesson l = rl.getleassongbyid(0);
-        d.showLesson(l);
+//        RealmLeason rl = new RealmLeason(this);
+//        Lesson l = rl.getleassongbyid(0);
+//        d.showLesson(l);
     }
 
     @Override

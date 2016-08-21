@@ -61,11 +61,15 @@ public class RecordFragment extends Fragment {
     Recod recod;
     RecordAdapter recordAdapter = null;
 
-    public static RecordFragment newInstance() {
-        RecordFragment fragmentFirst = new RecordFragment();
+    public static RecordFragment newInstance(Lesson l) {
+        RecordFragment fragmentFirst = new RecordFragment(l);
         Bundle args = new Bundle();
         fragmentFirst.setArguments(args);
         return fragmentFirst;
+    }
+
+    public RecordFragment(Lesson l) {
+        this.l = l;
     }
 
     @Override
@@ -150,7 +154,7 @@ public class RecordFragment extends Fragment {
                 boolean deleted = file.delete();
                 Log.e("delete", "" + deleted);
                 rl.deleteRecordbyid(index, l);
-                l = rl.getleassongbyid(0);
+                l = rl.getleassongbyid(l.getId());
                 list = l.getRecods();
                 recordAdapter.notifyDataSetChanged();
                 issave = true;
@@ -164,7 +168,7 @@ public class RecordFragment extends Fragment {
                     savefile();
                 }
                 issave = true;
-                l = rl.getleassongbyid(0);
+                l = rl.getleassongbyid(l.getId());
                 list = l.getRecods();
                 recod = list.get(i);
                 if (isplay == false) {
@@ -213,7 +217,7 @@ public class RecordFragment extends Fragment {
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         Calendar c = Calendar.getInstance();
         String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/original/1";
+        mFileName += "/original/" + l.getId();
         mFileName += "/record" + c.getTime().getTime() + ".mp3";
         Log.e("mFileName", mFileName);
         recod.setLocation(mFileName);
@@ -238,7 +242,7 @@ public class RecordFragment extends Fragment {
 
     public void onPlay(boolean start) {
         if (start) {
-            tv_nameplay.setText("Play file: " + recod.getLocation());
+            tv_nameplay.setText("Play file: " + recod.getName());
             startPlaying(recod.getLocation());
         } else {
             tv_nameplay.setText("Completed");
@@ -296,7 +300,7 @@ public class RecordFragment extends Fragment {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     rl.addRecordbyid(recod, l);
-                                    l = rl.getleassongbyid(0);
+                                    l = rl.getleassongbyid(l.getId());
                                     list = l.getRecods();
                                     recordAdapter.notifyDataSetChanged();
                                 }
@@ -321,7 +325,7 @@ public class RecordFragment extends Fragment {
         btn_record = (Button) getActivity().findViewById(R.id.btn_record);
         btn_save = (Button) getActivity().findViewById(R.id.btn_save);
         listview = (ListView) getActivity().findViewById(R.id.listrecord);
-        tv_time = (TextView) getActivity().findViewById(R.id.text_time);
+        tv_time = (TextView) getActivity().findViewById(R.id.text_timestic);
         tv_nameplay = (TextView) getActivity().findViewById(R.id.textNowPlaying);
         btn_play.setEnabled(false);
         btn_save.setEnabled(false);
@@ -329,7 +333,6 @@ public class RecordFragment extends Fragment {
 
         timer = new Timer();
         rl = new RealmLeason(mcontext);
-        l = rl.getleassongbyid(0);
         Log.e("ok", "" + l.getRecods().size());
         list = l.getRecods();
 

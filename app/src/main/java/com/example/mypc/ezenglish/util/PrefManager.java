@@ -3,7 +3,7 @@ package com.example.mypc.ezenglish.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.mypc.ezenglish.model.Voca;
+import com.example.mypc.ezenglish.model.VocaData;
 import com.example.mypc.ezenglish.model.VocaRed;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,7 +47,7 @@ public class PrefManager {
 
     }
 
-    public void setlistvoca(List<Voca> v) {
+    public void setlistvoca(List<VocaData> v) {
         GsonBuilder builder = new GsonBuilder();
         gson = builder.create();
         String s = gson.toJson(v);
@@ -56,8 +56,8 @@ public class PrefManager {
 
     }
 
-    public List<Voca> getlistvoca() {
-        List<Voca> list = new ArrayList<>();
+    public List<VocaData> getlistvoca() {
+        List<VocaData> list = new ArrayList<>();
         GsonBuilder builder = new GsonBuilder();
         gson = builder.create();
         String vcr = pref.getString(LISTVOCA, "");
@@ -65,7 +65,7 @@ public class PrefManager {
             return list;
         } else {
             try {
-                list = new Gson().fromJson(vcr, new TypeToken<List<Voca>>() {
+                list = new Gson().fromJson(vcr, new TypeToken<List<VocaData>>() {
                 }.getType());
                 return list;
             } catch (Exception ex) {
@@ -74,7 +74,6 @@ public class PrefManager {
             }
         }
     }
-
 
     public VocaRed getVocaRed() {
         VocaRed vc = new VocaRed();
@@ -91,10 +90,12 @@ public class PrefManager {
             }
         }
     }
+
     public void setFirstTimeLaunch(boolean isFirstTime) {
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
         editor.commit();
     }
+
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }

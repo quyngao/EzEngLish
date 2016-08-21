@@ -1,29 +1,21 @@
 package com.example.mypc.ezenglish.util;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
-import android.app.Application;
-import android.content.ContentUris;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 
-import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 
-import java.io.FileDescriptor;
 import java.util.ArrayList;
 
 public class UtilFunctions {
@@ -40,7 +32,7 @@ public class UtilFunctions {
         return false;
     }
 
-    public static ArrayList<MP3> listOfSongs(Application activity, int id) {
+    public static ArrayList<MP3> listOfSongs(Context activity, int id) {
         RealmLeason rl = new RealmLeason(activity);
         Lesson l = rl.getleassongbyid(id);
         ArrayList<MP3> list = new ArrayList<>();
@@ -78,6 +70,7 @@ public class UtilFunctions {
     }
 
     public static Bitmap getDefaultAlbumArt(String location) {
+        Log.e("location", Environment.getExternalStorageDirectory().getAbsolutePath() + location);
         Bitmap bm = null;
         try {
             bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + location);

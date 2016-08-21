@@ -1,6 +1,7 @@
 package com.example.mypc.ezenglish.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -41,8 +43,11 @@ public class ItemLessonActivity extends FragmentActivity {
     }
 
     private void init() {
+        Intent i = getIntent();
+        int id = i.getIntExtra("id", 1);
+        Log.e("anh yeu em ", "" + id);
         rl = new RealmLeason(this);
-        l = rl.getleassongbyid(0);
+        l = rl.getleassongbyid(id);
         getViews();
         setListeners();
     }
@@ -59,7 +64,7 @@ public class ItemLessonActivity extends FragmentActivity {
 
 
         AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_maps_local_bar, R.color.color_tab_2);
-        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.ic_maps_place, R.color.color_tab_1);
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.ic_music, R.color.color_tab_1);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_maps_local_restaurant, R.color.color_tab_3);
         AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.tab_4, R.drawable.ic_maps_local_attraction, R.color.color_tab_4);
         AHBottomNavigationItem item5 = new AHBottomNavigationItem(R.string.tab_5, R.drawable.ic_content_add, R.color.color_tab_5);

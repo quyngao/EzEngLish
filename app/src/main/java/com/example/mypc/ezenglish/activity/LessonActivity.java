@@ -3,24 +3,28 @@ package com.example.mypc.ezenglish.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.mypc.ezenglish.adapter.LessonAdapter;
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.adapter.CustomAdapter;
 import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
@@ -35,20 +39,21 @@ import java.util.ArrayList;
  * Created by Quylt on 8/10/2016.
  */
 public class LessonActivity extends Activity {
-    CustomAdapter customAdapter = null;
     static TextView playingSong;
     Button btnPlayer;
     static Button btnPause, btnPlay, btnNext, btnPrevious;
     Button btnStop;
     LinearLayout mediaLayout;
     static LinearLayout linearLayoutPlayingSong;
-    ListView mediaListView;
     ProgressBar progressBar;
     TextView textBufferDuration, textDuration;
     static ImageView imageViewAlbumArt;
     static Context context;
-    RealmLeason rl;
-    ArrayList<Lesson> list;
+    static RealmLeason rl;
+    static Lesson l;
+    static ArrayList<Lesson> list;
+    private RecyclerView recyclerView;
+    private LessonAdapter adapter;
 
     @Override
 
@@ -66,22 +71,89 @@ public class LessonActivity extends Activity {
         playingSong.setSelected(true);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
         if (PlayerConstants.SONGS_LIST.size() <= 0) {
-            PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), 0);
+            PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), 1);
         }
         setListItems();
     }
 
     private void setListItems() {
         list = rl.getAllLeasson();
-        customAdapter = new CustomAdapter(this, R.layout.custom_list, list);
-        mediaListView.setAdapter(customAdapter);
-        mediaListView.setFastScrollEnabled(true);
+        adapter = new LessonAdapter(this, list);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+    }
+
+    public static void nextActivity(int id) {
+        Intent i = new Intent(context, ItemLessonActivity.class);
+        i.putExtra("id", list.get(id).getId());
+        context.startActivity(i);
+    }
+
+    public static void ChoiseLesson(int id) {
+        l = list.get(id);
+        PlayerConstants.ID_LEASSON = l.getId();
+        PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(context, l.getId());
+        PlayerConstants.SONG_PAUSED = false;
+        PlayerConstants.SONG_NUMBER = 0;
+        boolean isServiceRunning = UtilFunctions.isServiceRunning(SongService.class.getName(), context);
+        if (!isServiceRunning) {
+            Intent i = new Intent(context, SongService.class);
+            context.startService(i);
+        } else {
+            PlayerConstants.SONG_CHANGE_HANDLER.sendMessage(PlayerConstants.SONG_CHANGE_HANDLER.obtainMessage());
+        }
+        updateUI();
+        changeButton();
+        Log.d("TAG", "TAG Tapped INOUT(OUT)");
+
+    }
+
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     private void getViews() {
         playingSong = (TextView) findViewById(R.id.textNowPlaying);
         btnPlayer = (Button) findViewById(R.id.btnMusicPlayer);
-        mediaListView = (ListView) findViewById(R.id.listViewMusic);
         mediaLayout = (LinearLayout) findViewById(R.id.linearLayoutMusicList);
         btnPause = (Button) findViewById(R.id.btnPause);
         btnPlay = (Button) findViewById(R.id.btnPlay);
@@ -93,33 +165,37 @@ public class LessonActivity extends Activity {
         imageViewAlbumArt = (ImageView) findViewById(R.id.imageViewAlbumArt);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnPrevious = (Button) findViewById(R.id.btnPrevious);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     }
 
     private void setListeners() {
-        mediaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
-                Log.d("TAG", "TAG Tapped INOUT(IN)");
-                Lesson l = list.get(position);
-                PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), l.getId());
-                PlayerConstants.SONG_PAUSED = false;
-                PlayerConstants.SONG_NUMBER = position;
-                boolean isServiceRunning = UtilFunctions.isServiceRunning(SongService.class.getName(), getApplicationContext());
-                if (!isServiceRunning) {
-                    Intent i = new Intent(getApplicationContext(), SongService.class);
-                    startService(i);
-                } else {
-                    PlayerConstants.SONG_CHANGE_HANDLER.sendMessage(PlayerConstants.SONG_CHANGE_HANDLER.obtainMessage());
-                }
-                updateUI();
-                changeButton();
-                Log.d("TAG", "TAG Tapped INOUT(OUT)");
-            }
-        });
+//        mediaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
+//                Log.d("TAG", "TAG Tapped INOUT(IN)");
+//                l = list.get(position);
+//
+//                PlayerConstants.ID_LEASSON = l.getId();
+//                PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), l.getId());
+//                PlayerConstants.SONG_PAUSED = false;
+//                PlayerConstants.SONG_NUMBER = 0;
+//                boolean isServiceRunning = UtilFunctions.isServiceRunning(SongService.class.getName(), getApplicationContext());
+//                if (!isServiceRunning) {
+//                    Intent i = new Intent(getApplicationContext(), SongService.class);
+//                    startService(i);
+//                } else {
+//                    PlayerConstants.SONG_CHANGE_HANDLER.sendMessage(PlayerConstants.SONG_CHANGE_HANDLER.obtainMessage());
+//                }
+//                updateUI();
+//                changeButton();
+//                Log.d("TAG", "TAG Tapped INOUT(OUT)");
+//            }
+//        });
         btnPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
+                i.putExtra("id", l.getId());
                 startActivity(i);
             }
         });
@@ -162,6 +238,7 @@ public class LessonActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
+                i.putExtra("id", l.getId());
                 startActivity(i);
             }
         });
@@ -197,7 +274,7 @@ public class LessonActivity extends Activity {
 
             MP3 data = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER);
             playingSong.setText(data.getName() + " " + data.getContext() + "-" + data.getType());
-            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
+            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt(l.getImg());
             imageViewAlbumArt.setBackgroundDrawable(new BitmapDrawable(albumArt));
             linearLayoutPlayingSong.setVisibility(View.VISIBLE);
         } catch (Exception e) {

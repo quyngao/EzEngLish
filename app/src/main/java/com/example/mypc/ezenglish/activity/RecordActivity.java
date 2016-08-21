@@ -80,7 +80,7 @@ public class RecordActivity extends Activity {
         btn_record = (Button) findViewById(R.id.btn_record);
         btn_save = (Button) findViewById(R.id.btn_save);
         listview = (ListView) findViewById(R.id.listrecord);
-        tv_time = (TextView) findViewById(R.id.text_time);
+        tv_time = (TextView) findViewById(R.id.text_timestic);
         tv_nameplay = (TextView) findViewById(R.id.textNowPlaying);
         btn_play.setEnabled(false);
         btn_save.setEnabled(false);
@@ -340,8 +340,8 @@ public class RecordActivity extends Activity {
             mPlayer.release();
             mPlayer = null;
         }
-        if (issave == false && recod.getLocation()!=null) {
-            File file = new File(""+recod.getLocation());
+        if (issave == false && recod.getLocation() != null) {
+            File file = new File("" + recod.getLocation());
             boolean deleted = file.delete();
             Log.e("delete", "" + deleted);
         }

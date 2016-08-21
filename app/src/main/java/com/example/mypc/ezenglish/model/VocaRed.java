@@ -13,11 +13,11 @@ public class VocaRed implements Serializable {
     String enddate;
 
     public VocaRed() {
-        step=5;
-        startdate ="00:00";
-        enddate="23:59";
-        isalarm=false;
-        issound= false;
+        step = 2;
+        startdate = "00:00";
+        enddate = "23:59";
+        isalarm = false;
+        issound = false;
     }
 
     public void setStep(int step) {

@@ -25,7 +25,6 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.activity.ItemActivity;
 import com.example.mypc.ezenglish.activity.LessonActivity;
 import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.MP3;
@@ -46,7 +45,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
     public static final String NOTIFY_PAUSE = "com.example.mypc.ezenglish.pause";
     public static final String NOTIFY_PLAY = "com.example.mypc.ezenglish.play";
     public static final String NOTIFY_NEXT = "com.example.mypc.ezenglish.next";
-
+    public static final String NOTIFY_VOCA = "com.example.mypc.ezenglish.view";
     private ComponentName remoteComponentName;
     private RemoteControlClient remoteControlClient;
     AudioManager audioManager;
@@ -110,7 +109,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
             if (PlayerConstants.SONGS_LIST.size() <= 0) {
-                PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), 0);
+                PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), PlayerConstants.ID_LEASSON);
             }
             MP3 data = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER);
             if (currentVersionSupportLockScreenControls) {
@@ -119,7 +118,6 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
             String songPath = data.getLocation();
             playSong(songPath, data);
             newNotification();
-
             PlayerConstants.SONG_CHANGE_HANDLER = new Handler(new Callback() {
                 @Override
                 public boolean handleMessage(Message msg) {
@@ -340,7 +338,6 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
         metadataEditor.apply();
         audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
     }
-
     @Override
     public void onAudioFocusChange(int focusChange) {
     }

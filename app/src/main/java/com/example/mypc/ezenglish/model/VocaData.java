@@ -1,21 +1,35 @@
 package com.example.mypc.ezenglish.model;
 
-import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
-import io.realm.annotations.PrimaryKey;
+import java.io.Serializable;
 
 /**
- * Created by Quylt on 8/8/2016.
+ * Created by MyPC on 21/08/2016.
  */
-public class Voca extends RealmObject {
-    @PrimaryKey
+public class VocaData implements Serializable {
     public int id;
     String name;
     String description;
     String img;
     String trans;
-    @Ignore
-    Lesson lesson;
+    boolean isRed;
+
+    public void copyData(Voca x) {
+        this.id = x.getId();
+        this.name = x.getName();
+        this.description = x.getDescription();
+        this.img = x.getImg();
+        this.trans = x.getTrans();
+        this.isRed = true;
+
+    }
+
+    public boolean isRed() {
+        return isRed;
+    }
+
+    public void setRed(boolean red) {
+        isRed = red;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -37,11 +51,8 @@ public class Voca extends RealmObject {
         this.trans = trans;
     }
 
-    public void setLesson(Lesson lesson) {
-        this.lesson = lesson;
-    }
-
     public int getId() {
+
         return id;
     }
 
@@ -59,9 +70,5 @@ public class Voca extends RealmObject {
 
     public String getTrans() {
         return trans;
-    }
-
-    public Lesson getLesson() {
-        return lesson;
     }
 }
