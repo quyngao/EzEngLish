@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.mypc.ezenglish.model.History;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Recod;
 import com.example.mypc.ezenglish.model.Topic;
@@ -47,14 +48,23 @@ public class RealmLeason {
         Lesson l = realm.where(Lesson.class).equalTo("id", id).findFirst();
         return l;
     }
-
-    public void addRecordbyid(Recod r, Lesson l) {
+    public void addRecordbyid(Recod r, int idl) {
         realm.beginTransaction();
-        Lesson lesson = getleassongbyid(l.getId());
+        Lesson lesson = getleassongbyid(idl);
+        int size = lesson.getRecods().size();
+
         lesson.getRecods().add(r);
         realm.commitTransaction();
-
     }
+
+    public void addHistorybyid(History h, int idl) {
+        realm.beginTransaction();
+        Lesson lesson = getleassongbyid(idl);
+        lesson.getHistories().add(h);
+        realm.commitTransaction();
+    }
+
+
     public ArrayList<Lesson> getAllLeasson() {
         ArrayList<Lesson> list = new ArrayList<>();
         for (Lesson i : realm.where(Lesson.class).findAll()) {
@@ -62,11 +72,11 @@ public class RealmLeason {
         }
         return list;
     }
+
     public void deleteRecordbyid(int i, Lesson l) {
         realm.beginTransaction();
         Lesson lesson = getleassongbyid(l.getId());
         lesson.getRecods().remove(i);
         realm.commitTransaction();
-
     }
 }

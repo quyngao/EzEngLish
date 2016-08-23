@@ -5,6 +5,7 @@ import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Environment;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -16,6 +17,8 @@ import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class UtilFunctions {
@@ -80,7 +83,7 @@ public class UtilFunctions {
         return bm;
     }
 
-    private static final float BITMAP_SCALE = 3f;
+    private static final float BITMAP_SCALE = 0.8f;
     private static final float BLUR_RADIUS = 15f;
 
     public static Bitmap blur(String location, Context context) {
@@ -118,6 +121,23 @@ public class UtilFunctions {
             time = m + ":" + s;
         }
         return time;
+    }
+
+    public static String getDurationFile(String file) {
+        long time = 0;
+        String s = "00:00";
+        MediaPlayer mp = new MediaPlayer();
+        try {
+            mp.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath() + file);
+            mp.prepare();
+            time = mp.getDuration();
+            mp.release();
+            s = getDuration(time);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("loi", e.getMessage());
+        }
+        return s;
     }
 
     public static boolean currentVersionSupportBigNotification() {

@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,33 +20,40 @@ import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.cleveroad.audiowidget.AudioWidget;
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.activity.LessonActivity;
 import com.example.mypc.ezenglish.controls.Controls;
+import com.example.mypc.ezenglish.model.History;
+import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
+import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.receiver.NotificationBroadcast;
+import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SongService extends Service implements AudioManager.OnAudioFocusChangeListener {
     String LOG_CLASS = "SongService";
     private MediaPlayer mp;
+    AudioWidget audioWidget;
     int NOTIFICATION_ID = 1111;
     public static final String NOTIFY_PREVIOUS = "com.example.mypc.ezenglish.previous";
     public static final String NOTIFY_DELETE = "com.example.mypc.ezenglish.delete";
     public static final String NOTIFY_PAUSE = "com.example.mypc.ezenglish.pause";
     public static final String NOTIFY_PLAY = "com.example.mypc.ezenglish.play";
     public static final String NOTIFY_NEXT = "com.example.mypc.ezenglish.next";
-    public static final String NOTIFY_VOCA = "com.example.mypc.ezenglish.view";
     private ComponentName remoteComponentName;
     private RemoteControlClient remoteControlClient;
     AudioManager audioManager;
@@ -67,6 +75,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
         currentVersionSupportBigNotification = UtilFunctions.currentVersionSupportBigNotification();
         currentVersionSupportLockScreenControls = UtilFunctions.currentVersionSupportLockScreenControls();
         timer = new Timer();
+        audioWidget = new AudioWidget.Builder(getApplicationContext()).build();
         mp.setOnCompletionListener(new OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -107,6 +116,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
     @SuppressLint("NewApi")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         try {
             if (PlayerConstants.SONGS_LIST.size() <= 0) {
                 PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), PlayerConstants.ID_LEASSON);
@@ -125,6 +135,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     String songPath = data.getLocation();
                     newNotification();
                     try {
+                        saveHistory();
                         playSong(songPath, data);
                         LessonActivity.changeUI();
                     } catch (Exception e) {
@@ -163,7 +174,71 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     return false;
                 }
             });
+            audioWidget.show(100, 100);
 
+            audioWidget.controller().onControlsClickListener(new AudioWidget.OnControlsClickListener() {
+                @Override
+                public boolean onPlaylistClicked() {
+                    Log.e("songserrvice", "view onPlaylistClicked");
+                    return false;
+                }
+
+                @Override
+                public void onPlaylistLongClicked() {
+
+                }
+
+                @Override
+                public void onPreviousClicked() {
+                    Controls.previousControl(getApplicationContext());
+                }
+
+                @Override
+                public void onPreviousLongClicked() {
+
+                }
+
+                @Override
+                public boolean onPlayPauseClicked() {
+                    return false;
+                }
+
+                @Override
+                public void onPlayPauseLongClicked() {
+
+                }
+
+                @Override
+                public void onNextClicked() {
+                    Controls.nextControl(getApplicationContext());
+                }
+
+                @Override
+                public void onNextLongClicked() {
+
+                }
+
+                @Override
+                public void onAlbumClicked() {
+                    Log.e("songserrvice", "view onAlbumClicked");
+                }
+
+                @Override
+                public void onAlbumLongClicked() {
+
+                }
+            });
+            audioWidget.controller().onWidgetStateChangedListener(new AudioWidget.OnWidgetStateChangedListener() {
+                @Override
+                public void onWidgetStateChanged(@NonNull AudioWidget.State state) {
+                    // widget state changed (COLLAPSED, EXPANDED, REMOVED)
+                }
+
+                @Override
+                public void onWidgetPositionChanged(int cx, int cy) {
+                    // widget position change. Save coordinates here to reuse them next time AudioWidget.show(int, int) called.
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -267,9 +342,24 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
 
     }
 
+    public void saveHistory() {
+        if (mp != null) {
+            RealmLeason rl = new RealmLeason(getApplicationContext());
+            History h = new History();
+            int x = mp.getCurrentPosition();
+            h.setLongs(x);
+            Date t = new Date();
+            h.setTimes(t.getTime());
+            h.setType(PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getType());
+            if (x > 20000) rl.addHistorybyid(h, PlayerConstants.ID_LEASSON);
+            Log.e("luu history", "id" + PlayerConstants.ID_LEASSON + "time" + Constant.df.format(t) + "long :" + mp.getCurrentPosition());
+        }
+    }
+
     @Override
     public void onDestroy() {
         if (mp != null) {
+            saveHistory();
             mp.stop();
             mp = null;
         }
@@ -328,7 +418,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
             return;
         MetadataEditor metadataEditor = remoteControlClient.editMetadata(true);
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM, data.getContext());
-        metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST, data.getType());
+        metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST, Constant.typemp3[data.getType()]);
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE, data.getName());
         mDummyAlbumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
         if (mDummyAlbumArt == null) {
@@ -338,6 +428,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
         metadataEditor.apply();
         audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
     }
+
     @Override
     public void onAudioFocusChange(int focusChange) {
     }

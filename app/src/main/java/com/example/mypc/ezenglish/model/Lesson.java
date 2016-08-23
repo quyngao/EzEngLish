@@ -24,6 +24,7 @@ public class Lesson extends RealmObject {
     RealmList<History> histories;
     RealmList<Voca> vocas;
     RealmList<MP3> all;
+
     Doc doc;
     @Ignore
     RealmList<Schedule> schedules;

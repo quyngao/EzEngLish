@@ -87,6 +87,7 @@ public class LessonActivity extends Activity {
     }
 
     public static void nextActivity(int id) {
+        PlayerConstants.ID_LEASSON = list.get(id).getId();
         Intent i = new Intent(context, ItemLessonActivity.class);
         i.putExtra("id", list.get(id).getId());
         context.startActivity(i);

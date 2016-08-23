@@ -93,7 +93,6 @@ public class VocaFlagment extends Fragment implements TextToSpeech.OnInitListene
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_voca, container, false);
     }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -121,8 +120,9 @@ public class VocaFlagment extends Fragment implements TextToSpeech.OnInitListene
         listvoca = prefManager.getlistvoca();
         Log.e("size voca", "" + listvoca.size());
         if (listvoca.size() == 0) {
-            VocaData tmp = new VocaData();
+
             for (Voca vc : l.getVocas()) {
+                VocaData tmp = new VocaData();
                 tmp.copyData(vc);
                 listvoca.add(tmp);
             }

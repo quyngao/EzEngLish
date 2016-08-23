@@ -11,19 +11,13 @@ import io.realm.annotations.PrimaryKey;
  * Created by Quylt on 8/8/2016.
  */
 public class Recod extends RealmObject {
-    @PrimaryKey
-    @Index
-    public int id;
+
     String name;
     String location;
     String time;
 
     @Ignore
     Lesson lesson = new Lesson();
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -41,9 +35,6 @@ public class Recod extends RealmObject {
         this.lesson = lesson;
     }
 
-    public int getId() {
-        return id;
-    }
 
     public String getName() {
         return name;

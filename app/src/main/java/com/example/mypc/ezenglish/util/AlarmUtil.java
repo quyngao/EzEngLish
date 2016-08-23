@@ -25,7 +25,7 @@ import java.util.Date;
  */
 public class AlarmUtil {
 
-    static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     public static void startAlarmvocar(int time, int id, Context context) {
 
@@ -35,7 +35,7 @@ public class AlarmUtil {
         PendingIntent pending = PendingIntent.getBroadcast(context.getApplicationContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Date d = new Date();
         long date = d.getTime() + time * 60 * 1000;
-        Log.e("time", df.format(d));
+        Log.e("time", Constant.df.format(d));
         if (Build.VERSION.SDK_INT >= 19) {
             am.setExact(AlarmManager.RTC_WAKEUP, date, pending);
         } else am.set(AlarmManager.RTC_WAKEUP, date, pending);
@@ -53,11 +53,12 @@ public class AlarmUtil {
     private static void speakOut(String s, TextToSpeech tt) {
         tt.speak(s, TextToSpeech.QUEUE_FLUSH, null);
     }
-    public static void buildNotificaiton(VocaData voca, int id,int idvoca, boolean sound, Context context) {
+
+    public static void buildNotificaiton(VocaData voca, int id, int idvoca, boolean sound, Context context) {
 
 
         Intent intent1 = new Intent(context, VocaActivity.class);
-        intent1.putExtra("id",idvoca);
+        intent1.putExtra("id", idvoca);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

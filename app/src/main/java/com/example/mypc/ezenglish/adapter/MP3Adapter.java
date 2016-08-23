@@ -28,11 +28,13 @@ public class MP3Adapter extends ArrayAdapter<MP3> {
         this.context = context;
         inflator = LayoutInflater.from(context);
     }
+
     private class ViewHolder {
         TextView textViewSongName, textViewArtist, textViewDuration;
     }
 
     ViewHolder holder;
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View myView = convertView;
@@ -49,7 +51,7 @@ public class MP3Adapter extends ArrayAdapter<MP3> {
         MP3 detail = listleasson.get(position);
         holder.textViewSongName.setText(detail.getName());
         holder.textViewArtist.setText(detail.getContext() + " - " + detail.getId());
-        holder.textViewDuration.setText(UtilFunctions.getDuration(0));
+        holder.textViewDuration.setText(UtilFunctions.getDurationFile(detail.getLocation()));
         return myView;
     }
 }

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.mypc.ezenglish.R;
+import com.example.mypc.ezenglish.flagment.HistoryFragment;
 import com.example.mypc.ezenglish.flagment.Mp3Fragment;
 import com.example.mypc.ezenglish.flagment.OneFragment;
 import com.example.mypc.ezenglish.flagment.RecordFragment;
@@ -34,10 +35,10 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return VocaFlagment.newInstance(l);
             case 3: // Fragment # 1 - This will show SecondFragment
-                return new OneFragment(R.layout.welcome_slide3);
+                return HistoryFragment.newInstance(l);
+            // new OneFragment(R.layout.welcome_slide3);
             case 4: // Fragment # 1 - This will show SecondFragment
                 return RecordFragment.newInstance(l);
-
             default:
                 return null;
         }

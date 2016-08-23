@@ -84,7 +84,7 @@ public class RecordFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mcontext = getActivity();
         init();
@@ -216,13 +216,12 @@ public class RecordFragment extends Fragment {
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         Calendar c = Calendar.getInstance();
-        String mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/original/" + l.getId();
+        String mFileName = "/original/" + l.getId();
         mFileName += "/record" + c.getTime().getTime() + ".mp3";
         Log.e("mFileName", mFileName);
         recod.setLocation(mFileName);
         Log.e("location", recod.getLocation());
-        mRecorder.setOutputFile(recod.getLocation());
+        mRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath()+recod.getLocation());
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
             mRecorder.prepare();
@@ -259,7 +258,7 @@ public class RecordFragment extends Fragment {
     public void startPlaying(String location) {
         mPlayer = new MediaPlayer();
         try {
-            mPlayer.setDataSource(location);
+            mPlayer.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath() + location);
             mPlayer.prepare();
             mPlayer.start();
             mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -276,7 +275,6 @@ public class RecordFragment extends Fragment {
         } catch (IOException e) {
         }
     }
-
 
     public void savefile() {
         final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -299,7 +297,7 @@ public class RecordFragment extends Fragment {
                     .setPositiveButton("Save",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    rl.addRecordbyid(recod, l);
+                                    rl.addRecordbyid(recod, l.getId());
                                     l = rl.getleassongbyid(l.getId());
                                     list = l.getRecods();
                                     recordAdapter.notifyDataSetChanged();

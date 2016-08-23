@@ -23,6 +23,7 @@ import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.service.SongService;
+import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
@@ -99,7 +100,7 @@ public class Mp3Fragment extends Fragment {
     private void updateUI() {
         try {
             String songName = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getName();
-            String composer = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getType();
+            String composer = Constant.typemp3[PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getType()];
             textAlbumArtist.setText(songName);
             textComposer.setText(composer);
         } catch (Exception e) {

@@ -12,7 +12,7 @@ public class MP3 extends RealmObject {
     public int id;
     String name;
     String location;
-    String type;
+    int type;
     String context;
     @Ignore
     Lesson lesson;
@@ -29,9 +29,7 @@ public class MP3 extends RealmObject {
         this.location = location;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+
 
     public void setContext(String context) {
         this.context = context;
@@ -54,8 +52,12 @@ public class MP3 extends RealmObject {
         return location;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getContext() {

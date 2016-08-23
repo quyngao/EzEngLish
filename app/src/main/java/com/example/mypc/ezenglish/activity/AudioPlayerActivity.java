@@ -155,7 +155,7 @@ public class AudioPlayerActivity extends Activity {
             String songName = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getName();
             String artist = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getContext();
             String album = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getLocation();
-            String composer = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getType();
+            String composer = ""+PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getType();
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/original/1/voca.txt");
             StringBuilder text = new StringBuilder();
             try {

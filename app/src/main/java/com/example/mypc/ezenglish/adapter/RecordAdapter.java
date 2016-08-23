@@ -33,6 +33,7 @@ public class RecordAdapter extends ArrayAdapter<Recod> {
     private class ViewHolder {
         TextView textname, textdate, textViewDuration;
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View myView = convertView;
@@ -49,7 +50,7 @@ public class RecordAdapter extends ArrayAdapter<Recod> {
         Recod detail = listrecord.get(position);
         holder.textname.setText(detail.getName());
         holder.textdate.setText(detail.getTime());
-        holder.textViewDuration.setText(UtilFunctions.getDuration(0));
+        holder.textViewDuration.setText(UtilFunctions.getDurationFile(detail.getLocation()));
         return myView;
     }
 

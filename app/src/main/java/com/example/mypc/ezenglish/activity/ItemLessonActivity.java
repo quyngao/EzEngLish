@@ -113,7 +113,6 @@ public class ItemLessonActivity extends FragmentActivity {
         }
 
     }
-
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override

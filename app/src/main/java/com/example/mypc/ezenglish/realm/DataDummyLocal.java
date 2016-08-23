@@ -132,7 +132,7 @@ public class DataDummyLocal {
         m.setName("Day of the Dead Audio");
         m.setContext("Audio");
         m.setLocation("/original/1/Day of the Dead Audio.mp3");
-        m.setType("0");
+        m.setType(0);
         list.add(m);
         i++;
         m = new MP3();
@@ -140,7 +140,7 @@ public class DataDummyLocal {
         m.setName("Day of the Dead Vocab");
         m.setContext("Voca");
         m.setLocation("/original/1/Day of the Dead Vocab.mp3");
-        m.setType("1");
+        m.setType(1);
         list.add(m);
         i++;
         m = new MP3();
@@ -148,7 +148,7 @@ public class DataDummyLocal {
         m.setName("Day of the Dead MS");
         m.setContext("Ministore");
         m.setLocation("/original/1/Day of the Dead MS.mp3");
-        m.setType("2");
+        m.setType(2);
         list.add(m);
         i++;
         return list;
@@ -162,7 +162,7 @@ public class DataDummyLocal {
         m.setName("Bubba's Food Audio");
         m.setContext("Audio");
         m.setLocation("/original/2/Bubba's Food Audio.mp3");
-        m.setType("0");
+        m.setType(0);
         list.add(m);
         i++;
         m = new MP3();
@@ -170,7 +170,7 @@ public class DataDummyLocal {
         m.setName("Bubba's Food Vocab");
         m.setContext("Voca");
         m.setLocation("/original/2/Bubba's Food Vocab.mp3");
-        m.setType("1");
+        m.setType(1);
         list.add(m);
         i++;
         m = new MP3();
@@ -178,7 +178,7 @@ public class DataDummyLocal {
         m.setName("Bubba's Food MS A");
         m.setContext("Ministore");
         m.setLocation("/original/2/Bubba's Food MS-A.mp3");
-        m.setType("2");
+        m.setType(2);
         list.add(m);
         i++;
 
@@ -187,7 +187,7 @@ public class DataDummyLocal {
         m.setName("Bubba's Food MS B");
         m.setContext("Ministore");
         m.setLocation("/original/2/Bubba's Food MS-B.mp3");
-        m.setType("2");
+        m.setType(2);
         list.add(m);
         i++;
 
@@ -196,7 +196,7 @@ public class DataDummyLocal {
         m.setName("Bubba's Food MS C");
         m.setContext("Ministore");
         m.setLocation("/original/2/Bubba's Food MS-B.mp3");
-        m.setType("2");
+        m.setType(2);
         list.add(m);
         i++;
         return list;
@@ -210,7 +210,7 @@ public class DataDummyLocal {
         m.setName("A Kiss Audio");
         m.setContext("Audio");
         m.setLocation("/original/3/A Kiss Audio.mp3");
-        m.setType("0");
+        m.setType(0);
         list.add(m);
         i++;
         m = new MP3();
@@ -218,7 +218,7 @@ public class DataDummyLocal {
         m.setName("A Kiss Vocab");
         m.setContext("Voca");
         m.setLocation("/original/3/A Kiss Vocab.mp3");
-        m.setType("1");
+        m.setType(1);
         list.add(m);
         i++;
         m = new MP3();
@@ -226,7 +226,7 @@ public class DataDummyLocal {
         m.setName("A Kiss MS A");
         m.setContext("Ministore");
         m.setLocation("/original/3/A Kiss MS-A.mp3");
-        m.setType("2");
+        m.setType(2);
         list.add(m);
         i++;
 
@@ -235,7 +235,7 @@ public class DataDummyLocal {
         m.setName("A Kiss MS B");
         m.setContext("Ministore");
         m.setLocation("/original/3/A Kiss MS-B.mp3");
-        m.setType("2");
+        m.setType(2);
         list.add(m);
         i++;
 
@@ -251,7 +251,7 @@ public class DataDummyLocal {
         m.setName("Changed Audio");
         m.setContext("Audio");
         m.setLocation("/original/4/Changed Audio.mp3");
-        m.setType("0");
+        m.setType(0);
         list.add(m);
         i++;
         m = new MP3();
@@ -259,7 +259,7 @@ public class DataDummyLocal {
         m.setName("Changed Vocab");
         m.setContext("Voca");
         m.setLocation("/original/4/Changed Vocab.mp3");
-        m.setType("1");
+        m.setType(1);
         list.add(m);
         i++;
         m = new MP3();
@@ -267,7 +267,7 @@ public class DataDummyLocal {
         m.setName("Changed MS A");
         m.setContext("Ministore");
         m.setLocation("/original/4/Changed MS-A.mp3");
-        m.setType("2");
+        m.setType(2);
         list.add(m);
         i++;
 
@@ -276,7 +276,7 @@ public class DataDummyLocal {
         m.setName("Changed MS B");
         m.setContext("Ministore");
         m.setLocation("/original/4/Changed MS-B.mp3");
-        m.setType("2");
+        m.setType(2);
         list.add(m);
         i++;
         return list;

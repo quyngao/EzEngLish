@@ -153,7 +153,7 @@ public class RecordActivity extends Activity {
                 boolean deleted = file.delete();
                 Log.e("delete", "" + deleted);
                 rl.deleteRecordbyid(index, l);
-                l = rl.getleassongbyid(0);
+                l = rl.getleassongbyid(l.getId());
                 list = l.getRecods();
                 recordAdapter.notifyDataSetChanged();
                 issave = true;
@@ -167,7 +167,7 @@ public class RecordActivity extends Activity {
                     savefile();
                 }
                 issave = true;
-                l = rl.getleassongbyid(0);
+                l = rl.getleassongbyid(l.getId());
                 list = l.getRecods();
                 recod = list.get(i);
                 if (isplay == false) {
@@ -206,8 +206,8 @@ public class RecordActivity extends Activity {
                     .setPositiveButton("Save",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    rl.addRecordbyid(recod, l);
-                                    l = rl.getleassongbyid(0);
+                                    rl.addRecordbyid(recod, l.getId());
+                                    l = rl.getleassongbyid(l.getId());
                                     list = l.getRecods();
                                     recordAdapter.notifyDataSetChanged();
                                 }
