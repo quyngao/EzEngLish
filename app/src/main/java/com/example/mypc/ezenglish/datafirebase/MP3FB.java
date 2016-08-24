@@ -31,5 +31,23 @@ public class MP3FB {
         this.context = mp3.getContext();
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public String getContext() {
+        return context;
+    }
 }

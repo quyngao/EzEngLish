@@ -1,5 +1,9 @@
 package com.example.mypc.ezenglish.model;
 
+import com.example.mypc.ezenglish.datafirebase.LessonFB;
+import com.example.mypc.ezenglish.datafirebase.MP3FB;
+import com.example.mypc.ezenglish.datafirebase.VocaFB;
+
 import java.util.Date;
 import java.util.List;
 
@@ -24,20 +28,33 @@ public class Lesson extends RealmObject {
     RealmList<History> histories;
     RealmList<Voca> vocas;
     RealmList<MP3> all;
-
     Doc doc;
+
     @Ignore
     RealmList<Schedule> schedules;
     @Ignore
-    List<MP3> ministore;
-    @Ignore
-    MP3 audio;
-    @Ignore
-    MP3 vocamp3;
-    @Ignore
-    Topic topic;
-    @Ignore
     User user;
+
+    public Lesson() {
+    }
+
+    public Lesson(LessonFB l) {
+        this.id = l.getId();
+        this.name = l.getName();
+        this.img = l.getImg();
+        this.context = l.getContext();
+        this.time = 0;
+        this.isrealy = 1;
+        this.vocas = new RealmList<>();
+        for (VocaFB vc : l.getVocas()) {
+            this.vocas.add(new Voca(vc));
+        }
+        this.all = new RealmList<>();
+        for (MP3FB m : l.getAll()) {
+            this.all.add(new MP3(m));
+        }
+        this.doc = new Doc(l.getDoc());
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -91,21 +108,6 @@ public class Lesson extends RealmObject {
         this.schedules = schedules;
     }
 
-    public void setMinistore(List<MP3> ministore) {
-        this.ministore = ministore;
-    }
-
-    public void setAudio(MP3 audio) {
-        this.audio = audio;
-    }
-
-    public void setVocamp3(MP3 vocamp3) {
-        this.vocamp3 = vocamp3;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
-    }
 
     public void setUser(User user) {
         this.user = user;
@@ -163,21 +165,6 @@ public class Lesson extends RealmObject {
         return schedules;
     }
 
-    public List<MP3> getMinistore() {
-        return ministore;
-    }
-
-    public MP3 getAudio() {
-        return audio;
-    }
-
-    public MP3 getVocamp3() {
-        return vocamp3;
-    }
-
-    public Topic getTopic() {
-        return topic;
-    }
 
     public User getUser() {
         return user;

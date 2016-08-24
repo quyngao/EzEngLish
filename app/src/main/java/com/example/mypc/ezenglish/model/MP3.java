@@ -1,5 +1,7 @@
 package com.example.mypc.ezenglish.model;
 
+import com.example.mypc.ezenglish.datafirebase.MP3FB;
+
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
@@ -14,8 +16,17 @@ public class MP3 extends RealmObject {
     String location;
     int type;
     String context;
-    @Ignore
-    Lesson lesson;
+
+    public MP3() {
+    }
+
+    public MP3(MP3FB mp3) {
+        this.id = mp3.getId();
+        this.name = mp3.getName();
+        this.location = mp3.getLocation();
+        this.type = mp3.getType();
+        this.context = mp3.getContext();
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -30,14 +41,10 @@ public class MP3 extends RealmObject {
     }
 
 
-
     public void setContext(String context) {
         this.context = context;
     }
 
-    public void setLesson(Lesson lesson) {
-        this.lesson = lesson;
-    }
 
     public int getId() {
 
@@ -64,7 +71,4 @@ public class MP3 extends RealmObject {
         return context;
     }
 
-    public Lesson getLesson() {
-        return lesson;
-    }
 }

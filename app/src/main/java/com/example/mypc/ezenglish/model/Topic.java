@@ -1,5 +1,9 @@
 package com.example.mypc.ezenglish.model;
 
+import com.example.mypc.ezenglish.datafirebase.LessonFB;
+import com.example.mypc.ezenglish.datafirebase.MP3FB;
+import com.example.mypc.ezenglish.datafirebase.TopicFB;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -14,6 +18,17 @@ public class Topic extends RealmObject {
     String img;
     String description;
     RealmList<Lesson> lessons;
+
+    public Topic(TopicFB t) {
+        this.id = t.getId();
+        this.name = t.getName();
+        this.img = t.getImg();
+        this.description = t.getDescription();
+        this.lessons = new RealmList<>();
+        for (LessonFB l : t.getLessons()) {
+            this.lessons.add(new Lesson(l));
+        }
+    }
 
     public int getId() {
         return id;
@@ -55,7 +70,7 @@ public class Topic extends RealmObject {
         this.description = description;
     }
 
-    public Topic dummy(){
+    public Topic dummy() {
         MP3 m1 = new MP3();
         m1.setName("A Kiss Audio");
         m1.setContext("/storage/emulated/0/original/A Kiss Audio.mp3");
@@ -87,6 +102,9 @@ public class Topic extends RealmObject {
 08-10 00:32:43.542 9237-9237/? D/path: /storage/emulated/0/original/Bubba's Food Vocab.mp3
 08-10 00:32:43.542 9237-9237/? E/path: /storage/emulated/0/original/Bubba's Food Vocab.mp3
 * */
-return new Topic();
+        return new Topic();
+    }
+
+    public Topic() {
     }
 }

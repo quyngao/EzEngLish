@@ -1,5 +1,7 @@
 package com.example.mypc.ezenglish.model;
 
+import com.example.mypc.ezenglish.datafirebase.DocFB;
+
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
@@ -13,8 +15,16 @@ public class Doc extends RealmObject {
     String type;
     String name;
     String location;
-    @Ignore
-    Lesson lesson;
+
+    public Doc(DocFB doc) {
+        this.id = doc.getId();
+        this.type = doc.getType();
+        this.name = doc.getName();
+        this.location = doc.getLocation();
+    }
+
+    public Doc() {
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -32,9 +42,6 @@ public class Doc extends RealmObject {
         this.location = location;
     }
 
-    public void setLesson(Lesson lesson) {
-        this.lesson = lesson;
-    }
 
     public int getId() {
         return id;
@@ -52,7 +59,5 @@ public class Doc extends RealmObject {
         return location;
     }
 
-    public Lesson getLesson() {
-        return lesson;
-    }
+
 }

@@ -1,5 +1,7 @@
 package com.example.mypc.ezenglish.model;
 
+import com.example.mypc.ezenglish.datafirebase.VocaFB;
+
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
@@ -14,8 +16,17 @@ public class Voca extends RealmObject {
     String description;
     String img;
     String trans;
-    @Ignore
-    Lesson lesson;
+
+    public Voca() {
+    }
+
+    public Voca(VocaFB vc) {
+        this.id = vc.getId();
+        this.name = vc.getName();
+        this.description = vc.getDescription();
+        this.img = vc.getImg();
+        this.trans = vc.getTrans();
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -35,10 +46,6 @@ public class Voca extends RealmObject {
 
     public void setTrans(String trans) {
         this.trans = trans;
-    }
-
-    public void setLesson(Lesson lesson) {
-        this.lesson = lesson;
     }
 
     public int getId() {
@@ -61,7 +68,4 @@ public class Voca extends RealmObject {
         return trans;
     }
 
-    public Lesson getLesson() {
-        return lesson;
-    }
 }

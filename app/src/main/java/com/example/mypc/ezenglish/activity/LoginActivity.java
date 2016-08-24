@@ -92,10 +92,7 @@ public class LoginActivity extends Activity {
                             ref.child("ezer").child(authData.getUid()).updateChildren(map);
 
                             setdatadummy();
-                            Intent intent = new Intent(LoginActivity.this, LessonActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+
                         }
 
                         @Override
@@ -115,17 +112,28 @@ public class LoginActivity extends Activity {
 
     public void setdatadummy() {
 
-        DataDummyLocal d = new DataDummyLocal();
-        Topic t = d.saveTopic();
+//        DataDummyLocal d = new DataDummyLocal();
+//        Topic t = d.saveTopic();
 
-        TopicFB tf = new TopicFB(t);
+
         Firebase rootRef = new Firebase(Constant.FIREBASE_DATA_URL);
         Firebase alanRef = rootRef.child("topic");
         alanRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 TopicFB x = snapshot.getValue(TopicFB.class);
-                System.out.println("There are " + x.getName());
+                Topic t = new Topic(x);
+                RealmTopic r = new RealmTopic(LoginActivity.this);
+                r.Savetopic(t);
+                Topic tsave = r.getTopicbyid(1);
+                DataDummyLocal d = new DataDummyLocal();
+//                r.Savetopic(d.saveTopic());
+                d.showTopic(tsave);
+
+                Intent intent = new Intent(LoginActivity.this, LessonActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
 
             @Override
@@ -133,11 +141,6 @@ public class LoginActivity extends Activity {
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
-
-        RealmTopic r = new RealmTopic(this);
-        r.Savetopic(t);
-        Topic tsave = r.getTopicbyid(1);
-        d.showTopic(tsave);
     }
 
     @Override
