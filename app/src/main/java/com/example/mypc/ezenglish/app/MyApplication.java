@@ -2,6 +2,8 @@ package com.example.mypc.ezenglish.app;
 
 import android.app.Application;
 
+import com.firebase.client.Firebase;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -19,6 +21,8 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
+
+        Firebase.setAndroidContext(this);
 
     }
 }

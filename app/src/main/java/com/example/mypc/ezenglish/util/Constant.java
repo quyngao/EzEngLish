@@ -10,5 +10,8 @@ public class Constant {
     public static String[] typemp3 = {"Audio", "Vocabulary", "Mini story"};
     public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static SimpleDateFormat dfx = new SimpleDateFormat("yyyy-MM-dd");
+    public static String FIREBASE_USER_URL = "https://ezfb.firebaseio.com/ezenglish/users";
+    public static String FIREBASE_DATA_URL = "https://ezfb.firebaseio.com/ezenglish/data";
+
 
 }

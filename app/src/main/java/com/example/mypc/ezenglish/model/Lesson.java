@@ -18,7 +18,7 @@ public class Lesson extends RealmObject {
     String img;
     String context;
     int time;
-    Date start;
+    String start;
     int isrealy;
     RealmList<Recod> recods;
     RealmList<History> histories;
@@ -59,7 +59,7 @@ public class Lesson extends RealmObject {
         this.time = time;
     }
 
-    public void setStart(Date start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
@@ -131,7 +131,7 @@ public class Lesson extends RealmObject {
         return time;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return start;
     }
 

@@ -41,4 +41,12 @@
     <string name="tab_3">Voca </string>
     <string name="tab_4">History</string>
     <string name="tab_5">Record ?</string>
+
+    <string name="signup_error_message">Please make sure you enter an email address and password!</string>
+    <string name="signup_error_title">Error!</string>
+    <string name="signup_success">Account successfully created! You can now Login.</string>
+    <string name="login_error_message">Please make sure you enter an email address and password!</string>
+    <string name="lbl_forgot_password">Forgot password?</string>
+    <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
+    <string name="btn_back"><![CDATA[<< Back]]></string>
 </resources>
