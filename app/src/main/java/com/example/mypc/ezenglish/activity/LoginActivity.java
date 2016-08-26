@@ -17,6 +17,7 @@ import com.example.mypc.ezenglish.model.Topic;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
 import com.example.mypc.ezenglish.realm.RealmTopic;
 import com.example.mypc.ezenglish.util.Constant;
+import com.example.mypc.ezenglish.util.PrefManager;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -111,29 +112,54 @@ public class LoginActivity extends Activity {
     }
 
     public void setdatadummy() {
-
-//        DataDummyLocal d = new DataDummyLocal();
-//        Topic t = d.saveTopic();
-
-
         Firebase rootRef = new Firebase(Constant.FIREBASE_DATA_URL);
-        Firebase alanRef = rootRef.child("topic");
+        Firebase alanRef = rootRef.child("topics");
+        final DataDummyLocal d = new DataDummyLocal();
+        final RealmTopic r = new RealmTopic(LoginActivity.this);
+//        Topic t = d.saveTopic();
+//        d.showTopic(t);
+//
+//        TopicFB tf = new TopicFB(t);
+//
+//        alanRef.push().setValue(tf);
+
+
+//
+
         alanRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                TopicFB x = snapshot.getValue(TopicFB.class);
-                Topic t = new Topic(x);
-                RealmTopic r = new RealmTopic(LoginActivity.this);
-                r.Savetopic(t);
-                Topic tsave = r.getTopicbyid(1);
-                DataDummyLocal d = new DataDummyLocal();
-//                r.Savetopic(d.saveTopic());
-                d.showTopic(tsave);
+                System.out.println("There are " + snapshot.getChildrenCount() + " blog posts");
+                PrefManager prefManager = new PrefManager(LoginActivity.this);
+                prefManager.setFirstTimeLaunch(false);
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    TopicFB x = postSnapshot.getValue(TopicFB.class);
+                    Topic t = new Topic(x);
+                    d.showTopic(t);
+                    if (r.getAllTopic() != null || r.getAllTopic().size() > 0) {
 
-                Intent intent = new Intent(LoginActivity.this, LessonActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                    } else r.Savetopic(t);
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+
+                }
+
+
+//
+//                r.Savetopic(t);
+//                Topic tsave = r.getTopicbyid(1);
+
+
+//                r.Savetopic(tsave);
+
+
+//                Intent intent = new Intent(LoginActivity.this, LessonActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(intent);
             }
 
             @Override

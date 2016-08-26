@@ -27,7 +27,7 @@ public class RealmTopic {
     }
 
     public Topic getTopicbyid(int id) {
-        return realm.where(Topic.class).equalTo("id", id).findFirst();
+        return realm.where(Topic.class).findFirst();
     }
 
     public ArrayList<Topic> getAllTopic() {
@@ -37,4 +37,11 @@ public class RealmTopic {
         }
         return list;
     }
+
+    public void removeall() {
+        realm.beginTransaction();
+        realm.where(Topic.class).findAll().clear();
+        realm.commitTransaction();
+    }
+
 }

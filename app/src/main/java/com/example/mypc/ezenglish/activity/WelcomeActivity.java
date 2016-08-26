@@ -112,7 +112,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     102);
         }
         if (!prefManager.isFirstTimeLaunch()) {
-            launchHomeScreen();
+            login();
             finish();
         } else {
 
@@ -196,7 +196,6 @@ public class WelcomeActivity extends AppCompatActivity {
             dots[i].setTextColor(colorsInactive[currentPage]);
             dotsLayout.addView(dots[i]);
         }
-
         if (dots.length > 0)
             dots[currentPage].setTextColor(colorsActive[currentPage]);
     }
@@ -207,9 +206,10 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, LessonActivity.class));
+        startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
         finish();
     }
+
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override

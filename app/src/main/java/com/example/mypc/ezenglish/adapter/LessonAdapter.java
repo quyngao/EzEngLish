@@ -19,6 +19,7 @@ import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.util.Constant;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,9 +29,14 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
 
 
     private Context mContext;
-    private List<Lesson> albumList;
+    private ArrayList<Lesson> albumList;
 
     public LessonAdapter(Context mContext, List<Lesson> albumList) {
+        this.mContext = mContext;
+        this.albumList = (ArrayList<Lesson>) albumList;
+    }
+
+    public LessonAdapter(Context mContext, ArrayList<Lesson> albumList) {
         this.mContext = mContext;
         this.albumList = albumList;
     }

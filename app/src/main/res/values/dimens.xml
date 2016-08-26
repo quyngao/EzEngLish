@@ -10,8 +10,8 @@
     <dimen name="desc_padding">40dp</dimen>
     <dimen name="item_offset">10dp</dimen>
     <dimen name="detail_backdrop_height">250dp</dimen>
-    <dimen name="backdrop_title">30dp</dimen>
-    <dimen name="backdrop_subtitle">18dp</dimen>
+    <dimen name="backdrop_title">40sp</dimen>
+    <dimen name="backdrop_subtitle">25sp</dimen>
     <dimen name="card_margin">5dp</dimen>
     <dimen name="card_album_radius">0dp</dimen>
     <dimen name="album_cover_height">160dp</dimen>

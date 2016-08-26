@@ -316,10 +316,10 @@ public class DataDummyLocal {
         v1.setImg("/original/1/1.jpg");
         v1.setName("tu d:");
         v1.setTrans("transliteration");
+        list.add(v1);
         i++;
 
         v1 = new Voca();
-        list.add(v1);
         v1.setId(i);
         v1.setDescription("HandSome");
         v1.setImg("/original/1/3.jpg");
