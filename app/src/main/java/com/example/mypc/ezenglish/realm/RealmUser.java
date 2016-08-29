@@ -22,14 +22,14 @@ public class RealmUser {
         realm.commitTransaction();
     }
 
-    public void EditUser(User user) {
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(user);
-        realm.commitTransaction();
-
+    public User getUser() {
+        return realm.where(User.class).findFirst();
     }
 
-    public User getUser(String account, String pass) {
-        return realm.where(User.class).equalTo("account", account).equalTo("password", pass).findFirst();
+    public void deleteUser() {
+        realm.beginTransaction();
+        realm.delete(User.class);
+        realm.commitTransaction();
+
     }
 }

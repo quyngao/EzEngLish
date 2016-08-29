@@ -12,6 +12,5 @@ public class Constant {
     public static SimpleDateFormat dfx = new SimpleDateFormat("yyyy-MM-dd");
     public static String FIREBASE_USER_URL = "https://ezfb.firebaseio.com/ezenglish/users";
     public static String FIREBASE_DATA_URL = "https://ezfb.firebaseio.com/ezenglish/data";
-
-
+    public static String DATA_URL = "http://quyngao.16mb.com/ezenglish/";
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
@@ -10,16 +10,16 @@
         android:id="@+id/weekView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:columnGap="8dp"
+        app:columnGap="5dp"
         app:dayBackgroundColor="#05000000"
         app:eventTextColor="@android:color/white"
         app:headerColumnBackground="#ffffffff"
-        app:headerColumnPadding="8dp"
+        app:headerColumnPadding="5dp"
         app:headerColumnTextColor="@color/cardview_dark_background"
         app:headerRowBackgroundColor="@color/colorPrimary"
-        app:headerRowPadding="12dp"
-        app:hourHeight="60dp"
-        app:noOfVisibleDays="3"
+        app:headerRowPadding="10dp"
+        app:hourHeight="46dp"
+        app:noOfVisibleDays="7"
         app:textSize="12sp"
         app:todayBackgroundColor="#1848adff"
         app:todayHeaderTextColor="@color/colorAccent"/>

@@ -36,9 +36,7 @@ public class ScheduleFragment extends Fragment {
         resideMenu = parentActivity.getResideMenu();
         WeekView mWeekView = (WeekView) parentView.findViewById(R.id.weekView);
         mWeekView.goToToday();
-        mWeekView.setNumberOfVisibleDays(1);
-
-
+        mWeekView.setNumberOfVisibleDays(3);
         mWeekView.setMonthChangeListener(new MonthLoader.MonthChangeListener() {
             @Override
             public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
@@ -51,6 +49,7 @@ public class ScheduleFragment extends Fragment {
         int newMonth = x;
         int newYear = y;
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
+
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, 3);
         startTime.set(Calendar.MINUTE, 0);
@@ -159,7 +158,6 @@ public class ScheduleFragment extends Fragment {
         endTime.add(Calendar.HOUR_OF_DAY, 23);
         event = new WeekViewEvent(7, "aloha", startTime, endTime);
         event.setColor(getResources().getColor(R.color.bg_screen2));
-        events.add(event);
         events.add(event);
 
         startTime = Calendar.getInstance();

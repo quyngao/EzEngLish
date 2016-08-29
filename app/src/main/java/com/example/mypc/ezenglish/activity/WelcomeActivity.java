@@ -27,16 +27,12 @@ import android.widget.TextView;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.model.Topic;
-import com.example.mypc.ezenglish.model.User;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
 import com.example.mypc.ezenglish.realm.RealmTopic;
 import com.example.mypc.ezenglish.realm.RealmUser;
 import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PrefManager;
 import com.firebase.client.Firebase;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 /**
  * Created by Quylt on 8/12/2016.
@@ -60,32 +56,45 @@ public class WelcomeActivity extends AppCompatActivity {
                 } else {
                     Log.e("Permission", "Denied");
                 }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(intent, 103);
+                }
                 return;
 
             }
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 103) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+
+            }
+        }
+    }
     public void setdatadummy() {
-        User x = new User();
-        x.setId(1);
-        x.setAccount("quyngao");
-        x.setBirthday("16/03/1995");
-        x.setDescription("dep zai");
-        x.setEmail("quy@gmail.com");
-        x.setImg("ezapp/img");
-        x.setLevel(0);
-        x.setMale(0);
-        x.setName("quy ngao");
-        x.setPassword("quydz");
-        x.setPhone("012234");
-        x.setRate("100");
-        x.setStatus(0);
+//        User x = new User();
+//        x.setId(1);
+//        x.setAccount("quyngao");
+//        x.setBirthday("16/03/1995");
+//        x.setDescription("dep zai");
+//        x.setEmail("quy@gmail.com");
+//        x.setImg("ezapp/img");
+//        x.setLevel(0);
+//        x.setMale(0);
+//        x.setName("quy ngao");
+//        x.setPassword("quydz");
+//        x.setPhone("012234");
+//        x.setRate("100");
+//        x.setStatus(0);
 
         RealmUser realmUser = new RealmUser(this);
-        realmUser.SaveUser(x);
-        User y = realmUser.getUser("quyngao", "quydz");
-        Log.e("user", y.getName());
+//        realmUser.SaveUser(x);
+//        User y = realmUser.getUser("quyngao", "quydz");
+//        Log.e("user", y.getName());
         DataDummyLocal d = new DataDummyLocal();
         Topic t = d.saveTopic();
         RealmTopic r = new RealmTopic(this);

@@ -6,30 +6,29 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.controls.RealmController;
 import com.example.mypc.ezenglish.flagment.HomeFragment;
+import com.example.mypc.ezenglish.flagment.ProfileFlagment;
 import com.example.mypc.ezenglish.flagment.ScheduleFragment;
+import com.example.mypc.ezenglish.realm.RealmUser;
 import com.example.mypc.ezenglish.util.Constant;
 import com.firebase.client.Firebase;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
-
-import io.realm.Realm;
 
 /**
  * Created by Quylt on 8/26/2016.
  */
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     ResideMenu resideMenu;
+
     private ResideMenuItem itemHome;
     private ResideMenuItem itemProfile;
     private ResideMenuItem itemCalendar;
@@ -38,6 +37,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenuItem itemguide;
     private ResideMenuItem itemsetting;
     private HomeActivity mContext;
+    Toolbar toolbar;
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,12 +53,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             changeFragment(new HomeFragment());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         initCollapsingToolbar();
-        try {
-            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.backdrophome));
-        } catch (Exception e) {
-            e.printStackTrace();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
         }
+        return (super.onOptionsItemSelected(menuItem));
     }
 
     private void initCollapsingToolbar() {
@@ -76,9 +86,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     collapsingToolbar.setTitle(getString(R.string.app_name));
                     isShow = true;
                 } else if (isShow) {
-                    collapsingToolbar.setTitle(" ");
+                    collapsingToolbar.setTitle("");
                     isShow = false;
                 }
+
             }
         });
     }
@@ -128,7 +139,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (view == itemHome) {
             changeFragment(new HomeFragment());
         } else if (view == itemProfile) {
-//            changeFragment(new ProfileFragment());
+            changeFragment(new ProfileFlagment());
         } else if (view == itemCalendar) {
             changeFragment(new ScheduleFragment());
         } else if (view == itemlearnNow) {
@@ -137,6 +148,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == itemlogout) {
             Firebase ref = new Firebase(Constant.FIREBASE_USER_URL);
             ref.unauth();
+            RealmUser realmUser = new RealmUser(HomeActivity.this);
+            realmUser.deleteUser();
             finish();
             startActivity(new Intent(HomeActivity.this, LoginActivity.class));
         }

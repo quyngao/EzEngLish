@@ -5,7 +5,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,11 +14,13 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.RemoteControlClient;
 import android.media.RemoteControlClient.MetadataEditor;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -28,10 +29,10 @@ import android.widget.RemoteViews;
 
 import com.cleveroad.audiowidget.AudioWidget;
 import com.example.mypc.ezenglish.R;
+import com.example.mypc.ezenglish.activity.ItemLessonActivity;
 import com.example.mypc.ezenglish.activity.LessonActivity;
 import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.History;
-import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.receiver.NotificationBroadcast;
@@ -43,6 +44,10 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.cleveroad.audiowidget.AudioWidget.OnControlsClickListener;
+import static com.cleveroad.audiowidget.AudioWidget.OnWidgetStateChangedListener;
+import static com.cleveroad.audiowidget.AudioWidget.State;
 
 public class SongService extends Service implements AudioManager.OnAudioFocusChangeListener {
     String LOG_CLASS = "SongService";
@@ -71,11 +76,21 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
     public void onCreate() {
         mp = new MediaPlayer();
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-
         currentVersionSupportBigNotification = UtilFunctions.currentVersionSupportBigNotification();
         currentVersionSupportLockScreenControls = UtilFunctions.currentVersionSupportLockScreenControls();
         timer = new Timer();
-        audioWidget = new AudioWidget.Builder(getApplicationContext()).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+            audioWidget = new AudioWidget.Builder(getApplicationContext()).lightColor(getApplication().getResources().getColor(R.color.colorPrimary))
+                    .darkColor(getApplication().getResources().getColor(R.color.colorPrimaryDark))
+                    .expandWidgetColor(getApplication().getResources().getColor(R.color.colorPrimary))
+                    .progressColor(getApplication().getResources().getColor(R.color.colorAccent))
+                    .progressStrokeWidth(5.f)
+                    .crossColor(getApplication().getResources().getColor(R.color.colorAccent))
+                    .crossOverlappedColor(getApplication().getResources().getColor(R.color.colorPrimaryDark))
+                    .crossStrokeWidth(5.f).defaultAlbumDrawable(getApplication().getResources().getDrawable(R.drawable.ic_music))
+                    .shadowColor(getApplication().getResources().getColor(R.color.colorPrimaryDark))
+                    .build();
+        }
         mp.setOnCompletionListener(new OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -157,12 +172,14 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                             remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
                         }
                         mp.start();
+                        audioWidget.controller().start();
                     } else if (message.equalsIgnoreCase(getResources().getString(R.string.pause))) {
                         PlayerConstants.SONG_PAUSED = true;
                         if (currentVersionSupportLockScreenControls) {
                             remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_PAUSED);
                         }
                         mp.pause();
+                        audioWidget.controller().pause();
                     }
                     newNotification();
                     try {
@@ -175,8 +192,9 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                 }
             });
             audioWidget.show(100, 100);
+            audioWidget.controller().start();
 
-            audioWidget.controller().onControlsClickListener(new AudioWidget.OnControlsClickListener() {
+            audioWidget.controller().onControlsClickListener(new OnControlsClickListener() {
                 @Override
                 public boolean onPlaylistClicked() {
                     Log.e("songserrvice", "view onPlaylistClicked");
@@ -185,7 +203,6 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
 
                 @Override
                 public void onPlaylistLongClicked() {
-
                 }
 
                 @Override
@@ -200,6 +217,14 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
 
                 @Override
                 public boolean onPlayPauseClicked() {
+                    boolean x = PlayerConstants.SONG_PAUSED;
+                    if (PlayerConstants.SONG_PAUSED) {
+                        Controls.playControl(getApplicationContext());
+                        audioWidget.controller().start();
+                    } else {
+                        Controls.pauseControl(getApplicationContext());
+                        audioWidget.controller().pause();
+                    }
                     return false;
                 }
 
@@ -220,7 +245,12 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
 
                 @Override
                 public void onAlbumClicked() {
-                    Log.e("songserrvice", "view onAlbumClicked");
+                    Intent i = new Intent(SongService.this, ItemLessonActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    i.putExtra("id", PlayerConstants.ID_LEASSON);
+                    startActivity(i);
+
                 }
 
                 @Override
@@ -228,10 +258,19 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
 
                 }
             });
-            audioWidget.controller().onWidgetStateChangedListener(new AudioWidget.OnWidgetStateChangedListener() {
+            audioWidget.controller().onWidgetStateChangedListener(new OnWidgetStateChangedListener() {
                 @Override
-                public void onWidgetStateChanged(@NonNull AudioWidget.State state) {
+                public void onWidgetStateChanged(@NonNull State state) {
                     // widget state changed (COLLAPSED, EXPANDED, REMOVED)
+                    if (state == State.COLLAPSED) {
+                        Log.e("songserrvice", "view COLLAPSED");
+                    }
+                    if (state == State.EXPANDED) {
+                        Log.e("songserrvice", "view EXPANDED");
+                    }
+                    if (state == State.REMOVED) {
+                        onDestroy();
+                    }
                 }
 
                 @Override
@@ -251,6 +290,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
      */
     @SuppressLint("NewApi")
     private void newNotification() {
+
         String songName = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getName();
         String albumName = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getContext();
         RemoteViews simpleContentView = new RemoteViews(getApplicationContext().getPackageName(), R.layout.custom_notification);

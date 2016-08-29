@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +12,12 @@ import android.widget.ProgressBar;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.datafirebase.TopicFB;
+import com.example.mypc.ezenglish.datafirebase.UserFB;
 import com.example.mypc.ezenglish.model.Topic;
+import com.example.mypc.ezenglish.model.User;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
 import com.example.mypc.ezenglish.realm.RealmTopic;
+import com.example.mypc.ezenglish.realm.RealmUser;
 import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PrefManager;
 import com.firebase.client.AuthData;
@@ -23,10 +25,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.firebase.client.core.operation.AckUserWrite;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Quylt on 8/24/2016.
@@ -37,12 +35,11 @@ public class LoginActivity extends Activity {
     private Button btnSignup, btnLogin, btnReset;
     final Firebase ref = new Firebase(Constant.FIREBASE_USER_URL);
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (ref.getAuth() != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
 
@@ -88,10 +85,20 @@ public class LoginActivity extends Activity {
                         @Override
                         public void onAuthenticated(AuthData authData) {
                             progressBar.setVisibility(View.GONE);
-                            Map<String, Object> map = new HashMap<String, Object>();
-                            map.put("email", emailAddress);
-                            ref.child("ezer").child(authData.getUid()).updateChildren(map);
+                            ref.child(authData.getUid()).child("user").addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    System.out.println(snapshot.getValue());
+                                    UserFB v = snapshot.getValue(UserFB.class);
+                                    User x = new User(v);
+                                    RealmUser realmUser = new RealmUser(LoginActivity.this);
+                                    realmUser.SaveUser(x);
+                                }
 
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+                                }
+                            });
                             setdatadummy();
 
                         }
@@ -136,9 +143,13 @@ public class LoginActivity extends Activity {
                     TopicFB x = postSnapshot.getValue(TopicFB.class);
                     Topic t = new Topic(x);
                     d.showTopic(t);
-                    if (r.getAllTopic() != null || r.getAllTopic().size() > 0) {
 
-                    } else r.Savetopic(t);
+                    if (r.getAllTopic().size() > 0) {
+                        Log.e("a", "done save");
+                    } else {
+                        Log.e("a", "save");
+                        r.Savetopic(t);
+                    }
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

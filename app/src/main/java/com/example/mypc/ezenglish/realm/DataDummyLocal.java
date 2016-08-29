@@ -23,8 +23,8 @@ public class DataDummyLocal {
         l.setDoc(getDoc(1));
         l.setContext("First for beginner");
         l.setImg("/original/1/avatar.jpg");
-        l.setIsrealy(1);
-        l.setTime(10);
+        l.setIsrealy(0);
+        l.setTime(0);
         l.setVocas(getlistvocar(1 * 10));
         l.setAll(getlistmp31(1 * 10));
         return l;
@@ -37,8 +37,8 @@ public class DataDummyLocal {
         l.setDoc(getDoc(2));
         l.setContext("Second for beginner");
         l.setImg("/original/2/avatar.jpg");
-        l.setIsrealy(1);
-        l.setTime(20);
+        l.setIsrealy(0);
+        l.setTime(0);
         l.setVocas(getlistvocar(2 * 10));
         l.setAll(getlistmp32(2 * 10));
         return l;
@@ -51,8 +51,8 @@ public class DataDummyLocal {
         l.setDoc(getDoc(3));
         l.setContext("For beginner");
         l.setImg("/original/3/avatar.jpg");
-        l.setIsrealy(1);
-        l.setTime(20);
+        l.setIsrealy(0);
+        l.setTime(0);
         l.setVocas(getlistvocar(3 * 10));
         l.setAll(getlistmp33(3 * 10));
         return l;
@@ -65,13 +65,12 @@ public class DataDummyLocal {
         l.setDoc(getDoc(4));
         l.setContext("Second for beginner");
         l.setImg("/original/4/avatar.png");
-        l.setIsrealy(1);
-        l.setTime(10);
+        l.setIsrealy(0);
+        l.setTime(0);
         l.setVocas(getlistvocar(4 * 10));
         l.setAll(getlistmp34(4 * 10));
         return l;
     }
-
     public Topic saveTopic() {
         Topic t = new Topic();
         t.setId(1);

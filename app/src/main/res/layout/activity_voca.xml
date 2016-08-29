@@ -13,10 +13,12 @@
 
         <ImageView
             android:id="@+id/img_setredmin"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/ic_dots" />
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/icon_settings" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
