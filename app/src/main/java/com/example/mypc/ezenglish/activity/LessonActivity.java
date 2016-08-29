@@ -31,6 +31,7 @@ import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.service.SongService;
 import com.example.mypc.ezenglish.util.PlayerConstants;
+import com.example.mypc.ezenglish.util.PrefManager;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class LessonActivity extends Activity {
     static ArrayList<Lesson> list;
     private RecyclerView recyclerView;
     private LessonAdapter adapter;
+    PrefManager prefManager;
 
     @Override
 
@@ -62,6 +64,7 @@ public class LessonActivity extends Activity {
         setContentView(R.layout.activity_lesson);
         context = LessonActivity.this;
         rl = new RealmLeason(this);
+        prefManager = new PrefManager(this);
         init();
     }
 
@@ -78,6 +81,7 @@ public class LessonActivity extends Activity {
 
     private void setListItems() {
         list = rl.getAllLeasson();
+        Log.e("all lesson", "" + list.size());
         adapter = new LessonAdapter(this, list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -89,6 +93,8 @@ public class LessonActivity extends Activity {
     public static void nextActivity(int id) {
         PlayerConstants.ID_LEASSON = list.get(id).getId();
         Intent i = new Intent(context, ItemLessonActivity.class);
+        PrefManager pr = new PrefManager(context);
+        if (list.get(id).getIsrealy() == 0) pr.setremote(true);
         i.putExtra("id", list.get(id).getId());
         context.startActivity(i);
     }
@@ -196,6 +202,7 @@ public class LessonActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
+                if (l.getIsrealy() == 0) prefManager.setremote(true);
                 i.putExtra("id", l.getId());
                 startActivity(i);
             }

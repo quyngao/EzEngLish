@@ -17,6 +17,7 @@ import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.activity.LessonActivity;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.util.Constant;
+import com.example.mypc.ezenglish.util.PrefManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,10 +31,12 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
 
     private Context mContext;
     private ArrayList<Lesson> albumList;
+    PrefManager prefManager;
 
     public LessonAdapter(Context mContext, List<Lesson> albumList) {
         this.mContext = mContext;
         this.albumList = (ArrayList<Lesson>) albumList;
+        prefManager = new PrefManager(mContext);
     }
 
     public LessonAdapter(Context mContext, ArrayList<Lesson> albumList) {
@@ -55,7 +58,10 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
         holder.count.setText(album.getContext());
 
         holder.state.setText(Constant.stateslesson[album.getIsrealy()]);
-        Glide.with(mContext).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + album.getImg())).into(holder.thumbnail);
+
+        if (album.getIsrealy() == 1)
+            Glide.with(mContext).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + album.getImg())).into(holder.thumbnail);
+        else Glide.with(mContext).load(Constant.DATA_URL + album.getImg()).into(holder.thumbnail);
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override

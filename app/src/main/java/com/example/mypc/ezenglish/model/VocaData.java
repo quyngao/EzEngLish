@@ -11,7 +11,27 @@ public class VocaData implements Serializable {
     String description;
     String img;
     String trans;
+    String mean;
+    String type;
     boolean isRed;
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setMean(String mean) {
+
+        this.mean = mean;
+    }
+
+    public String getMean() {
+
+        return mean;
+    }
+
+    public String getType() {
+        return type;
+    }
 
     public void copyData(Voca x) {
         this.id = x.getId();
@@ -19,6 +39,10 @@ public class VocaData implements Serializable {
         this.description = x.getDescription();
         this.img = x.getImg();
         this.trans = x.getTrans();
+        this.mean = x.getMean();
+        this.type = x.getType();
+
+        this.type = x.getTrans();
         this.isRed = true;
 
     }

@@ -16,16 +16,35 @@ public class Voca extends RealmObject {
     String description;
     String img;
     String trans;
+    String mean;
+    String type;
 
     public Voca() {
     }
-
     public Voca(VocaFB vc) {
         this.id = vc.getId();
         this.name = vc.getName();
         this.description = vc.getDescription();
         this.img = vc.getImg();
         this.trans = vc.getTrans();
+        this.mean = vc.getMean();
+        this.type = vc.getType();
+    }
+
+    public void setMean(String mean) {
+        this.mean = mean;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getMean() {
+        return mean;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void setId(int id) {

@@ -18,7 +18,7 @@ public class RealmUser {
 
     public void SaveUser(User user) {
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(user);
+        realm.copyToRealm(user);
         realm.commitTransaction();
     }
 

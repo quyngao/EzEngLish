@@ -25,6 +25,7 @@ public class PrefManager {
     private static final String PREF_NAME = "isfirst";
     private static final String VOCARED = "VOCARED";
     private static final String LISTVOCA = "LISTVOCA";
+    private static final String ISREMOTE = "ISREMOTE";
 
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
@@ -94,6 +95,15 @@ public class PrefManager {
     public void setFirstTimeLaunch(boolean isFirstTime) {
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
         editor.commit();
+    }
+
+    public void setremote(boolean isFirstTime) {
+        editor.putBoolean(ISREMOTE, isFirstTime);
+        editor.commit();
+    }
+
+    public boolean isRemote() {
+        return pref.getBoolean(ISREMOTE, true);
     }
 
     public boolean isFirstTimeLaunch() {

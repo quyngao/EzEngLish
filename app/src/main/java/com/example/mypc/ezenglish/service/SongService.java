@@ -38,6 +38,7 @@ import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.receiver.NotificationBroadcast;
 import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PlayerConstants;
+import com.example.mypc.ezenglish.util.PrefManager;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
 import java.io.IOException;
@@ -420,7 +421,12 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                 remoteControlClient.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
             }
             mp.reset();
-            mp.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath() + songPath);
+            PrefManager pre = new PrefManager(getApplicationContext());
+
+            if (pre.isRemote() == true)
+                mp.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath() + songPath);
+            else
+                mp.setDataSource(Constant.DATA_URL + songPath);
             mp.prepare();
             mp.start();
             timer.scheduleAtFixedRate(new MainTask(), 0, 100);

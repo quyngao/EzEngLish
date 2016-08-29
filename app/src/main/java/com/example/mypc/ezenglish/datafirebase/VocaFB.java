@@ -11,27 +11,43 @@ public class VocaFB {
     String description;
     String img;
     String trans;
+    String mean;
+    String type;
 
     public VocaFB() {
     }
 
-    public VocaFB(int id, String name, String description, String img, String trans) {
+
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setImg(String img) {
         this.img = img;
+    }
+
+    public void setTrans(String trans) {
         this.trans = trans;
     }
 
-    public VocaFB(Voca v) {
-        this.id = v.getId();
-        this.name = v.getName();
-        this.description = v.getDescription();
-        this.img = v.getImg();
-        this.trans = v.getTrans();
+    public void setMean(String mean) {
+        this.mean = mean;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getId() {
+
         return id;
     }
 
@@ -49,5 +65,24 @@ public class VocaFB {
 
     public String getTrans() {
         return trans;
+    }
+
+    public String getMean() {
+        return mean;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public VocaFB(Voca vc) {
+
+        this.id = vc.getId();
+        this.name = vc.getName();
+        this.description = vc.getDescription();
+        this.img = vc.getImg();
+        this.trans = vc.getTrans();
+        this.mean = vc.getMean();
+        this.type = vc.getType();
     }
 }

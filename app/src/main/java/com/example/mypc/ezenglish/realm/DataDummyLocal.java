@@ -30,6 +30,7 @@ public class DataDummyLocal {
         return l;
     }
 
+
     public Lesson getLesson2() {
         Lesson l = new Lesson();
         l.setId(2);
@@ -63,7 +64,7 @@ public class DataDummyLocal {
         l.setId(4);
         l.setName("Changed");
         l.setDoc(getDoc(4));
-        l.setContext("Second for beginner");
+        l.setContext(" for beginner");
         l.setImg("/original/4/avatar.png");
         l.setIsrealy(0);
         l.setTime(0);
@@ -71,6 +72,21 @@ public class DataDummyLocal {
         l.setAll(getlistmp34(4 * 10));
         return l;
     }
+
+    public Lesson getLesson5() {
+        Lesson l = new Lesson();
+        l.setId(5);
+        l.setName("Drag");
+        l.setDoc(getDoc(5));
+        l.setContext(" for beginner");
+        l.setImg("/original/5/avatar.jpg");
+        l.setIsrealy(0);
+        l.setTime(0);
+        l.setVocas(getlistvocar(5 * 10));
+        l.setAll(getlistmp35(5 * 10));
+        return l;
+    }
+
     public Topic saveTopic() {
         Topic t = new Topic();
         t.setId(1);
@@ -87,6 +103,8 @@ public class DataDummyLocal {
         tmp = getLesson3();
         list.add(tmp);
         tmp = getLesson4();
+        list.add(tmp);
+        tmp = getLesson5();
         list.add(tmp);
 
         t.setLessons(list);
@@ -275,6 +293,45 @@ public class DataDummyLocal {
         m.setName("Changed MS B");
         m.setContext("Ministore");
         m.setLocation("/original/4/Changed MS-B.mp3");
+        m.setType(2);
+        list.add(m);
+        i++;
+        return list;
+    }
+
+    public RealmList<MP3> getlistmp35(int i) {
+        RealmList<MP3> list = new RealmList<>();
+
+        MP3 m = new MP3();
+        m.setId(i);
+        m.setName("Drag Audio");
+        m.setContext("Audio");
+        m.setLocation("/original/5/Drag Audio.mp3");
+        m.setType(0);
+        list.add(m);
+        i++;
+        m = new MP3();
+        m.setId(i);
+        m.setName("Drag Vocab");
+        m.setContext("Voca");
+        m.setLocation("/original/5/Drag Vocab.mp3");
+        m.setType(1);
+        list.add(m);
+        i++;
+        m = new MP3();
+        m.setId(i);
+        m.setName("Drag MS-A");
+        m.setContext("Ministore");
+        m.setLocation("/original/5/Drag MS-A.mp3");
+        m.setType(2);
+        list.add(m);
+        i++;
+
+        m = new MP3();
+        m.setId(i);
+        m.setName("Drag MS-B");
+        m.setContext("Ministore");
+        m.setLocation("/original/5/Drag MS-B.mp3");
         m.setType(2);
         list.add(m);
         i++;

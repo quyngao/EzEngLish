@@ -131,8 +131,6 @@ public class LoginActivity extends Activity {
 //        alanRef.push().setValue(tf);
 
 
-//
-
         alanRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -143,7 +141,6 @@ public class LoginActivity extends Activity {
                     TopicFB x = postSnapshot.getValue(TopicFB.class);
                     Topic t = new Topic(x);
                     d.showTopic(t);
-
                     if (r.getAllTopic().size() > 0) {
                         Log.e("a", "done save");
                     } else {

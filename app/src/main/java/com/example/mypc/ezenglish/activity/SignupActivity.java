@@ -178,6 +178,7 @@ public class SignupActivity extends Activity {
                                 ref.child(authData.getUid()).setValue(map);
                                 User x = new User(user);
                                 RealmUser realmUser = new RealmUser(SignupActivity.this);
+                                realmUser.deleteUser();
                                 realmUser.SaveUser(x);
                             }
 

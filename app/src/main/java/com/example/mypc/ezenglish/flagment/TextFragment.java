@@ -62,7 +62,7 @@ public class TextFragment extends Fragment {
         textNowPlaying.setText(l.getName());
         textAlbumArtist.setText(l.getContext());
         try {
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/original/1/voca.txt");
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + l.getDoc().getLocation());
             StringBuilder text = new StringBuilder();
             try {
                 BufferedReader br = new BufferedReader(new FileReader(file));
