@@ -4,9 +4,9 @@
     <item
         android:id="@+id/replay"
         android:orderInCategory="100"
-        android:title="Play Online"/>
+        android:title="Play now Local"/>
     <item
         android:id="@+id/view"
         android:orderInCategory="101"
-        android:title="View Lesson Online"/>
+        android:title="View Lesson Local"/>
 </menu>

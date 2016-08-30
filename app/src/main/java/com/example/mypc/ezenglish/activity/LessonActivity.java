@@ -1,16 +1,25 @@
 package com.example.mypc.ezenglish.activity;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,19 +31,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.mypc.ezenglish.adapter.LessonAdapter;
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
+import com.example.mypc.ezenglish.realm.DataDummyLocal;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.service.SongService;
+import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.PrefManager;
 import com.example.mypc.ezenglish.util.UtilFunctions;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Quylt on 8/10/2016.
@@ -51,11 +66,116 @@ public class LessonActivity extends Activity {
     static ImageView imageViewAlbumArt;
     static Context context;
     static RealmLeason rl;
+    static ProgressDialog progressDialog;
+    static DownloadManager dm;
     static Lesson l;
     static ArrayList<Lesson> list;
+
+    static List<Long> callback = new ArrayList<>();
     private RecyclerView recyclerView;
     private LessonAdapter adapter;
     PrefManager prefManager;
+
+    public static void showloadding() {
+        progressDialog = ProgressDialog.show(context, "Loading...",
+                "Waitting ..", true, true);
+        progressDialog.show();
+    }
+
+    public static void delete(long l) {
+        for (int i = 0; i < callback.size(); i++) {
+            if (callback.get(i) == Long.parseLong("" + l)) {
+                callback.remove(i);
+                return;
+            }
+
+        }
+    }
+
+    public static void hintloadding() {
+        progressDialog.hide();
+    }
+
+    public static void showconfirmdow(final int position) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle("Download...");
+        alertDialog.setMessage("Are you sure you want download  lesson?" + list.get(position).getName());
+        alertDialog.setIcon(R.drawable.icon_home);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(context, "You clicked on YES", Toast.LENGTH_SHORT).show();
+                dowloading(list.get(position));
+                showloadding();
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(context, "You clicked on NO", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+
+            }
+        });
+        alertDialog.show();
+    }
+
+    public static void dowloading(Lesson lx) {
+        l = lx;
+        showloadding();
+        File direct = new File(Environment.getExternalStorageDirectory()
+                + "/original/" + l.getId());
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
+        dm = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(
+                Uri.parse(Constant.DATA_URL + l.getImg()));
+        request.setDestinationInExternalPublicDir("/original/" + l.getId() + "/", "avatar.jpg");
+        long x = dm.enqueue(request);
+        callback.add(x);
+
+        request = new DownloadManager.Request(
+                Uri.parse(Constant.DATA_URL + l.getDoc().getLocation()));
+        request.setDestinationInExternalPublicDir("/original/" + l.getId() + "/", "voca.txt");
+        x = dm.enqueue(request);
+        callback.add(x);
+
+        for (MP3 mp3 : l.getAll()) {
+            request = new DownloadManager.Request(
+                    Uri.parse(Constant.DATA_URL + mp3.getLocation()));
+            request.setDestinationInExternalPublicDir("/original/" + l.getId() + "/", mp3.getName() + ".mp3");
+            x = dm.enqueue(request);
+            callback.add(x);
+        }
+    }
+
+    static BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                long downloadId = intent.getLongExtra(
+                        DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+                DownloadManager.Query query = new DownloadManager.Query();
+                query.setFilterById(downloadId);
+                Cursor c = dm.query(query);
+                if (c.moveToFirst()) {
+                    int columnIndex = c
+                            .getColumnIndex(DownloadManager.COLUMN_STATUS);
+                    if (DownloadManager.STATUS_SUCCESSFUL == c
+                            .getInt(columnIndex)) {
+                        delete(downloadId);
+                        Log.e("ok", "done" + downloadId);
+                        if (callback.size() == 0) {
+                            hintloadding();
+                            rl.saveLocal(l);
+                            list = rl.getAllLeasson();
+                            nextActivity(l.getId() - 1);
+                        }
+                    }
+                }
+            }
+        }
+    };
 
     @Override
 
@@ -82,6 +202,9 @@ public class LessonActivity extends Activity {
     private void setListItems() {
         list = rl.getAllLeasson();
         Log.e("all lesson", "" + list.size());
+        for (Lesson x : list) {
+            new DataDummyLocal().showLesson(x);
+        }
         adapter = new LessonAdapter(this, list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -95,6 +218,7 @@ public class LessonActivity extends Activity {
         Intent i = new Intent(context, ItemLessonActivity.class);
         PrefManager pr = new PrefManager(context);
         if (list.get(id).getIsrealy() == 0) pr.setremote(true);
+        else pr.setremote(false);
         i.putExtra("id", list.get(id).getId());
         context.startActivity(i);
     }
@@ -106,6 +230,8 @@ public class LessonActivity extends Activity {
         PlayerConstants.SONG_PAUSED = false;
         PlayerConstants.SONG_NUMBER = 0;
         boolean isServiceRunning = UtilFunctions.isServiceRunning(SongService.class.getName(), context);
+        if (l.getIsrealy() == 0) new PrefManager(context).setremote(true);
+        else new PrefManager(context).setremote(false);
         if (!isServiceRunning) {
             Intent i = new Intent(context, SongService.class);
             context.startService(i);
@@ -202,9 +328,12 @@ public class LessonActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
-                if (l.getIsrealy() == 0) prefManager.setremote(true);
-                i.putExtra("id", l.getId());
-                startActivity(i);
+                if (l.getIsrealy() == 0) {
+                    prefManager.setremote(true);
+                    i.putExtra("id", l.getId());
+                    startActivity(i);
+                }
+
             }
         });
         btnPlay.setOnClickListener(new View.OnClickListener() {
@@ -246,8 +375,11 @@ public class LessonActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
-                i.putExtra("id", l.getId());
-                startActivity(i);
+                if (l.getIsrealy() == 0) {
+                    prefManager.setremote(true);
+                    i.putExtra("id", l.getId());
+                    startActivity(i);
+                }
             }
         });
     }
@@ -272,8 +404,16 @@ public class LessonActivity extends Activity {
                     progressBar.setProgress(i[2]);
                 }
             };
+            registerReceiver(receiver, new IntentFilter(
+                    DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         } catch (Exception e) {
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     @SuppressWarnings("deprecation")
@@ -281,9 +421,15 @@ public class LessonActivity extends Activity {
         try {
 
             MP3 data = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER);
+            RealmLeason l = new RealmLeason(context);
+            Lesson ls = l.getleassongbyid(PlayerConstants.ID_LEASSON);
             playingSong.setText(data.getName() + " " + data.getContext() + "-" + data.getType());
-            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt(l.getImg());
-            imageViewAlbumArt.setBackgroundDrawable(new BitmapDrawable(albumArt));
+
+            if (ls.getIsrealy() > 0) {
+                Glide.with(context).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + ls.getImg())).into(imageViewAlbumArt);
+            } else {
+                Glide.with(context).load(Constant.DATA_URL + ls.getImg()).into(imageViewAlbumArt);
+            }
             linearLayoutPlayingSong.setVisibility(View.VISIBLE);
         } catch (Exception e) {
         }

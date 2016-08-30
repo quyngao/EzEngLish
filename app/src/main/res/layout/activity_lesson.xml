@@ -39,6 +39,7 @@
             <ImageView
                 android:id="@+id/imageViewAlbumArt"
                 android:layout_width="@dimen/small_image_art_width"
+                android:scaleType="centerCrop"
                 android:layout_height="@dimen/small_image_art_width" />
 
             <LinearLayout

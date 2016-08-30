@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -59,16 +60,16 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
 
         holder.state.setText(Constant.stateslesson[album.getIsrealy()]);
 
-        if (album.getIsrealy() == 1)
+        if (album.getIsrealy() > 0) {
             Glide.with(mContext).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + album.getImg())).into(holder.thumbnail);
-        else Glide.with(mContext).load(Constant.DATA_URL + album.getImg()).into(holder.thumbnail);
+            if (album.getIsrealy() == 2)
+                holder.overflow.setBackgroundResource(R.drawable.learnnow);
+        } else {
+            Glide.with(mContext).load(Constant.DATA_URL + album.getImg()).into(holder.thumbnail);
+            Log.e("remote", Constant.DATA_URL + album.getImg());
+        }
 
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow, position, album.getIsrealy());
-            }
-        });
+
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +79,13 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LessonActivity.nextActivity(position);
+                if (albumList.get(position).getIsrealy() == 1) {
+                    LessonActivity.nextActivity(position);
+                } else if (albumList.get(position).getIsrealy() == 0) {
+                    LessonActivity.showconfirmdow(position);
+                } else if (albumList.get(position).getIsrealy() == 2) {
+                    LessonActivity.nextActivity(position);
+                }
             }
         });
 
@@ -90,10 +97,13 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
     }
 
     private void showPopupMenu(View view, int i, int state) {
-        // inflate menu
+
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_album, popup.getMenu());
+        Log.e("show ", "online ?" + albumList.get(i).getName() + " state" + albumList.get(i).getIsrealy());
+        if (albumList.get(i).getIsrealy() == 0)
+            inflater.inflate(R.menu.menu_album, popup.getMenu());
+        else inflater.inflate(R.menu.menu_local, popup.getMenu());
         popup.setOnMenuItemClickListener(new MyMenuItemClickListener(i));
         popup.show();
     }
@@ -109,10 +119,10 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
-                case R.id.action_add_favourite:
+                case R.id.replay:
                     LessonActivity.ChoiseLesson(id);
                     return true;
-                case R.id.action_play_next:
+                case R.id.view:
                     LessonActivity.nextActivity(id);
                     return true;
                 default:

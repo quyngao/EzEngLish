@@ -44,7 +44,9 @@ public class Lesson extends RealmObject {
         this.img = l.getImg();
         this.context = l.getContext();
         this.time = 0;
-        this.isrealy = 1;
+        if (l.getId() > 5) this.isrealy = 0;
+        else if (l.getId() == 5) this.isrealy = 2;
+        else this.isrealy = 1;
         this.vocas = new RealmList<>();
         for (VocaFB vc : l.getVocas()) {
             this.vocas.add(new Voca(vc));

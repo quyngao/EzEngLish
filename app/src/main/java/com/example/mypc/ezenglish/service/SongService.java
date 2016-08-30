@@ -33,6 +33,7 @@ import com.example.mypc.ezenglish.activity.ItemLessonActivity;
 import com.example.mypc.ezenglish.activity.LessonActivity;
 import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.History;
+import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.receiver.NotificationBroadcast;
@@ -251,7 +252,6 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     i.putExtra("id", PlayerConstants.ID_LEASSON);
                     startActivity(i);
-
                 }
 
                 @Override
@@ -308,10 +308,11 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
         if (currentVersionSupportBigNotification) {
             notification.bigContentView = expandedView;
         }
-
         try {
             long albumId = PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getId();
-            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
+            RealmLeason l = new RealmLeason(getApplicationContext());
+            Lesson ls = l.getleassongbyid(PlayerConstants.ID_LEASSON);
+            Bitmap albumArt = UtilFunctions.getDefaultAlbumArt(ls.getImg());
             if (albumArt != null) {
                 notification.contentView.setImageViewBitmap(R.id.imageViewAlbumArt, albumArt);
                 if (currentVersionSupportBigNotification) {
@@ -423,11 +424,21 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
             mp.reset();
             PrefManager pre = new PrefManager(getApplicationContext());
 
-            if (pre.isRemote() == true)
+            if (pre.isRemote() == false) {
+                Log.e("location", songPath);
                 mp.setDataSource(Environment.getExternalStorageDirectory().getAbsolutePath() + songPath);
-            else
+            } else {
+                Log.e("location", Constant.DATA_URL + songPath);
                 mp.setDataSource(Constant.DATA_URL + songPath);
+            }
             mp.prepare();
+            LessonActivity.showloadding();
+            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    LessonActivity.hintloadding();
+                }
+            });
             mp.start();
             timer.scheduleAtFixedRate(new MainTask(), 0, 100);
         } catch (IOException e) {
@@ -466,8 +477,9 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM, data.getContext());
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_ARTIST, Constant.typemp3[data.getType()]);
         metadataEditor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE, data.getName());
-        mDummyAlbumArt = UtilFunctions.getDefaultAlbumArt("/original/1/avatar.jpg");
-        if (mDummyAlbumArt == null) {
+        Lesson l = new RealmLeason(getApplicationContext()).getleassongbyid(PlayerConstants.ID_LEASSON);
+        if (l.getIsrealy() > 0) mDummyAlbumArt = UtilFunctions.getDefaultAlbumArt(l.getImg());
+        else {
             mDummyAlbumArt = BitmapFactory.decodeResource(getResources(), R.drawable.default_album_art);
         }
         metadataEditor.putBitmap(RemoteControlClient.MetadataEditor.BITMAP_KEY_ARTWORK, mDummyAlbumArt);

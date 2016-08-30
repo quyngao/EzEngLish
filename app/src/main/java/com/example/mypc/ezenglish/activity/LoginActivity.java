@@ -117,13 +117,12 @@ public class LoginActivity extends Activity {
             }
         });
     }
-
     public void setdatadummy() {
         Firebase rootRef = new Firebase(Constant.FIREBASE_DATA_URL);
         Firebase alanRef = rootRef.child("topics");
         final DataDummyLocal d = new DataDummyLocal();
         final RealmTopic r = new RealmTopic(LoginActivity.this);
-//        Topic t = d.saveTopic();
+        Topic t = d.saveTopic();
 //        d.showTopic(t);
 //
 //        TopicFB tf = new TopicFB(t);

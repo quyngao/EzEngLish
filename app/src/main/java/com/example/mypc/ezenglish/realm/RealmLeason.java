@@ -48,6 +48,7 @@ public class RealmLeason {
         Lesson l = realm.where(Lesson.class).equalTo("id", id).findFirst();
         return l;
     }
+
     public void addRecordbyid(Recod r, int idl) {
         realm.beginTransaction();
         Lesson lesson = getleassongbyid(idl);
@@ -61,6 +62,16 @@ public class RealmLeason {
         realm.beginTransaction();
         Lesson lesson = getleassongbyid(idl);
         lesson.getHistories().add(h);
+        realm.commitTransaction();
+    }
+
+    public void saveLocal(Lesson l) {
+        realm.beginTransaction();
+        Lesson lesson = getleassongbyid(l.getId());
+        lesson.setIsrealy(1);
+        for (int i = 0; i < l.getAll().size(); i++) {
+            l.getAll().get(i).setLocation("/original/" + l.getId() + "/" + l.getAll().get(i).getName() + ".mp3");
+        }
         realm.commitTransaction();
     }
 

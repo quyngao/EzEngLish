@@ -13,12 +13,16 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 
+import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class UtilFunctions {
@@ -72,13 +76,28 @@ public class UtilFunctions {
 //		return listOfSongs;
     }
 
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(Constant.DATA_URL + src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
+
     public static Bitmap getDefaultAlbumArt(String location) {
         Log.e("location", Environment.getExternalStorageDirectory().getAbsolutePath() + location);
         Bitmap bm = null;
         try {
             bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + location);
-        } catch (Error ee) {
         } catch (Exception e) {
+            return null;
         }
         return bm;
     }
@@ -88,6 +107,8 @@ public class UtilFunctions {
 
     public static Bitmap blur(String location, Context context) {
         Bitmap image = getDefaultAlbumArt(location);
+        if (image == null)
+            image = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_album_art);
         int width = Math.round(image.getWidth() * BITMAP_SCALE);
         int height = Math.round(image.getHeight() * BITMAP_SCALE);
 

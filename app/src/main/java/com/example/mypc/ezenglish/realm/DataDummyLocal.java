@@ -23,8 +23,8 @@ public class DataDummyLocal {
         l.setDoc(getDoc(1));
         l.setContext("First for beginner");
         l.setImg("/original/1/avatar.jpg");
-        l.setIsrealy(0);
-        l.setTime(0);
+        l.setIsrealy(1);
+        l.setTime(20000);
         l.setVocas(getlistvocar(1 * 10));
         l.setAll(getlistmp31(1 * 10));
         return l;
@@ -38,8 +38,8 @@ public class DataDummyLocal {
         l.setDoc(getDoc(2));
         l.setContext("Second for beginner");
         l.setImg("/original/2/avatar.jpg");
-        l.setIsrealy(0);
-        l.setTime(0);
+        l.setIsrealy(1);
+        l.setTime(30000);
         l.setVocas(getlistvocar(2 * 10));
         l.setAll(getlistmp32(2 * 10));
         return l;
@@ -52,8 +52,8 @@ public class DataDummyLocal {
         l.setDoc(getDoc(3));
         l.setContext("For beginner");
         l.setImg("/original/3/avatar.jpg");
-        l.setIsrealy(0);
-        l.setTime(0);
+        l.setIsrealy(1);
+        l.setTime(40000);
         l.setVocas(getlistvocar(3 * 10));
         l.setAll(getlistmp33(3 * 10));
         return l;
@@ -66,8 +66,8 @@ public class DataDummyLocal {
         l.setDoc(getDoc(4));
         l.setContext(" for beginner");
         l.setImg("/original/4/avatar.png");
-        l.setIsrealy(0);
-        l.setTime(0);
+        l.setIsrealy(1);
+        l.setTime(50000);
         l.setVocas(getlistvocar(4 * 10));
         l.setAll(getlistmp34(4 * 10));
         return l;
@@ -80,10 +80,24 @@ public class DataDummyLocal {
         l.setDoc(getDoc(5));
         l.setContext(" for beginner");
         l.setImg("/original/5/avatar.jpg");
-        l.setIsrealy(0);
-        l.setTime(0);
+        l.setIsrealy(2);
+        l.setTime(12220);
         l.setVocas(getlistvocar(5 * 10));
         l.setAll(getlistmp35(5 * 10));
+        return l;
+    }
+
+    public Lesson getLesson6() {
+        Lesson l = new Lesson();
+        l.setId(6);
+        l.setName("Intimacy");
+        l.setDoc(getDoc(6));
+        l.setContext("for beginner");
+        l.setImg("/original/6/avatar.jpg");
+        l.setIsrealy(0);
+        l.setTime(0);
+        l.setVocas(getlistvocar(6 * 10));
+        l.setAll(getlistmp36((6 * 10), 6));
         return l;
     }
 
@@ -105,6 +119,10 @@ public class DataDummyLocal {
         tmp = getLesson4();
         list.add(tmp);
         tmp = getLesson5();
+        list.add(tmp);
+
+
+        tmp = getLesson6();
         list.add(tmp);
 
         t.setLessons(list);
@@ -332,6 +350,45 @@ public class DataDummyLocal {
         m.setName("Drag MS-B");
         m.setContext("Ministore");
         m.setLocation("/original/5/Drag MS-B.mp3");
+        m.setType(2);
+        list.add(m);
+        i++;
+        return list;
+    }
+
+    public RealmList<MP3> getlistmp36(int i, int j) {
+        RealmList<MP3> list = new RealmList<>();
+
+        MP3 m = new MP3();
+        m.setId(i);
+        m.setName("Intimacy Audio");
+        m.setContext("Audio");
+        m.setLocation("/original/" + j + "/Intimacy%20Audio.mp3");
+        m.setType(0);
+        list.add(m);
+        i++;
+        m = new MP3();
+        m.setId(i);
+        m.setName("Intimacy Vocab");
+        m.setContext("Voca");
+        m.setLocation("/original/" + j + "/Intimacy%20Vocab.mp3");
+        m.setType(1);
+        list.add(m);
+        i++;
+        m = new MP3();
+        m.setId(i);
+        m.setName("Intimacy MS-A");
+        m.setContext("Ministore");
+        m.setLocation("/original/" + j + "/Intimacy%20MS-A.mp3");
+        m.setType(2);
+        list.add(m);
+        i++;
+
+        m = new MP3();
+        m.setId(i);
+        m.setName("Intimacy MS-B");
+        m.setContext("Ministore");
+        m.setLocation("/original/" + j + "/Intimacy%20MS-B.mp3");
         m.setType(2);
         list.add(m);
         i++;
