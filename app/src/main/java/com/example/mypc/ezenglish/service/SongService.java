@@ -193,7 +193,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     return false;
                 }
             });
-            audioWidget.show(100, 100);
+            audioWidget.show(100, 200);
             audioWidget.controller().start();
 
             audioWidget.controller().onControlsClickListener(new OnControlsClickListener() {
@@ -270,7 +270,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                         Log.e("songserrvice", "view EXPANDED");
                     }
                     if (state == State.REMOVED) {
-                        onDestroy();
+                        Controls.pauseControl(getApplicationContext());
                     }
                 }
 
