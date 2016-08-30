@@ -2,11 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item
-        android:id="@+id/replay"
+        android:id="@+id/playnow"
         android:orderInCategory="100"
-        android:title="Play Online" />
+        android:title="Learn now" />
     <item
-        android:id="@+id/down"
+        android:id="@+id/view"
         android:orderInCategory="101"
-        android:title="Download and Learn" />
+        android:title="View Lesson " />
 </menu>

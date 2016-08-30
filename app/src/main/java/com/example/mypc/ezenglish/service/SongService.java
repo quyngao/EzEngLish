@@ -319,9 +319,9 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     notification.bigContentView.setImageViewBitmap(R.id.imageViewAlbumArt, albumArt);
                 }
             } else {
-                notification.contentView.setImageViewResource(R.id.imageViewAlbumArt, R.drawable.default_album_art);
+                notification.contentView.setImageViewResource(R.id.imageViewAlbumArt, R.drawable.ic_logo);
                 if (currentVersionSupportBigNotification) {
-                    notification.bigContentView.setImageViewResource(R.id.imageViewAlbumArt, R.drawable.default_album_art);
+                    notification.bigContentView.setImageViewResource(R.id.imageViewAlbumArt, R.drawable.ic_logo);
                 }
             }
         } catch (Exception e) {

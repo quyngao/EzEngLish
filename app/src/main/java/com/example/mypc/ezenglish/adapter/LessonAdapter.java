@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -62,33 +63,36 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
 
         if (album.getIsrealy() > 0) {
             Glide.with(mContext).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + album.getImg())).into(holder.thumbnail);
-            if (album.getIsrealy() == 2)
-                holder.overflow.setBackgroundResource(R.drawable.learnnow);
+//            if (album.getIsrealy() == 2) holder.overflow.setBackgroundResource(R.drawable.learnnow);
         } else {
             Glide.with(mContext).load(Constant.DATA_URL + album.getImg()).into(holder.thumbnail);
             Log.e("remote", Constant.DATA_URL + album.getImg());
         }
-
-
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow, position, album.getIsrealy());
-            }
-        });
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (albumList.get(position).getIsrealy() == 1) {
-                    LessonActivity.nextActivity(position);
-                } else if (albumList.get(position).getIsrealy() == 0) {
-                    LessonActivity.showconfirmdow(position);
-                } else if (albumList.get(position).getIsrealy() == 2) {
-                    LessonActivity.nextActivity(position);
-                }
+                showPopupMenu(holder.thumbnail, position, album.getIsrealy());
             }
         });
 
+        holder.bg_c.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(holder.thumbnail, position, album.getIsrealy());
+            }
+        });
+//        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (albumList.get(position).getIsrealy() == 1) {
+//                    LessonActivity.nextActivity(position);
+//                } else if (albumList.get(position).getIsrealy() == 0) {
+//                    LessonActivity.showconfirmdow(position);
+//                } else if (albumList.get(position).getIsrealy() == 2) {
+//                    LessonActivity.nextActivity(position);
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -103,7 +107,10 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
         Log.e("show ", "online ?" + albumList.get(i).getName() + " state" + albumList.get(i).getIsrealy());
         if (albumList.get(i).getIsrealy() == 0)
             inflater.inflate(R.menu.menu_album, popup.getMenu());
-        else inflater.inflate(R.menu.menu_local, popup.getMenu());
+        else if (albumList.get(i).getIsrealy() == 1)
+            inflater.inflate(R.menu.menu_local, popup.getMenu());
+        else if (albumList.get(i).getIsrealy() == 2)
+            inflater.inflate(R.menu.menu_now, popup.getMenu());
         popup.setOnMenuItemClickListener(new MyMenuItemClickListener(i));
         popup.show();
     }
@@ -122,8 +129,17 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
                 case R.id.replay:
                     LessonActivity.ChoiseLesson(id);
                     return true;
+                case R.id.leared:
+                    LessonActivity.ChoiseLesson(id);
+                    return true;
                 case R.id.view:
                     LessonActivity.nextActivity(id);
+                    return true;
+                case R.id.down:
+                    LessonActivity.showconfirmdow(id);
+                    return true;
+                case R.id.playnow:
+                    LessonActivity.ChoiseLesson(id);
                     return true;
                 default:
             }
@@ -133,15 +149,16 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count, state;
-        public ImageView thumbnail, overflow;
+        public ImageView thumbnail;
+        public RelativeLayout bg_c;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-            overflow = (ImageView) view.findViewById(R.id.overflow);
             state = (TextView) view.findViewById(R.id.state);
+            bg_c = (RelativeLayout) view.findViewById(R.id.bg_c);
         }
     }
 }

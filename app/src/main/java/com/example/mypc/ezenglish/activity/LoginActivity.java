@@ -42,7 +42,6 @@ public class LoginActivity extends Activity {
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
-
         setContentView(R.layout.activity_login);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -117,6 +116,7 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
     public void setdatadummy() {
         Firebase rootRef = new Firebase(Constant.FIREBASE_DATA_URL);
         Firebase alanRef = rootRef.child("topics");

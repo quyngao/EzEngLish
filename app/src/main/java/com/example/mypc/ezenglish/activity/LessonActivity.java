@@ -10,10 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,11 +29,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.mypc.ezenglish.adapter.LessonAdapter;
 import com.example.mypc.ezenglish.R;
+import com.example.mypc.ezenglish.adapter.LessonAdapter;
 import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
@@ -77,8 +74,11 @@ public class LessonActivity extends Activity {
     PrefManager prefManager;
 
     public static void showloadding() {
-        progressDialog = ProgressDialog.show(context, "Loading...",
-                "Waitting ..", true, true);
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Waitting");
+        progressDialog.setTitle("Downloading ... ");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(true);
         progressDialog.show();
     }
 
@@ -93,7 +93,7 @@ public class LessonActivity extends Activity {
     }
 
     public static void hintloadding() {
-        progressDialog.hide();
+        progressDialog.dismiss();
     }
 
     public static void showconfirmdow(final int position) {
@@ -103,14 +103,12 @@ public class LessonActivity extends Activity {
         alertDialog.setIcon(R.drawable.icon_home);
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(context, "You clicked on YES", Toast.LENGTH_SHORT).show();
                 dowloading(list.get(position));
                 showloadding();
             }
         });
         alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(context, "You clicked on NO", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
 
             }
@@ -164,8 +162,9 @@ public class LessonActivity extends Activity {
                     if (DownloadManager.STATUS_SUCCESSFUL == c
                             .getInt(columnIndex)) {
                         delete(downloadId);
-                        Log.e("ok", "done" + downloadId);
+                        Log.e("ok", "done" + downloadId + " --  " + callback.size());
                         if (callback.size() == 0) {
+                            Log.e("ok", "done all");
                             hintloadding();
                             rl.saveLocal(l);
                             list = rl.getAllLeasson();
@@ -240,7 +239,6 @@ public class LessonActivity extends Activity {
         }
         updateUI();
         changeButton();
-        Log.d("TAG", "TAG Tapped INOUT(OUT)");
 
     }
 
@@ -302,33 +300,11 @@ public class LessonActivity extends Activity {
     }
 
     private void setListeners() {
-//        mediaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
-//                Log.d("TAG", "TAG Tapped INOUT(IN)");
-//                l = list.get(position);
-//
-//                PlayerConstants.ID_LEASSON = l.getId();
-//                PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), l.getId());
-//                PlayerConstants.SONG_PAUSED = false;
-//                PlayerConstants.SONG_NUMBER = 0;
-//                boolean isServiceRunning = UtilFunctions.isServiceRunning(SongService.class.getName(), getApplicationContext());
-//                if (!isServiceRunning) {
-//                    Intent i = new Intent(getApplicationContext(), SongService.class);
-//                    startService(i);
-//                } else {
-//                    PlayerConstants.SONG_CHANGE_HANDLER.sendMessage(PlayerConstants.SONG_CHANGE_HANDLER.obtainMessage());
-//                }
-//                updateUI();
-//                changeButton();
-//                Log.d("TAG", "TAG Tapped INOUT(OUT)");
-//            }
-//        });
         btnPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
-                if (l.getIsrealy() == 0) {
+                if (l.getIsrealy() > 0) {
                     prefManager.setremote(true);
                     i.putExtra("id", l.getId());
                     startActivity(i);
@@ -375,7 +351,7 @@ public class LessonActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(LessonActivity.this, ItemLessonActivity.class);
-                if (l.getIsrealy() == 0) {
+                if (l.getIsrealy() > 0) {
                     prefManager.setremote(true);
                     i.putExtra("id", l.getId());
                     startActivity(i);

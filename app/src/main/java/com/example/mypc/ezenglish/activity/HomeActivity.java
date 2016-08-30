@@ -55,6 +55,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.icon_tmp_menu);
         initCollapsingToolbar();
     }
 
@@ -89,7 +90,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     collapsingToolbar.setTitle("");
                     isShow = false;
                 }
-
             }
         });
     }
@@ -102,13 +102,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.setScaleValue(0.6f);
         resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
         // create menu items;
-        itemHome = new ResideMenuItem(this, R.drawable.icon_home, "Home");
-        itemProfile = new ResideMenuItem(this, R.drawable.icon_profile, "Profile");
-        itemlearnNow = new ResideMenuItem(this, R.drawable.icon_calendar, "Learn Now");
-        itemCalendar = new ResideMenuItem(this, R.drawable.icon_calendar, "Calendar");
-        itemsetting = new ResideMenuItem(this, R.drawable.icon_settings, "Setting");
-        itemguide = new ResideMenuItem(this, R.drawable.icon_profile, "Guide");
-        itemlogout = new ResideMenuItem(this, R.drawable.icon_profile, "Logout");
+        itemHome = new ResideMenuItem(this, R.drawable.icon_tmp_home, "Home");
+        itemProfile = new ResideMenuItem(this, R.drawable.icon_tmp_profile, "Profile");
+        itemlearnNow = new ResideMenuItem(this, R.drawable.icon_tmp_learning, "Learn Now");
+        itemCalendar = new ResideMenuItem(this, R.drawable.icon_tmp_calender, "Calendar");
+        itemsetting = new ResideMenuItem(this, R.drawable.icon_tmp_setting, "Setting");
+        itemguide = new ResideMenuItem(this, R.drawable.icon_tmp_guide, "Guide");
+        itemlogout = new ResideMenuItem(this, R.drawable.icon_tmp_logout, "Logout");
 
         itemHome.setOnClickListener(this);
         itemProfile.setOnClickListener(this);

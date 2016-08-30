@@ -1,12 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <item
-        android:id="@+id/replay"
+        android:id="@+id/leared"
         android:orderInCategory="100"
-        android:title="Play now Local"/>
+        android:title="Learned" />
     <item
         android:id="@+id/view"
         android:orderInCategory="101"
-        android:title="View Lesson Local"/>
+        android:title="Review" />
 </menu>
