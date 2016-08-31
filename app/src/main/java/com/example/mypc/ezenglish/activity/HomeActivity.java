@@ -19,6 +19,7 @@ import com.example.mypc.ezenglish.flagment.ProfileFlagment;
 import com.example.mypc.ezenglish.flagment.ScheduleFragment;
 import com.example.mypc.ezenglish.realm.RealmUser;
 import com.example.mypc.ezenglish.util.Constant;
+import com.example.mypc.ezenglish.util.PrefManager;
 import com.firebase.client.Firebase;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
@@ -143,8 +144,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == itemCalendar) {
             changeFragment(new ScheduleFragment());
         } else if (view == itemlearnNow) {
-            startActivity(new Intent(HomeActivity.this, LessonActivity.class));
-            finish();
+            int id = new PrefManager(HomeActivity.this).getlearnid();
+            if (id == 0) {
+                startActivity(new Intent(HomeActivity.this, LessonActivity.class));
+                finish();
+            } else {
+                Intent i = new Intent(HomeActivity.this, ItemLessonActivity.class);
+                i.putExtra("id", id);
+                startActivity(i);
+                finish();
+            }
+
         } else if (view == itemlogout) {
             Firebase ref = new Firebase(Constant.FIREBASE_USER_URL);
             ref.unauth();

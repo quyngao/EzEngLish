@@ -41,8 +41,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (ref.getAuth() != null) {
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-            finish();
+            setdatadummy();
         }
         setContentView(R.layout.activity_login);
         inputEmail = (EditText) findViewById(R.id.email);
@@ -125,10 +124,10 @@ public class LoginActivity extends Activity {
         final DataDummyLocal d = new DataDummyLocal();
         final RealmTopic r = new RealmTopic(LoginActivity.this);
 
-        Topic t = d.saveTopic();
+//        Topic t = d.saveTopic();
 
-        TopicFB tf = new TopicFB(t);
-        alanRef.push().setValue(tf);
+//        TopicFB tf = new TopicFB(t);
+//        alanRef.push().setValue(tf);
 
         alanRef.addValueEventListener(new ValueEventListener() {
             @Override

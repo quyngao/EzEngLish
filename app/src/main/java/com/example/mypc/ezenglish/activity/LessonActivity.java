@@ -36,6 +36,7 @@ import com.example.mypc.ezenglish.adapter.LessonAdapter;
 import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
+import com.example.mypc.ezenglish.model.Voca;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.service.SongService;
@@ -92,8 +93,28 @@ public class LessonActivity extends Activity {
         }
     }
 
+    public static void showconfirmdowfirst(final int position) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle("Download First...");
+        alertDialog.setMessage("Are you sure you want download for lesson?" + list.get(position).getName());
+        alertDialog.setIcon(R.drawable.icon_home);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dowloading(list.get(position));
+                showloadding();
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+            }
+        });
+        alertDialog.show();
+    }
+
     public static void hintloadding() {
-        progressDialog.dismiss();
+        progressDialog.cancel();
     }
 
     public static void showconfirmdow(final int position) {
@@ -144,11 +165,20 @@ public class LessonActivity extends Activity {
             x = dm.enqueue(request);
             callback.add(x);
         }
+        int i = 1;
+        for (Voca voca : l.getVocas()) {
+            request = new DownloadManager.Request(
+                    Uri.parse(Constant.DATA_URL + voca.getImg()));
+            request.setDestinationInExternalPublicDir("/original/" + l.getId() + "/", i + ".jpg");
+            i++;
+            x = dm.enqueue(request);
+            callback.add(x);
+        }
     }
 
     static BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, Intent intent) {
             String action = intent.getAction();
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                 long downloadId = intent.getLongExtra(
@@ -164,11 +194,31 @@ public class LessonActivity extends Activity {
                         delete(downloadId);
                         Log.e("ok", "done" + downloadId + " --  " + callback.size());
                         if (callback.size() == 0) {
-                            Log.e("ok", "done all");
                             hintloadding();
-                            rl.saveLocal(l);
-                            list = rl.getAllLeasson();
-                            nextActivity(l.getId() - 1);
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                            alertDialog.setTitle("Download...");
+                            alertDialog.setMessage("Are you sure lear now  lesson?" + l.getName());
+                            alertDialog.setIcon(R.drawable.icon_home);
+                            alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    rl.saveLocal(l, 2);
+                                    new PrefManager(context).setlearnid(l.getId());
+                                    list = rl.getAllLeasson();
+                                    nextActivity(l.getId() - 1);
+                                    dialog.cancel();
+                                }
+                            });
+                            alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    rl.saveLocal(l, 1);
+                                    list = rl.getAllLeasson();
+                                    changeUI();
+                                    dialog.cancel();
+
+                                }
+                            });
+                            alertDialog.show();
+                            Log.e("ok", "done all");
                         }
                     }
                 }
@@ -184,6 +234,8 @@ public class LessonActivity extends Activity {
         context = LessonActivity.this;
         rl = new RealmLeason(this);
         prefManager = new PrefManager(this);
+
+
         init();
     }
 
@@ -196,6 +248,10 @@ public class LessonActivity extends Activity {
             PlayerConstants.SONGS_LIST = UtilFunctions.listOfSongs(getApplication(), 1);
         }
         setListItems();
+        int id = prefManager.getlearnid();
+        if (id == 0) {
+            showconfirmdowfirst(0);
+        }
     }
 
     private void setListItems() {

@@ -27,6 +27,7 @@ public class PrefManager {
     private static final String LISTVOCA = "LISTVOCA";
     private static final String ISREMOTE = "ISREMOTE";
 
+    private static final String ID_LEARN = "ID_LEARN";
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
 
@@ -100,6 +101,15 @@ public class PrefManager {
     public void setremote(boolean isFirstTime) {
         editor.putBoolean(ISREMOTE, isFirstTime);
         editor.commit();
+    }
+
+    public void setlearnid(int id) {
+        editor.putInt(ID_LEARN, id);
+        editor.commit();
+    }
+
+    public int getlearnid() {
+        return pref.getInt(ID_LEARN, 0);
     }
 
     public boolean isRemote() {
