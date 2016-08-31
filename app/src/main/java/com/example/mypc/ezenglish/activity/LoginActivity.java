@@ -11,8 +11,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.mypc.ezenglish.R;
+import com.example.mypc.ezenglish.datafirebase.LessonFB;
 import com.example.mypc.ezenglish.datafirebase.TopicFB;
 import com.example.mypc.ezenglish.datafirebase.UserFB;
+import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Topic;
 import com.example.mypc.ezenglish.model.User;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
@@ -117,18 +119,17 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
     public void setdatadummy() {
         Firebase rootRef = new Firebase(Constant.FIREBASE_DATA_URL);
         Firebase alanRef = rootRef.child("topics");
         final DataDummyLocal d = new DataDummyLocal();
         final RealmTopic r = new RealmTopic(LoginActivity.this);
-        Topic t = d.saveTopic();
-//        d.showTopic(t);
-//
-//        TopicFB tf = new TopicFB(t);
-//
-//        alanRef.push().setValue(tf);
 
+        Topic t = d.saveTopic();
+
+        TopicFB tf = new TopicFB(t);
+        alanRef.push().setValue(tf);
 
         alanRef.addValueEventListener(new ValueEventListener() {
             @Override

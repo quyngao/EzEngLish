@@ -30,7 +30,6 @@ public class DataDummyLocal {
         return l;
     }
 
-
     public Lesson getLesson2() {
         Lesson l = new Lesson();
         l.setId(2);
@@ -166,7 +165,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Day of the Dead Audio");
         m.setContext("Audio");
-        m.setLocation("/original/1/Day of the Dead Audio.mp3");
+        m.setLocation("/original/1/Day%20of%20the%20Dead%20Audio.mp3");
         m.setType(0);
         list.add(m);
         i++;
@@ -174,7 +173,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Day of the Dead Vocab");
         m.setContext("Voca");
-        m.setLocation("/original/1/Day of the Dead Vocab.mp3");
+        m.setLocation("/original/1/Day%20of%20the%20Dead%20Vocab.mp3");
         m.setType(1);
         list.add(m);
         i++;
@@ -182,7 +181,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Day of the Dead MS");
         m.setContext("Ministore");
-        m.setLocation("/original/1/Day of the Dead MS.mp3");
+        m.setLocation("/original/1/Day%20of%20the%20Dead%20MS.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -399,45 +398,89 @@ public class DataDummyLocal {
         RealmList<Voca> list = new RealmList<>();
         Voca v1 = new Voca();
         v1.setId(i);
-        v1.setDescription("Dễ dàng");
+        v1.setDescription("An area of ground in which dead bodies are buried");
         v1.setImg("/original/1/1.jpg");
-        v1.setName("Easy");
-        v1.setTrans("ēzē");
+        v1.setName("Cemetery");
+        v1.setTrans("/ˈsɛməˌtɛri/");
+        v1.setType("N");
         i++;
         list.add(v1);
         v1 = new Voca();
         v1.setId(i);
-        v1.setDescription("Tiếng anh");
-        v1.setImg("/original/1/2.png");
-        v1.setName("English");
-        v1.setTrans("english");
+        v1.setDescription("Atmosphere");
+        v1.setImg("/original/1/2.jpg");
+        v1.setName("Atmosphere");
+        v1.setTrans("/'ætməsfiə/");
+        v1.setType("N");
         i++;
         list.add(v1);
 
         v1 = new Voca();
         v1.setId(i);
-        v1.setDescription("HandSome");
+        v1.setDescription("A place in the ground where a dead person is buried");
         v1.setImg("/original/1/3.jpg");
-        v1.setName("HandSome");
-        v1.setTrans("ˈhansəm");
+        v1.setName("Grave");
+        v1.setTrans("/ɡreɪv/");
+        v1.setType("N");
+
         i++;
         list.add(v1);
 
         v1 = new Voca();
         v1.setId(i);
-        v1.setDescription("a");
-        v1.setImg("/original/1/1.jpg");
-        v1.setName("tu d:");
-        v1.setTrans("transliteration");
+        v1.setDescription("a person in your family who lived a long time ago");
+        v1.setImg("/original/1/4.jpg");
+        v1.setName("Ancestor");
+        v1.setTrans("/ˈæn.ses.tɚ/");
+        v1.setType("N");
         list.add(v1);
         i++;
 
         v1 = new Voca();
         v1.setId(i);
-        v1.setDescription("HandSome");
-        v1.setImg("/original/1/3.jpg");
-        v1.setName("HandSome");
-        v1.setTrans("ˈhansəm");
+        v1.setDescription("a toy that flies in the air while you hold it by a long string");
+        v1.setImg("/original/1/5.jpg");
+        v1.setName("Kite");
+        v1.setTrans("/kaɪt/");
+        v1.setType("N");
+        i++;
+        list.add(v1);
+
+
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("serious and sad");
+        v1.setImg("/original/1/6.jpg");
+        v1.setName("Somber");
+        v1.setTrans("/ˈsɒm.bər/");
+        v1.setType("adj");
+        i++;
+        list.add(v1);
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("a particular way of thinking about or dealing with something");
+        v1.setImg("/original/1/7.jpg");
+        v1.setName("Approach");
+        v1.setTrans("/əˈproʊtʃ/");
+        v1.setType("N");
+        i++;
+        list.add(v1);
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("to die");
+        v1.setImg("/original/1/8.jpg");
+        v1.setName("Pass away");
+        v1.setTrans("/pɑːs əˈweɪ/");
+        v1.setType("Phrasal verb");
+        i++;
+        list.add(v1);
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("a toy that flies in the air while you hold it by a long string");
+        v1.setImg("/original/1/9.jpg");
+        v1.setName("Find");
+        v1.setTrans("/faɪnd/");
+        v1.setType("V");
         i++;
         list.add(v1);
         return list;
