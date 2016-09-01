@@ -89,7 +89,6 @@ public class LessonActivity extends Activity {
                 callback.remove(i);
                 return;
             }
-
         }
     }
 
@@ -174,6 +173,9 @@ public class LessonActivity extends Activity {
             x = dm.enqueue(request);
             callback.add(x);
         }
+        rl.saveLocal(l, 2);
+        new PrefManager(context).setlearnid(l.getId());
+        list = rl.getAllLeasson();
     }
 
     static BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -193,7 +195,7 @@ public class LessonActivity extends Activity {
                             .getInt(columnIndex)) {
                         delete(downloadId);
                         Log.e("ok", "done" + downloadId + " --  " + callback.size());
-                        if (callback.size() == 0) {
+                        if (callback.size() == 7) {
                             hintloadding();
                             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                             alertDialog.setTitle("Download...");
@@ -201,9 +203,6 @@ public class LessonActivity extends Activity {
                             alertDialog.setIcon(R.drawable.icon_home);
                             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    rl.saveLocal(l, 2);
-                                    new PrefManager(context).setlearnid(l.getId());
-                                    list = rl.getAllLeasson();
                                     nextActivity(l.getId() - 1);
                                     dialog.cancel();
                                 }
@@ -214,7 +213,6 @@ public class LessonActivity extends Activity {
                                     list = rl.getAllLeasson();
                                     changeUI();
                                     dialog.cancel();
-
                                 }
                             });
                             alertDialog.show();
@@ -234,8 +232,6 @@ public class LessonActivity extends Activity {
         context = LessonActivity.this;
         rl = new RealmLeason(this);
         prefManager = new PrefManager(this);
-
-
         init();
     }
 

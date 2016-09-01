@@ -75,6 +75,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }
     }
+
     public void setdatadummy() {
 //        User x = new User();
 //        x.setId(1);
@@ -91,7 +92,7 @@ public class WelcomeActivity extends AppCompatActivity {
 //        x.setRate("100");
 //        x.setStatus(0);
 
-        RealmUser realmUser = new RealmUser(this);
+//        RealmUser realmUser = new RealmUser(this);
 //        realmUser.SaveUser(x);
 //        User y = realmUser.getUser("quyngao", "quydz");
 //        Log.e("user", y.getName());
@@ -186,6 +187,13 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    public void loadSignupView() {
+        Intent intent = new Intent(this, SignupActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

@@ -42,4 +42,9 @@
     <color name="color_tab_5">#303F9F</color>
 
     <color name="album_title">#4c4c4c</color>
+
+
+    <color name="color_story">#3F51B5</color>
+    <color name="color_voca">#20d2bb</color>
+    <color name="color_audio">#f64c73</color>
 </resources>
