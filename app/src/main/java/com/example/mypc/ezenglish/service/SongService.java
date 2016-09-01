@@ -153,6 +153,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     newNotification();
                     try {
                         saveHistory();
+                        audioWidget.show(100,300);
                         playSong(songPath, data);
                         LessonActivity.changeUI();
                     } catch (Exception e) {
@@ -175,6 +176,8 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                         }
                         mp.start();
                         audioWidget.controller().start();
+                        audioWidget.show(100,300);
+
                     } else if (message.equalsIgnoreCase(getResources().getString(R.string.pause))) {
                         PlayerConstants.SONG_PAUSED = true;
                         if (currentVersionSupportLockScreenControls) {
@@ -193,7 +196,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     return false;
                 }
             });
-            audioWidget.show(100, 200);
+            audioWidget.show(100, 300);
             audioWidget.controller().start();
 
             audioWidget.controller().onControlsClickListener(new OnControlsClickListener() {

@@ -1,6 +1,7 @@
 package com.example.mypc.ezenglish.flagment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,7 +15,10 @@ import com.example.mypc.ezenglish.adapter.HistoryAdapter;
 import com.example.mypc.ezenglish.model.History;
 import com.example.mypc.ezenglish.model.Lesson;
 
-import java.util.Timer;
+import org.eazegraph.lib.charts.BarChart;
+import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.BarModel;
+import org.eazegraph.lib.models.PieModel;
 
 import io.realm.RealmList;
 
@@ -64,6 +68,31 @@ public class HistoryFragment extends Fragment {
 
     public void getViews() {
         listview = (ListView) getActivity().findViewById(R.id.listhisto);
+
+
+        BarChart mBarChart = (BarChart) getActivity().findViewById(R.id.barchart);
+
+        mBarChart.addBar(new BarModel("Mon", 4.3f, 0xFF123456));
+        mBarChart.addBar(new BarModel("Tue", 0.3f, 0xFF123456));
+        mBarChart.addBar(new BarModel("Wen", 1.1f, 0xFF123456));
+        mBarChart.addBar(new BarModel("Thu", 5.5f, 0xFF123456));
+        mBarChart.addBar(new BarModel("Fri", 2.3f, 0xFF123456));
+        mBarChart.addBar(new BarModel("Sat", 4.3f, 0xFF123456));
+        mBarChart.addBar(new BarModel("Sun", 6.3f, 0xFF123456));
+
+        mBarChart.startAnimation();
+
+
+        PieChart mPieChart = (PieChart) getActivity().findViewById(R.id.piechart);
+
+        mPieChart.addPieSlice(new PieModel("Audio", 10, Color.parseColor("#3F51B5")));
+        mPieChart.addPieSlice(new PieModel("Voca", 20, Color.parseColor("#20d2bb")));
+        mPieChart.addPieSlice(new PieModel("Story", 60, Color.parseColor("##f64c73")));
+        mPieChart.addPieSlice(new PieModel("Other", 8, Color.parseColor("#FFEB3B")));
+
+
+        mPieChart.startAnimation();
+
         Log.e("ok history", "" + l.getHistories().size() + " id : " + l.getId());
         list = l.getHistories();
         for (int i = 0; i < list.size(); i++) {

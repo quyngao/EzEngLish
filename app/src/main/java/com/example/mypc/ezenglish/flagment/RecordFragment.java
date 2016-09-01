@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -111,12 +110,12 @@ public class RecordFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (isrecord == false) {
-                    btn_record.setBackgroundResource(R.drawable.ic_isrecord);
+                    btn_record.setBackgroundResource(R.drawable.ic_record);
                     btn_play.setEnabled(false);
                     btn_save.setEnabled(false);
 
                 } else {
-                    btn_record.setBackgroundResource(R.drawable.ic_record);
+                    btn_record.setBackgroundResource(R.drawable.ic_recording);
                     btn_play.setEnabled(true);
                     btn_save.setEnabled(true);
                 }
@@ -132,7 +131,7 @@ public class RecordFragment extends Fragment {
                     btn_record.setEnabled(false);
                     btn_save.setEnabled(true);
                 } else {
-                    btn_play.setBackgroundResource(R.drawable.ic_action_play);
+                    btn_play.setBackgroundResource(R.drawable.ic_action_pauserecord);
                     btn_record.setEnabled(true);
                     btn_save.setEnabled(true);
                 }
@@ -221,7 +220,7 @@ public class RecordFragment extends Fragment {
         Log.e("mFileName", mFileName);
         recod.setLocation(mFileName);
         Log.e("location", recod.getLocation());
-        mRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath()+recod.getLocation());
+        mRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + recod.getLocation());
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
             mRecorder.prepare();

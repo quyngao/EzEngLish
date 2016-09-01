@@ -16,6 +16,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.special.ResideMenu.ResideMenu;
 
+import org.eazegraph.lib.charts.StackedBarChart;
+import org.eazegraph.lib.models.BarModel;
+import org.eazegraph.lib.models.StackedBarModel;
+
 /**
  * Created by MyPC on 28/08/2016.
  */
@@ -62,54 +66,45 @@ public class ProfileFlagment extends Fragment {
         progressBar = (ProgressBar) parentView.findViewById(R.id.progressBar);
 
         progressBar.setVisibility(View.GONE);
-        btnChangeEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                oldEmail.setVisibility(View.GONE);
-                newEmail.setVisibility(View.VISIBLE);
-                password.setVisibility(View.GONE);
-                newPassword.setVisibility(View.GONE);
-                changeEmail.setVisibility(View.VISIBLE);
-                changePassword.setVisibility(View.GONE);
-            }
-        });
-        changeEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                if (!newEmail.getText().toString().trim().equals("")) {
-//                    user.updateEmail(newEmail.getText().toString().trim())
-//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Toast.makeText(MainActivity.this, "Email address is updated. Please sign in with new email id!", Toast.LENGTH_LONG).show();
-//                                        signOut();
-//                                        progressBar.setVisibility(View.GONE);
-//                                    } else {
-//                                        Toast.makeText(MainActivity.this, "Failed to update email!", Toast.LENGTH_LONG).show();
-//                                        progressBar.setVisibility(View.GONE);
-//                                    }
-//                                }
-//                            });
+        setgraph();
+        setListener();
+    }
 
-                    ref.changeEmail("quyltptit@gmail.com", "1", "newemail@firebase.com", new Firebase.ResultHandler() {
-                        @Override
-                        public void onSuccess() {
-                            // email changed
-                        }
+    public void setgraph() {
+        StackedBarChart mStackedBarChart = (StackedBarChart) parentView.findViewById(R.id.stackedbarchart);
 
-                        @Override
-                        public void onError(FirebaseError firebaseError) {
-                            // error encountered
-                        }
-                    });
-                } else if (newEmail.getText().toString().trim().equals("")) {
-                    newEmail.setError("Enter email");
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
+        StackedBarModel s1 = new StackedBarModel("Lesson 1");
+
+        s1.addBar(new BarModel(2f, getResources().getColor(R.color.color_audio)));
+        s1.addBar(new BarModel(4f, getResources().getColor(R.color.color_voca)));
+        s1.addBar(new BarModel(4f, getResources().getColor(R.color.color_mini)));
+
+        StackedBarModel s2 = new StackedBarModel("Lesson 2");
+        s2.addBar(new BarModel(1.2f, getResources().getColor(R.color.color_audio)));
+        s2.addBar(new BarModel(3f, getResources().getColor(R.color.color_voca)));
+        s2.addBar(new BarModel(5f, getResources().getColor(R.color.color_mini)));
+
+        StackedBarModel s3 = new StackedBarModel("Lessson 3");
+
+        s3.addBar(new BarModel(2.1f, getResources().getColor(R.color.color_audio)));
+        s3.addBar(new BarModel(2f, getResources().getColor(R.color.color_voca)));
+        s3.addBar(new BarModel(6f, getResources().getColor(R.color.color_mini)));
+
+        StackedBarModel s4 = new StackedBarModel("Lessson 4");
+        s4.addBar(new BarModel(2.1f, getResources().getColor(R.color.color_audio)));
+        s4.addBar(new BarModel(2f, getResources().getColor(R.color.color_voca)));
+        s4.addBar(new BarModel(6f, getResources().getColor(R.color.color_mini)));
+
+
+        mStackedBarChart.addBar(s1);
+        mStackedBarChart.addBar(s2);
+        mStackedBarChart.addBar(s3);
+        mStackedBarChart.addBar(s4);
+
+        mStackedBarChart.startAnimation();
+    }
+
+    public void setListener() {
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,8 +147,42 @@ public class ProfileFlagment extends Fragment {
 //                }
             }
         });
+        changeEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                if (!newEmail.getText().toString().trim().equals("")) {
+//                    user.updateEmail(newEmail.getText().toString().trim())
+//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()) {
+//                                        Toast.makeText(MainActivity.this, "Email address is updated. Please sign in with new email id!", Toast.LENGTH_LONG).show();
+//                                        signOut();
+//                                        progressBar.setVisibility(View.GONE);
+//                                    } else {
+//                                        Toast.makeText(MainActivity.this, "Failed to update email!", Toast.LENGTH_LONG).show();
+//                                        progressBar.setVisibility(View.GONE);
+//                                    }
+//                                }
+//                            });
 
+                    ref.changeEmail("quyltptit@gmail.com", "1", "newemail@firebase.com", new Firebase.ResultHandler() {
+                        @Override
+                        public void onSuccess() {
+                            // email changed
+                        }
 
+                        @Override
+                        public void onError(FirebaseError firebaseError) {
+                            // error encountered
+                        }
+                    });
+                } else if (newEmail.getText().toString().trim().equals("")) {
+                    newEmail.setError("Enter email");
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
-
 }
