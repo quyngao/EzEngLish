@@ -6,21 +6,38 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Sample Schedule"
+            android:textColor="@color/colorPrimary"
+            android:textSize="22sp"
+            android:textStyle="bold">
+        </TextView>
+    </LinearLayout>
+
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/linear"
         app:columnGap="5dp"
         app:dayBackgroundColor="#05000000"
         app:eventTextColor="@android:color/white"
         app:headerColumnBackground="#ffffffff"
-        app:headerColumnPadding="5dp"
+        app:headerColumnPadding="3dp"
         app:headerColumnTextColor="@color/cardview_dark_background"
-        app:headerRowBackgroundColor="@color/colorPrimary"
-        app:headerRowPadding="10dp"
-        app:hourHeight="46dp"
+        app:headerRowPadding="3dp"
+        app:hourHeight="22dp"
         app:noOfVisibleDays="7"
-        app:textSize="12sp"
+        app:textSize="10sp"
         app:todayBackgroundColor="#1848adff"
         app:todayHeaderTextColor="@color/colorAccent"/>
 </RelativeLayout>

@@ -9,14 +9,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.mypc.ezenglish.R;
+import com.example.mypc.ezenglish.dialog.RemidDialog;
+import com.example.mypc.ezenglish.flagment.GuideFragment;
 import com.example.mypc.ezenglish.flagment.HomeFragment;
 import com.example.mypc.ezenglish.flagment.ProfileFlagment;
 import com.example.mypc.ezenglish.flagment.ScheduleFragment;
+import com.example.mypc.ezenglish.model.Lesson;
+import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.realm.RealmUser;
 import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PrefManager;
@@ -155,6 +161,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
             }
 
+        } else if (view == itemsetting) {
+            int id = new PrefManager(HomeActivity.this).getlearnid();
+            RealmLeason rl = new RealmLeason(HomeActivity.this);
+            if (id == 0) {
+                Toast.makeText(HomeActivity.this, "nothing to setting", Toast.LENGTH_SHORT).show();
+            } else {
+                Lesson l = rl.getleassongbyid(id);
+                RemidDialog reddialog = new RemidDialog(HomeActivity.this, l);
+                reddialog.show();
+            }
+        } else if (view == itemguide) {
+            changeFragment(new GuideFragment());
+            Log.e("ok", "ok");
         } else if (view == itemlogout) {
             Firebase ref = new Firebase(Constant.FIREBASE_USER_URL);
             ref.unauth();

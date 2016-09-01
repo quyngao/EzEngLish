@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
 
     }
 
+
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
@@ -102,7 +103,6 @@ public class HomeFragment extends Fragment {
                 R.drawable.flow,
                 R.drawable.bussiniss,
                 R.drawable.power};
-
         TopicFB a = new TopicFB(0, "Origional Effortless English", "" + covers[0], " Dành cho những người mới bắt đầu học tiếng anh ( Bắt đầu học)", new ArrayList<LessonFB>());
         albumList.add(a);
         a = new TopicFB(1, " Learn Real English", "" + covers[1], "Những đoạn hội thoại, giao tiếp về 1 số chủ đề trong cuộc sống thường ngày.", new ArrayList<LessonFB>());

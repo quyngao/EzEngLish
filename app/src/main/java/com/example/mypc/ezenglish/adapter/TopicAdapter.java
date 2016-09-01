@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.ezenglish.R;
@@ -37,24 +38,28 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        TopicFB album = albumList.get(position);
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        final TopicFB album = albumList.get(position);
         holder.title.setText(album.getName());
-        holder.count.setText(album.getDescription() + " songs");
+        holder.count.setText(album.getDescription());
         holder.bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, LessonActivity.class));
+                if (position == 0)
+                    mContext.startActivity(new Intent(mContext, LessonActivity.class));
+                else Toast.makeText(mContext, "updated", Toast.LENGTH_SHORT).show();
             }
         });
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, LessonActivity.class));
+                if (position == 0)
+                    mContext.startActivity(new Intent(mContext, LessonActivity.class));
+                else Toast.makeText(mContext, "updated", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // loading album cover using Glide library
+
         Glide.with(mContext).load("").fitCenter().placeholder(Integer.parseInt(album.getImg())).into(holder.thumbnail);
 
 //        holder.overflow.setOnClickListener(new View.OnClickListener() {

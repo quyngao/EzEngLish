@@ -63,10 +63,11 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
 
         if (album.getIsrealy() > 0) {
             Glide.with(mContext).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + album.getImg())).into(holder.thumbnail);
-//            if (album.getIsrealy() == 2) holder.overflow.setBackgroundResource(R.drawable.learnnow);
+            holder.overflow.setBackgroundResource(R.drawable.ic_starblu);
+            if (album.getIsrealy() == 2) holder.overflow.setBackgroundResource(R.drawable.icstar);
         } else {
             Glide.with(mContext).load(Constant.DATA_URL + album.getImg()).into(holder.thumbnail);
-            Log.e("remote", Constant.DATA_URL + album.getImg());
+            holder.overflow.setBackgroundResource(R.drawable.ic_down);
         }
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +150,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count, state;
-        public ImageView thumbnail;
+        public ImageView thumbnail, overflow;
         public RelativeLayout bg_c;
 
         public MyViewHolder(View view) {
@@ -157,6 +158,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
             title = (TextView) view.findViewById(R.id.title);
             count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            overflow = (ImageView) view.findViewById(R.id.overflow);
             state = (TextView) view.findViewById(R.id.state);
             bg_c = (RelativeLayout) view.findViewById(R.id.bg_c);
         }
