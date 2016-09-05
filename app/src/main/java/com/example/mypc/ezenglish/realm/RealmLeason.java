@@ -65,10 +65,11 @@ public class RealmLeason {
         realm.commitTransaction();
     }
 
-    public void saveLocal(Lesson l, int x) {
+    public void saveLocal(Lesson l, int x, String s) {
         realm.beginTransaction();
         Lesson lesson = getleassongbyid(l.getId());
         lesson.setIsrealy(x);
+        if (!s.equalsIgnoreCase("")) lesson.setStart(s);
         for (int i = 0; i < l.getAll().size(); i++) {
             l.getAll().get(i).setLocation("/original/" + l.getId() + "/" + l.getAll().get(i).getName() + ".mp3");
         }

@@ -24,8 +24,7 @@ import java.util.Date;
  * Created by Quylt on 8/12/2016.
  */
 public class AlarmUtil {
-
-
+    public static  SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void startAlarmvocar(int time, int id, Context context) {
 
@@ -61,7 +60,7 @@ public class AlarmUtil {
         intent1.putExtra("id", idvoca);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent1.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         RemoteViews simpleContentView = new RemoteViews(context.getApplicationContext().getPackageName(), R.layout.notification_voca);
         Notification notification = new NotificationCompat.Builder(context.getApplicationContext())

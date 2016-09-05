@@ -4,9 +4,6 @@ import com.example.mypc.ezenglish.datafirebase.LessonFB;
 import com.example.mypc.ezenglish.datafirebase.MP3FB;
 import com.example.mypc.ezenglish.datafirebase.VocaFB;
 
-import java.util.Date;
-import java.util.List;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
@@ -44,9 +41,10 @@ public class Lesson extends RealmObject {
         this.img = l.getImg();
         this.context = l.getContext();
         this.time = 0;
-        if (l.getId() > 5) this.isrealy = 0;
-        else if (l.getId() == 5) this.isrealy = 2;
-        else this.isrealy = 1;
+        this.isrealy = 0;
+//        if (l.getId() > 5) this.isrealy = 0;
+//        else if (l.getId() == 5) this.isrealy = 2;
+//        else this.isrealy = 1;
         this.vocas = new RealmList<>();
         for (VocaFB vc : l.getVocas()) {
             this.vocas.add(new Voca(vc));

@@ -37,7 +37,7 @@ public class VocaActivity extends Activity {
         VocaData voca = list.get(id);
 
         Glide.with(this).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + voca.getImg())).into(imgthumbnail);
-        tv_name.setText(voca.getName());
+        tv_name.setText(voca.getName() + "(" + voca.getType() + ")");
         tv_description.setText(voca.getDescription());
         tv_tran.setText(voca.getTrans());
 

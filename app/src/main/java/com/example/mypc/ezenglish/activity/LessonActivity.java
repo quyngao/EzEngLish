@@ -13,10 +13,12 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,9 +39,11 @@ import com.example.mypc.ezenglish.controls.Controls;
 import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.MP3;
 import com.example.mypc.ezenglish.model.Voca;
+import com.example.mypc.ezenglish.model.VocaData;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
 import com.example.mypc.ezenglish.realm.RealmLeason;
 import com.example.mypc.ezenglish.service.SongService;
+import com.example.mypc.ezenglish.util.AlarmUtil;
 import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PlayerConstants;
 import com.example.mypc.ezenglish.util.PrefManager;
@@ -47,6 +51,7 @@ import com.example.mypc.ezenglish.util.UtilFunctions;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -173,9 +178,7 @@ public class LessonActivity extends Activity {
             x = dm.enqueue(request);
             callback.add(x);
         }
-        rl.saveLocal(l, 2);
-        new PrefManager(context).setlearnid(l.getId());
-        list = rl.getAllLeasson();
+
     }
 
     static BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -199,17 +202,34 @@ public class LessonActivity extends Activity {
                             hintloadding();
                             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                             alertDialog.setTitle("Download...");
-                            alertDialog.setMessage("Are you sure lear now  lesson?" + l.getName());
+                            alertDialog.setMessage("Are you sure learn now  lesson?, 1 lesson you need to learn at least 7 days" + l.getName());
                             alertDialog.setIcon(R.drawable.icon_home);
                             alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    String day = AlarmUtil.df.format(Calendar.getInstance().getTime());
+                                    for (int i = 0; i < list.size(); i++) {
+                                        if (list.get(i).getIsrealy() == 2)
+                                            rl.saveLocal(list.get(i), 1, "");
+                                    }
+                                    rl.saveLocal(l, 2, day);
+                                    List<VocaData> listvoca = new ArrayList<VocaData>();
+                                    for (Voca vc : l.getVocas()) {
+                                        VocaData tmp = new VocaData();
+                                        tmp.copyData(vc);
+                                        listvoca.add(tmp);
+                                    }
+                                    PrefManager prefManager = new PrefManager(context);
+                                    prefManager.setlistvoca(listvoca);
+                                    prefManager.setlearnid(l.getId());
+                                    prefManager.setlearnid(l.getId());
+                                    list = rl.getAllLeasson();
                                     nextActivity(l.getId() - 1);
                                     dialog.cancel();
                                 }
                             });
                             alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    rl.saveLocal(l, 1);
+                                    rl.saveLocal(l, 1, "");
                                     list = rl.getAllLeasson();
                                     changeUI();
                                     dialog.cancel();
@@ -225,6 +245,15 @@ public class LessonActivity extends Activity {
     };
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 103) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+            }
+        }
+    }
+
+    @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -232,6 +261,11 @@ public class LessonActivity extends Activity {
         context = LessonActivity.this;
         rl = new RealmLeason(this);
         prefManager = new PrefManager(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, 103);
+        }
         init();
     }
 
@@ -272,6 +306,41 @@ public class LessonActivity extends Activity {
         else pr.setremote(false);
         i.putExtra("id", list.get(id).getId());
         context.startActivity(i);
+    }
+
+    public static void reLesson(int id) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle("Relearn...");
+        l = list.get(id);
+        alertDialog.setMessage("You sure you want to relearn?" + l.getName());
+        alertDialog.setIcon(R.drawable.icon_home);
+        alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String day = AlarmUtil.df.format(Calendar.getInstance().getTime());
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).getIsrealy() == 2) rl.saveLocal(list.get(i), 1, "");
+                }
+                rl.saveLocal(l, 2, day);
+                List<VocaData> listvoca = new ArrayList<VocaData>();
+                for (Voca vc : l.getVocas()) {
+                    VocaData tmp = new VocaData();
+                    tmp.copyData(vc);
+                    listvoca.add(tmp);
+                }
+                PrefManager prefManager = new PrefManager(context);
+                prefManager.setlistvoca(listvoca);
+                prefManager.setlearnid(l.getId());
+                list = rl.getAllLeasson();
+                nextActivity(l.getId() - 1);
+            }
+        });
+        alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertDialog.show();
+
     }
 
     public static void ChoiseLesson(int id) {

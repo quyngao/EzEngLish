@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.dialog.RemidDialog;
+import com.example.mypc.ezenglish.dialog.ScheduleDialog;
 import com.example.mypc.ezenglish.flagment.GuideFragment;
 import com.example.mypc.ezenglish.flagment.HomeFragment;
 import com.example.mypc.ezenglish.flagment.ProfileFlagment;
@@ -43,6 +43,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenuItem itemlogout;
     private ResideMenuItem itemguide;
     private ResideMenuItem itemsetting;
+    private ResideMenuItem itemGame;
     private HomeActivity mContext;
     Toolbar toolbar;
 
@@ -112,6 +113,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         itemHome = new ResideMenuItem(this, R.drawable.icon_tmp_home, "Home");
         itemProfile = new ResideMenuItem(this, R.drawable.icon_tmp_profile, "Profile");
         itemlearnNow = new ResideMenuItem(this, R.drawable.icon_tmp_learning, "Learn Now");
+        itemGame = new ResideMenuItem(this, R.drawable.icon_game, "Relax");
         itemCalendar = new ResideMenuItem(this, R.drawable.icon_tmp_calender, "Calendar");
         itemsetting = new ResideMenuItem(this, R.drawable.icon_tmp_setting, "Setting");
         itemguide = new ResideMenuItem(this, R.drawable.icon_tmp_guide, "Guide");
@@ -127,8 +129,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemlearnNow, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemGame, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemsetting, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemguide, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemlogout, ResideMenu.DIRECTION_LEFT);
@@ -147,6 +150,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             changeFragment(new HomeFragment());
         } else if (view == itemProfile) {
             changeFragment(new ProfileFlagment());
+        } else if (view == itemGame) {
+            Toast.makeText(HomeActivity.this, "Construction", Toast.LENGTH_SHORT).show();
         } else if (view == itemCalendar) {
             changeFragment(new ScheduleFragment());
         } else if (view == itemlearnNow) {
@@ -168,8 +173,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(HomeActivity.this, "nothing to setting", Toast.LENGTH_SHORT).show();
             } else {
                 Lesson l = rl.getleassongbyid(id);
-                RemidDialog reddialog = new RemidDialog(HomeActivity.this, l);
-                reddialog.show();
+                ScheduleDialog scheduleDialog = new ScheduleDialog(HomeActivity.this, l);
+                scheduleDialog.show();
             }
         } else if (view == itemguide) {
             changeFragment(new GuideFragment());

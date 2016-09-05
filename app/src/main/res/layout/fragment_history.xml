@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="@android:color/transparent"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -19,7 +18,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
+            android:layout_weight="0.4"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <org.eazegraph.lib.charts.PieChart
+                android:id="@+id/piechart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                app:egLegendTextSize="15sp"
+                app:egUsePieRotation="true"
+                app:egValueTextSize="36sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
             android:orientation="horizontal"
             android:weightSum="1">
 
@@ -31,30 +47,13 @@
                 android:padding="10dp"
                 app:egBarWidth="20dp"
                 app:egFixedBarWidth="true"
+                app:egLegendColor="@color/album_title"
                 app:egLegendHeight="40dp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-            <org.eazegraph.lib.charts.PieChart
-                android:id="@+id/piechart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp"
-                app:egLegendTextSize="18sp"
-                app:egUsePieRotation="true"
-                app:egValueTextSize="36sp" />
-        </LinearLayout>
-
 
     </LinearLayout>
-
 
     <ListView
         android:id="@+id/listhisto"
@@ -62,6 +61,5 @@
         android:layout_height="match_parent"
         android:layout_weight="0.7"
         android:background="@android:color/transparent" />
-
 
 </LinearLayout>

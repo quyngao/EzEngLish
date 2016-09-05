@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentSetting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/gradient_bg_hover"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Setting Schedule "
+                android:textColor="@color/colorBottomNavigationActiveColored"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Sound"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+                android:textSize="18sp" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchsound"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Turn on/off"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+                android:textSize="18sp" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchalarm"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:checked="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Step"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/text_step"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:text="5"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Audio :"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_audio"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="7:00"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Voca"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_voca"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="12:30"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Story :"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_story"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="17:00"
+                android:textColor="@color/colorBottomNavigationActiveColored"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+    </LinearLayout>
+</RelativeLayout>

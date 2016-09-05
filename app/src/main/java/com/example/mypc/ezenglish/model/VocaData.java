@@ -41,8 +41,6 @@ public class VocaData implements Serializable {
         this.trans = x.getTrans();
         this.mean = x.getMean();
         this.type = x.getType();
-
-        this.type = x.getTrans();
         this.isRed = true;
 
     }

@@ -72,13 +72,13 @@ public class HistoryFragment extends Fragment {
 
         BarChart mBarChart = (BarChart) getActivity().findViewById(R.id.barchart);
 
-        mBarChart.addBar(new BarModel("Mon", 4.3f, 0xFF123456));
-        mBarChart.addBar(new BarModel("Tue", 0.3f, 0xFF123456));
-        mBarChart.addBar(new BarModel("Wen", 1.1f, 0xFF123456));
-        mBarChart.addBar(new BarModel("Thu", 5.5f, 0xFF123456));
-        mBarChart.addBar(new BarModel("Fri", 2.3f, 0xFF123456));
-        mBarChart.addBar(new BarModel("Sat", 4.3f, 0xFF123456));
-        mBarChart.addBar(new BarModel("Sun", 6.3f, 0xFF123456));
+        mBarChart.addBar(new BarModel("Mon", 4.3f, Color.parseColor("#3F51B5")));
+        mBarChart.addBar(new BarModel("Tue", 0.3f, Color.parseColor("#3F51B5")));
+        mBarChart.addBar(new BarModel("Wen", 1.1f, Color.parseColor("#3F51B5")));
+        mBarChart.addBar(new BarModel("Thu", 5.5f, Color.parseColor("#3F51B5")));
+        mBarChart.addBar(new BarModel("Fri", 2.3f, Color.parseColor("#3F51B5")));
+        mBarChart.addBar(new BarModel("Sat", 4.3f, Color.parseColor("#3F51B5")));
+        mBarChart.addBar(new BarModel("Sun", 6.3f, Color.parseColor("#3F51B5")));
 
         mBarChart.startAnimation();
 
@@ -87,7 +87,7 @@ public class HistoryFragment extends Fragment {
 
         mPieChart.addPieSlice(new PieModel("Audio", 10, Color.parseColor("#3F51B5")));
         mPieChart.addPieSlice(new PieModel("Voca", 20, Color.parseColor("#20d2bb")));
-        mPieChart.addPieSlice(new PieModel("Story", 60, Color.parseColor("##f64c73")));
+        mPieChart.addPieSlice(new PieModel("Story", 60, Color.parseColor("#f64c73")));
         mPieChart.addPieSlice(new PieModel("Other", 8, Color.parseColor("#FFEB3B")));
 
 

@@ -44,7 +44,7 @@ public class VocaAdapter extends RecyclerView.Adapter<VocaAdapter.MyViewHolder> 
     public void onBindViewHolder(VocaAdapter.MyViewHolder holder, final int position) {
         final VocaData album = data.get(position);
         holder.title.setText(album.getName());
-        holder.tran.setText(album.getTrans());
+        holder.tran.setText(album.getTrans() + "(" + album.getType() + ")");
         holder.des.setText(album.getDescription());
         holder.check.setChecked(album.isRed());
 
@@ -85,8 +85,6 @@ public class VocaAdapter extends RecyclerView.Adapter<VocaAdapter.MyViewHolder> 
             check = (CheckBox) view.findViewById(R.id.tv_checkbox);
             des = (TextView) view.findViewById(R.id.des);
             voice = (ImageView) view.findViewById(R.id.voice);
-
-
         }
     }
 }

@@ -184,7 +184,6 @@ public class RecordFragment extends Fragment {
             }
         });
     }
-
     private class MainTask extends TimerTask {
         int time = 0;
 

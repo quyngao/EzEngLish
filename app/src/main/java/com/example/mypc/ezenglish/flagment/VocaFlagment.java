@@ -18,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.adapter.VocaAdapter;
@@ -67,7 +66,7 @@ public class VocaFlagment extends Fragment implements TextToSpeech.OnInitListene
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "This Language is not supported");
             } else {
-                speakOut("Hello Boy");
+                speakOut("Wellcome To" + l.getName());
             }
         } else {
             Log.e("TTS", "Initilization Failed!");
@@ -93,6 +92,7 @@ public class VocaFlagment extends Fragment implements TextToSpeech.OnInitListene
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_voca, container, false);
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -120,7 +120,6 @@ public class VocaFlagment extends Fragment implements TextToSpeech.OnInitListene
         listvoca = prefManager.getlistvoca();
         Log.e("size voca", "" + listvoca.size());
         if (listvoca.size() == 0) {
-
             for (Voca vc : l.getVocas()) {
                 VocaData tmp = new VocaData();
                 tmp.copyData(vc);
@@ -158,13 +157,11 @@ public class VocaFlagment extends Fragment implements TextToSpeech.OnInitListene
 
     @Override
     public void onItemClick(int location) {
-        Toast.makeText(getActivity(), "" + location, Toast.LENGTH_SHORT).show();
         speakOut(listvoca.get(location).getName());
     }
 
     @Override
     public void onCheckBox(int id, boolean b) {
-        Toast.makeText(getActivity(), "" + id + " -- " + b, Toast.LENGTH_SHORT).show();
         listvoca.get(id).setRed(b);
         prefManager.setlistvoca(listvoca);
     }

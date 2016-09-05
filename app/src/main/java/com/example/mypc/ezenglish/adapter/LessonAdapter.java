@@ -62,9 +62,13 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
         holder.state.setText(Constant.stateslesson[album.getIsrealy()]);
 
         if (album.getIsrealy() > 0) {
+            holder.state.setText(Constant.stateslesson[album.getIsrealy()] + " \n begin: " + album.getStart());
+
             Glide.with(mContext).load(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + album.getImg())).into(holder.thumbnail);
-            holder.overflow.setBackgroundResource(R.drawable.ic_starblu);
-            if (album.getIsrealy() == 2) holder.overflow.setBackgroundResource(R.drawable.icstar);
+            holder.overflow.setBackgroundResource(R.drawable.icstar);
+            if (album.getIsrealy() == 2)
+                holder.overflow.setBackgroundResource(R.drawable.ic_starblu);
+            holder.count.setText(album.getContext());
         } else {
             Glide.with(mContext).load(Constant.DATA_URL + album.getImg()).into(holder.thumbnail);
             holder.overflow.setBackgroundResource(R.drawable.ic_down);
@@ -131,7 +135,7 @@ public class LessonAdapter extends RecyclerView.Adapter<LessonAdapter.MyViewHold
                     LessonActivity.ChoiseLesson(id);
                     return true;
                 case R.id.leared:
-                    LessonActivity.ChoiseLesson(id);
+                    LessonActivity.reLesson(id);
                     return true;
                 case R.id.view:
                     LessonActivity.nextActivity(id);

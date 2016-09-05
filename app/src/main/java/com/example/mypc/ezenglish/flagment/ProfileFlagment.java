@@ -5,21 +5,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.activity.HomeActivity;
+import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.User;
 import com.example.mypc.ezenglish.realm.RealmLeason;
-import com.example.mypc.ezenglish.realm.RealmTopic;
 import com.example.mypc.ezenglish.realm.RealmUser;
-import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PrefManager;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.special.ResideMenu.ResideMenu;
 
 import org.eazegraph.lib.charts.StackedBarChart;
@@ -34,6 +28,7 @@ public class ProfileFlagment extends Fragment {
     private ResideMenu resideMenu;
     TextView tv_name, tv_inforperson, tv_inforlesson;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -44,22 +39,27 @@ public class ProfileFlagment extends Fragment {
     private void setUpViews() {
         HomeActivity parentActivity = (HomeActivity) getActivity();
         resideMenu = parentActivity.getResideMenu();
+        PrefManager prefManager = new PrefManager(parentActivity);
+        RealmLeason rl = new RealmLeason(parentActivity);
+        User user = new RealmUser(parentActivity).getUser();
+        System.out.println("" + user.getName());
 
-        btnChangeEmail = (Button) parentView.findViewById(R.id.change_email_button);
-        btnChangePassword = (Button) parentView.findViewById(R.id.change_password_button);
-        changeEmail = (Button) parentView.findViewById(R.id.changeEmail);
-        changePassword = (Button) parentView.findViewById(R.id.changePass);
-        btnSendResetEmail = (Button) parentView.findViewById(R.id.send);
+        tv_name = (TextView) parentView.findViewById(R.id.tv_pr_name);
+        tv_inforperson = (TextView) parentView.findViewById(R.id.tv_inforpe);
+        tv_inforlesson = (TextView) parentView.findViewById(R.id.tv_inforlearn);
+
 
         tv_name.setText("Hello  " + user.getName());
         tv_inforperson.setText("Description :" + user.getDescription());
         int i = prefManager.getlearnid();
         String s = "LEARNING :";
-        if (i != 0) s = s+topic.getleassongbyid(prefManager.getlearnid()).getName();
-        tv_inforlesson.setText("Total Lesson : 4/7" + " \n Total time : 15h" + " \n " + s);
+        if (i != 0) {
+            Lesson l = rl.getleassongbyid(prefManager.getlearnid());
+            s = s + l.getName();
+            tv_inforlesson.setText("Total Lesson : 4/7" + " \n Total time : 12h" + " Begin" + l.getStart() + " \n " + s);
 
+        } else tv_inforlesson.setText("Notthing  ..");
         StackedBarChart mStackedBarChart = (StackedBarChart) parentView.findViewById(R.id.stackedbarchart);
-
         StackedBarModel s1 = new StackedBarModel("Day of Death");
         s1.addBar(new BarModel(2f, getResources().getColor(R.color.color_audio)));
         s1.addBar(new BarModel(4.3f, getResources().getColor(R.color.color_voca)));

@@ -52,10 +52,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         prepareAlbums();
-
     }
-
-
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;

@@ -11,10 +11,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.mypc.ezenglish.R;
-import com.example.mypc.ezenglish.datafirebase.LessonFB;
 import com.example.mypc.ezenglish.datafirebase.TopicFB;
 import com.example.mypc.ezenglish.datafirebase.UserFB;
-import com.example.mypc.ezenglish.model.Lesson;
 import com.example.mypc.ezenglish.model.Topic;
 import com.example.mypc.ezenglish.model.User;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
@@ -41,6 +39,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (ref.getAuth() != null) {
+            Log.e("go to", "home");
             setdatadummy();
         }
         setContentView(R.layout.activity_login);
@@ -93,6 +92,8 @@ public class LoginActivity extends Activity {
                                     User x = new User(v);
                                     RealmUser realmUser = new RealmUser(LoginActivity.this);
                                     realmUser.SaveUser(x);
+                                    x = realmUser.getUser();
+                                    System.out.println("" + x.getName());
                                 }
 
                                 @Override
@@ -125,7 +126,7 @@ public class LoginActivity extends Activity {
         final RealmTopic r = new RealmTopic(LoginActivity.this);
 
 //        Topic t = d.saveTopic();
-
+//
 //        TopicFB tf = new TopicFB(t);
 //        alanRef.push().setValue(tf);
 
@@ -146,8 +147,6 @@ public class LoginActivity extends Activity {
                         r.Savetopic(t);
                     }
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
 

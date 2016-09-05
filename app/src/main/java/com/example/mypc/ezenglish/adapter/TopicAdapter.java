@@ -42,12 +42,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MyViewHolder
         final TopicFB album = albumList.get(position);
         holder.title.setText(album.getName());
         holder.count.setText(album.getDescription());
+
+
         holder.bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (position == 0)
                     mContext.startActivity(new Intent(mContext, LessonActivity.class));
-                else Toast.makeText(mContext, "updated", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(mContext, "updating", Toast.LENGTH_SHORT).show();
             }
         });
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
@@ -62,12 +64,9 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MyViewHolder
 
         Glide.with(mContext).load("").fitCenter().placeholder(Integer.parseInt(album.getImg())).into(holder.thumbnail);
 
-//        holder.overflow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showPopupMenu(holder.overflow);
-//            }
-//        });
+        if (position == 0) holder.overflow.setBackgroundResource(R.drawable.ic_starblu);
+        else holder.overflow.setBackgroundResource(R.drawable.ic_stargray);
+
     }
 
     @Override
@@ -78,7 +77,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
-        public ImageView thumbnail;
+        public ImageView thumbnail, overflow;
         public LinearLayout bg;
 
         public MyViewHolder(View view) {
@@ -86,6 +85,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MyViewHolder
             title = (TextView) view.findViewById(R.id.title);
             count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            overflow = (ImageView) view.findViewById(R.id.overflow);
             bg = (LinearLayout) view.findViewById(R.id.bg_topic);
         }
     }

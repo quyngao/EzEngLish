@@ -29,7 +29,6 @@ import com.example.mypc.ezenglish.R;
 import com.example.mypc.ezenglish.model.Topic;
 import com.example.mypc.ezenglish.realm.DataDummyLocal;
 import com.example.mypc.ezenglish.realm.RealmTopic;
-import com.example.mypc.ezenglish.realm.RealmUser;
 import com.example.mypc.ezenglish.util.Constant;
 import com.example.mypc.ezenglish.util.PrefManager;
 import com.firebase.client.Firebase;
@@ -124,8 +123,6 @@ public class WelcomeActivity extends AppCompatActivity {
         if (!prefManager.isFirstTimeLaunch()) {
             login();
             finish();
-        } else {
-
         }
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -150,19 +147,14 @@ public class WelcomeActivity extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
-
+                viewPager.setCurrentItem(getItem(-1));
             }
         });
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
                 int current = getItem(+1);
                 if (current < layouts.length) {
-                    // move to next screen
                     viewPager.setCurrentItem(current);
                 } else {
                     login();
@@ -170,30 +162,29 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
     }
-
     public void login() {
         Firebase mRef = new Firebase(Constant.FIREBASE_USER_URL);
-        try {
-            String mUserId = mRef.getAuth().getUid();
-        } catch (Exception e) {
-            loadLoginView();
-        }
         if (mRef.getAuth() == null) {
-            loadLoginView();
+            if (prefManager.isFirstTimeLaunch()) {
+                Intent intent = new Intent(this, SignupActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } else loadLoginView();
         } else {
             launchHomeScreen();
         }
     }
 
-    public void loadLoginView() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+    private void launchHomeScreen() {
+        prefManager.setFirstTimeLaunch(false);
+        startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
+        finish();
     }
 
-    public void loadSignupView() {
-        Intent intent = new Intent(this, SignupActivity.class);
+    public void loadLoginView() {
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -219,12 +210,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private int getItem(int i) {
         return viewPager.getCurrentItem() + i;
-    }
-
-    private void launchHomeScreen() {
-        prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
-        finish();
     }
 
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {

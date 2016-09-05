@@ -39,7 +39,7 @@ public class DataDummyLocal {
         l.setImg("/original/2/avatar.jpg");
         l.setIsrealy(1);
         l.setTime(30000);
-        l.setVocas(getlistvocar(2 * 10));
+        l.setVocas(getlistvocar2(2 * 10));
         l.setAll(getlistmp32(2 * 10));
         return l;
     }
@@ -64,7 +64,7 @@ public class DataDummyLocal {
         l.setName("Changed");
         l.setDoc(getDoc(4));
         l.setContext(" for beginner");
-        l.setImg("/original/4/avatar.png");
+        l.setImg("/original/4/avatar.jpg");
         l.setIsrealy(1);
         l.setTime(50000);
         l.setVocas(getlistvocar(4 * 10));
@@ -100,6 +100,20 @@ public class DataDummyLocal {
         return l;
     }
 
+    public Lesson getLesson7() {
+        Lesson l = new Lesson();
+        l.setId(7);
+        l.setName("Secret Love");
+        l.setDoc(getDoc(7));
+        l.setContext("for beginner");
+        l.setImg("/original/7/avatar.jpg");
+        l.setIsrealy(0);
+        l.setTime(0);
+        l.setVocas(getlistvocar(7 * 10));
+        l.setAll(getlistmp37((7 * 10), 7));
+        return l;
+    }
+
     public Topic saveTopic() {
         Topic t = new Topic();
         t.setId(1);
@@ -122,6 +136,8 @@ public class DataDummyLocal {
 
 
         tmp = getLesson6();
+        list.add(tmp);
+        tmp = getLesson7();
         list.add(tmp);
 
         t.setLessons(list);
@@ -195,7 +211,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Bubba's Food Audio");
         m.setContext("Audio");
-        m.setLocation("/original/2/Bubba's Food Audio.mp3");
+        m.setLocation("/original/2/Bubba's%20Food%20Audio.mp3");
         m.setType(0);
         list.add(m);
         i++;
@@ -203,7 +219,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Bubba's Food Vocab");
         m.setContext("Voca");
-        m.setLocation("/original/2/Bubba's Food Vocab.mp3");
+        m.setLocation("/original/2/Bubba's%20Food%20Vocab.mp3");
         m.setType(1);
         list.add(m);
         i++;
@@ -211,7 +227,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Bubba's Food MS A");
         m.setContext("Ministore");
-        m.setLocation("/original/2/Bubba's Food MS-A.mp3");
+        m.setLocation("/original/2/Bubba's%20Food%20MS-A.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -220,7 +236,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Bubba's Food MS B");
         m.setContext("Ministore");
-        m.setLocation("/original/2/Bubba's Food MS-B.mp3");
+        m.setLocation("/original/2/Bubba's%20Food%20MS-B.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -229,7 +245,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Bubba's Food MS C");
         m.setContext("Ministore");
-        m.setLocation("/original/2/Bubba's Food MS-B.mp3");
+        m.setLocation("/original/2/Bubba's%20Food%20MS-B.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -243,7 +259,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("A Kiss Audio");
         m.setContext("Audio");
-        m.setLocation("/original/3/A Kiss Audio.mp3");
+        m.setLocation("/original/3/A%20Kiss%20Audio.mp3");
         m.setType(0);
         list.add(m);
         i++;
@@ -251,7 +267,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("A Kiss Vocab");
         m.setContext("Voca");
-        m.setLocation("/original/3/A Kiss Vocab.mp3");
+        m.setLocation("/original/3/A%20Kiss%20Vocab.mp3");
         m.setType(1);
         list.add(m);
         i++;
@@ -259,7 +275,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("A Kiss MS A");
         m.setContext("Ministore");
-        m.setLocation("/original/3/A Kiss MS-A.mp3");
+        m.setLocation("/original/3/A%20Kiss%20MS-A.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -268,7 +284,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("A Kiss MS B");
         m.setContext("Ministore");
-        m.setLocation("/original/3/A Kiss MS-B.mp3");
+        m.setLocation("/original/3/A%20Kiss%20MS-B.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -284,7 +300,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Changed Audio");
         m.setContext("Audio");
-        m.setLocation("/original/4/Changed Audio.mp3");
+        m.setLocation("/original/4/Changed%20Audio.mp3");
         m.setType(0);
         list.add(m);
         i++;
@@ -292,7 +308,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Changed Vocab");
         m.setContext("Voca");
-        m.setLocation("/original/4/Changed Vocab.mp3");
+        m.setLocation("/original/4/Changed%20Vocab.mp3");
         m.setType(1);
         list.add(m);
         i++;
@@ -300,7 +316,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Changed MS A");
         m.setContext("Ministore");
-        m.setLocation("/original/4/Changed MS-A.mp3");
+        m.setLocation("/original/4/Changed%20MS-A.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -309,7 +325,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Changed MS B");
         m.setContext("Ministore");
-        m.setLocation("/original/4/Changed MS-B.mp3");
+        m.setLocation("/original/4/Changed%20MS-B.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -323,7 +339,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Drag Audio");
         m.setContext("Audio");
-        m.setLocation("/original/5/Drag Audio.mp3");
+        m.setLocation("/original/5/Drag%20Audio.mp3");
         m.setType(0);
         list.add(m);
         i++;
@@ -331,7 +347,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Drag Vocab");
         m.setContext("Voca");
-        m.setLocation("/original/5/Drag Vocab.mp3");
+        m.setLocation("/original/5/Drag%20Vocab.mp3");
         m.setType(1);
         list.add(m);
         i++;
@@ -339,7 +355,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Drag MS-A");
         m.setContext("Ministore");
-        m.setLocation("/original/5/Drag MS-A.mp3");
+        m.setLocation("/original/5/Drag%20MS-A.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -348,7 +364,7 @@ public class DataDummyLocal {
         m.setId(i);
         m.setName("Drag MS-B");
         m.setContext("Ministore");
-        m.setLocation("/original/5/Drag MS-B.mp3");
+        m.setLocation("/original/5/Drag%20MS-B.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -388,6 +404,45 @@ public class DataDummyLocal {
         m.setName("Intimacy MS-B");
         m.setContext("Ministore");
         m.setLocation("/original/" + j + "/Intimacy%20MS-B.mp3");
+        m.setType(2);
+        list.add(m);
+        i++;
+        return list;
+    }
+
+    public RealmList<MP3> getlistmp37(int i, int j) {
+        RealmList<MP3> list = new RealmList<>();
+
+        MP3 m = new MP3();
+        m.setId(i);
+        m.setName("Secret Love Audio");
+        m.setContext("Audio");
+        m.setLocation("/original/" + j + "/Secret%20Love%20Audio.mp3");
+        m.setType(0);
+        list.add(m);
+        i++;
+        m = new MP3();
+        m.setId(i);
+        m.setName("Secret Love Vocab");
+        m.setContext("Voca");
+        m.setLocation("/original/" + j + "/Secret%20Love%20Vocab.mp3");
+        m.setType(1);
+        list.add(m);
+        i++;
+        m = new MP3();
+        m.setId(i);
+        m.setName("Changed MS-A");
+        m.setContext("Ministore");
+        m.setLocation("/original/" + j + "/Changed%20MS-A.mp3");
+        m.setType(2);
+        list.add(m);
+        i++;
+
+        m = new MP3();
+        m.setId(i);
+        m.setName("Changed MS-B");
+        m.setContext("Ministore");
+        m.setLocation("/original/" + j + "/Changed%20MS-A.mp3");
         m.setType(2);
         list.add(m);
         i++;
@@ -482,6 +537,71 @@ public class DataDummyLocal {
         v1.setTrans("/faɪnd/");
         v1.setType("V");
         i++;
+        list.add(v1);
+        return list;
+
+
+    }
+
+    public RealmList<Voca> getlistvocar2(int i) {
+        RealmList<Voca> list = new RealmList<>();
+        Voca v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("Verry verry big");
+        v1.setImg("/original/2/1.jpg");
+        v1.setName("Huge");
+        v1.setTrans("/(h)yo͞oj/");
+        v1.setType("adj");
+        i++;
+        list.add(v1);
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("a greeting");
+        v1.setImg("/original/2/2.jpg");
+        v1.setName("WHAT'S UP");
+        v1.setTrans("/wɒt's ʌp/");
+        v1.setType("phrase");
+        i++;
+        list.add(v1);
+
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("To intentionally not listen or give attention to");
+        v1.setImg("/original/2/3.jpg");
+        v1.setName("Ignore");
+        v1.setTrans("/ɪɡˈnɔr/");
+        v1.setType("V");
+
+        i++;
+        list.add(v1);
+
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("a greeting ,How are you?");
+        v1.setImg("/original/2/4.jpg");
+        v1.setName("How’s it going:");
+        v1.setTrans("/Hau i do gau ing/");
+        v1.setType("Phrase");
+        list.add(v1);
+        i++;
+
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("to do something many times, or to continue doing it");
+        v1.setImg("/original/2/5.jpg");
+        v1.setName("KEEP");
+        v1.setTrans("/kip/");
+        v1.setType("V");
+        list.add(v1);
+        i++;
+
+        v1 = new Voca();
+        v1.setId(i);
+        v1.setDescription("There is no more, that is everything");
+        v1.setImg("/original/2/6.jpg");
+        v1.setName("That’s it");
+        v1.setTrans("/ðæt's ɪt/");
+        v1.setType("phrase");
         list.add(v1);
         return list;
 

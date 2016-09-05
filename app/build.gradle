@@ -42,5 +42,5 @@ dependencies {
     compile 'com.firebase:firebase-client-android:2.5.2+'
     compile 'com.specyci:residemenu:1.6+'
     compile 'com.github.alamkanak:android-week-view:1.2.6'
-    compile 'com.github.blackfizz:eazegraph:1.2.5l@aar'
+    compile 'com.github.blackfizz:eazegraph:1.2.2@aar'
 }

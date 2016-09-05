@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,13 +18,20 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.mypc.ezenglish.R;
+import com.example.mypc.ezenglish.datafirebase.TopicFB;
 import com.example.mypc.ezenglish.datafirebase.UserFB;
+import com.example.mypc.ezenglish.model.Topic;
 import com.example.mypc.ezenglish.model.User;
+import com.example.mypc.ezenglish.realm.DataDummyLocal;
+import com.example.mypc.ezenglish.realm.RealmTopic;
 import com.example.mypc.ezenglish.realm.RealmUser;
 import com.example.mypc.ezenglish.util.Constant;
+import com.example.mypc.ezenglish.util.PrefManager;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -47,6 +55,8 @@ public class SignupActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        Log.e("first SignupActivity", "zo day");
 
         btnSignIn = (Button) findViewById(R.id.sign_in_button);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
@@ -113,7 +123,7 @@ public class SignupActivity extends Activity {
 
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                String name = inputPassword.getText().toString().trim();
+                String name = inputName.getText().toString().trim();
                 String des = inputDescription.getText().toString().trim();
                 String birthday = inputBirthday.getText().toString().trim();
 
@@ -164,12 +174,11 @@ public class SignupActivity extends Activity {
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
+
                                     }
                                 });
-
                         AlertDialog dialog = builder.create();
                         dialog.show();
-
                         ref.authWithPassword(user.getEmail(), user.getPassword(), new Firebase.AuthResultHandler() {
                             @Override
                             public void onAuthenticated(AuthData authData) {
@@ -200,6 +209,47 @@ public class SignupActivity extends Activity {
                         dialog.show();
                     }
                 });
+            }
+        });
+    }
+
+    public void setdatadummy() {
+        Firebase rootRef = new Firebase(Constant.FIREBASE_DATA_URL);
+        Firebase alanRef = rootRef.child("topics");
+        final DataDummyLocal d = new DataDummyLocal();
+        final RealmTopic r = new RealmTopic(SignupActivity.this);
+
+//        Topic t = d.saveTopic();
+//
+//        TopicFB tf = new TopicFB(t);
+//        alanRef.push().setValue(tf);
+
+        alanRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                System.out.println("There are " + snapshot.getChildrenCount() + " blog posts");
+                PrefManager prefManager = new PrefManager(SignupActivity.this);
+                prefManager.setFirstTimeLaunch(false);
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    TopicFB x = postSnapshot.getValue(TopicFB.class);
+                    Topic t = new Topic(x);
+                    d.showTopic(t);
+                    if (r.getAllTopic().size() > 0) {
+                        Log.e("a", "done save");
+                    } else {
+                        Log.e("a", "save");
+                        r.Savetopic(t);
+                    }
+                    Intent intent = new Intent(SignupActivity.this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
     }

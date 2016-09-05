@@ -153,7 +153,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                     newNotification();
                     try {
                         saveHistory();
-                        audioWidget.show(100,300);
+                        audioWidget.show(100, 300);
                         playSong(songPath, data);
                         LessonActivity.changeUI();
                     } catch (Exception e) {
@@ -176,7 +176,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                         }
                         mp.start();
                         audioWidget.controller().start();
-                        audioWidget.show(100,300);
+                        audioWidget.show(100, 300);
 
                     } else if (message.equalsIgnoreCase(getResources().getString(R.string.pause))) {
                         PlayerConstants.SONG_PAUSED = true;
@@ -397,7 +397,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
             h.setTimes(t.getTime());
             h.setType(PlayerConstants.SONGS_LIST.get(PlayerConstants.SONG_NUMBER).getType());
             if (x > 20000) rl.addHistorybyid(h, PlayerConstants.ID_LEASSON);
-            Log.e("luu history", "id" + PlayerConstants.ID_LEASSON + "time" + Constant.df.format(t) + "long :" + mp.getCurrentPosition());
+            Log.e("luu history", "id" + PlayerConstants.ID_LEASSON + "time" + Constant.df.format(t) + "long :" + mp.getCurrentPosition() + " " + h.getType());
         }
     }
 
@@ -407,6 +407,7 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
             saveHistory();
             mp.stop();
             mp = null;
+            audioWidget.controller().stop();
         }
         super.onDestroy();
     }
@@ -434,15 +435,17 @@ public class SongService extends Service implements AudioManager.OnAudioFocusCha
                 Log.e("location", Constant.DATA_URL + songPath);
                 mp.setDataSource(Constant.DATA_URL + songPath);
             }
-            mp.prepare();
+
             LessonActivity.showloadding();
             mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
                     LessonActivity.hintloadding();
+                    mp.start();
                 }
             });
-            mp.start();
+            mp.prepare();
+
             timer.scheduleAtFixedRate(new MainTask(), 0, 100);
         } catch (IOException e) {
             e.printStackTrace();
